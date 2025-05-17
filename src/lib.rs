@@ -1,12 +1,13 @@
-#[derive(Debug)]
-pub struct WktNode {
-    keyword: String,
-    args: Vec<WktArg>,
-}
-
-#[derive(Debug)]
-pub enum WktArg {
-    String(String),
-    Number(f64),
-    Node(WktNode),
-}
+mod ast;
+mod citation;
+mod coordinate_system;
+mod ellipsoid;
+mod error;
+mod geodetic_reference_frame;
+mod id;
+mod keywords;
+mod map_projection;
+mod proj_crs;
+mod units;
+mod uri;
+mod utils;
