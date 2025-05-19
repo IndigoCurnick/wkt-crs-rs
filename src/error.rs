@@ -45,6 +45,7 @@ pub enum WktParseError {
     IncorrectKeywordOrder,
     ParseError(ParseError),
     IncorrectValue,
+    CouldNotDetermineType,
 }
 
 impl Display for WktParseError {
@@ -68,12 +69,14 @@ impl Display for WktParseError {
                 )
             }
             Self::TooManyKeyword(s) => write!(f, "Keyword `{}` has appeared too many times", s),
+            Self::TooFewKeyword(s) => write!(f, "Keyword `{}` has not appeared enough times", s),
             Self::IncorrectKeywordOrder => write!(f, "Keywords are not in correct order"),
             Self::ParseError(p) => write!(f, "{}", p),
             Self::IncorrectValue => write!(
                 f,
                 "A value which is not supported for this field was provided"
             ),
+            Self::CouldNotDetermineType => write!(f, "Could not determine type of this node"),
         }
     }
 }

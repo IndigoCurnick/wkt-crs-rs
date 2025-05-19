@@ -1,25 +1,20 @@
-// 7.5 Coordinate System
-// 7.5.1 Syntax
-
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
     id::Id,
-    keywords::{AXIS, ID, ORDER, TEMPORALQUANTITY, TIMEUNIT},
-    units::TimeUnit,
+    keywords::{AXIS, ID, ORDER},
 };
 
 use super::{axis_direction::AxisDirection, axis_order::AxisOrder};
 
-pub struct TemporalCountMeasureAxis {
+pub struct OrdinalDateTimeAxis {
     pub axis_name_abbreviation: String,
     pub axis_direction: AxisDirection,
     pub axis_order: Option<AxisOrder>,
-    pub time_unit: Option<TimeUnit>,
-    pub identifier: Option<Id>, // TODO: Technically the spec allows for multiple of these
+    pub identifier: Option<Id>,
 }
 
-impl TryFrom<&WktNode> for TemporalCountMeasureAxis {
+impl TryFrom<&WktNode> for OrdinalDateTimeAxis {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
@@ -31,9 +26,9 @@ impl TryFrom<&WktNode> for TemporalCountMeasureAxis {
             });
         }
 
-        if !(value.args.len() >= 2 || value.args.len() <= 6) {
+        if !(value.args.len() >= 2 || value.args.len() <= 5) {
             return Err(WktParseError::IncorrectArity {
-                expected: vec!["2-6".to_string()].into(),
+                expected: vec!["2-5".to_string()].into(),
                 found: value.args.len(),
             });
         }
@@ -46,56 +41,44 @@ impl TryFrom<&WktNode> for TemporalCountMeasureAxis {
         let axis_direction = AxisDirection::try_from((&value.args[1], value.args.get(2)))?;
 
         if value.args.len() == 2 {
-            return Ok(TemporalCountMeasureAxis {
+            return Ok(OrdinalDateTimeAxis {
                 axis_name_abbreviation,
                 axis_direction,
                 axis_order: None,
-                time_unit: None,
                 identifier: None,
             });
         }
 
+        // If Axis direction used 2 args then we start from 3
+        let i: usize = match value.args[2] {
+            WktArg::String(_) => 3,
+            _ => 2,
+        };
+
         let mut axis_order = None;
-        let mut time_unit = None;
         let mut identifier = None;
 
-        for i in 2..value.args.len() {
-            let this_value = &value.args[i];
-
-            match this_value {
-                WktArg::Node(node) => {
-                    match node.keyword.as_str() {
+        for j in i..value.args.len() {
+            match &value.args[j] {
+                WktArg::Node(n) => {
+                    match n.keyword.as_str() {
                         ORDER => {
-                            // Axis order comes first
-
-                            if time_unit.is_some() || identifier.is_some() {
-                                return Err(WktParseError::IncorrectKeywordOrder);
-                            }
-
-                            axis_order = Some(AxisOrder::try_from(node)?);
-                        }
-                        TIMEUNIT | TEMPORALQUANTITY => {
-                            // Spatial unit comes before identifier
-
+                            // ? Should handle more than one axis order?
+                            // Order comes before identifier
                             if identifier.is_some() {
                                 return Err(WktParseError::IncorrectKeywordOrder);
                             }
 
-                            time_unit = Some(TimeUnit::try_from(node)?);
+                            axis_order = Some(AxisOrder::try_from(n)?);
                         }
                         ID => {
-                            identifier = Some(Id::try_from(node)?);
+                            // ? should handle more than one identifier?
+                            identifier = Some(Id::try_from(n)?)
                         }
                         _ => {
                             return Err(WktParseError::IncorrectKeyword {
-                                expected: vec![
-                                    ORDER.to_string(),
-                                    TIMEUNIT.to_string(),
-                                    TEMPORALQUANTITY.to_string(),
-                                    ID.to_string(),
-                                ]
-                                .into(),
-                                found: node.keyword.to_string(),
+                                expected: vec![ORDER.to_string(), ID.to_string()].into(),
+                                found: n.keyword.clone(),
                             });
                         }
                     }
@@ -104,11 +87,10 @@ impl TryFrom<&WktNode> for TemporalCountMeasureAxis {
             }
         }
 
-        Ok(TemporalCountMeasureAxis {
+        Ok(OrdinalDateTimeAxis {
             axis_name_abbreviation,
             axis_direction,
             axis_order,
-            time_unit,
             identifier,
         })
     }

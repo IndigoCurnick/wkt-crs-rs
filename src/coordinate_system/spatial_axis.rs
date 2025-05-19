@@ -28,9 +28,9 @@ impl TryFrom<&WktNode> for SpatialAxis {
             });
         }
 
-        if !(value.args.len() >= 2 || value.args.len() <= 5) {
+        if !(value.args.len() >= 2 || value.args.len() <= 6) {
             return Err(WktParseError::IncorrectArity {
-                expected: vec!["2-5".to_string()].into(),
+                expected: vec!["2-6".to_string()].into(),
                 found: value.args.len(),
             });
         }

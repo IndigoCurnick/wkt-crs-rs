@@ -6,7 +6,7 @@ use crate::{
 
 #[derive(Debug, PartialEq)]
 pub struct AxisOrder {
-    pub bearing: f64, // TODO: Technically this should only ever be a uint
+    pub order: f64, // TODO: Technically this should only ever be a uint
 }
 
 impl TryFrom<&WktNode> for AxisOrder {
@@ -33,6 +33,6 @@ impl TryFrom<&WktNode> for AxisOrder {
             _ => return Err(WktParseError::ExpectedNumber),
         };
 
-        return Ok(AxisOrder { bearing });
+        return Ok(AxisOrder { order: bearing });
     }
 }
