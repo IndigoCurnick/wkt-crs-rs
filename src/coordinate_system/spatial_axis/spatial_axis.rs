@@ -1,12 +1,11 @@
 use crate::{
     ast::{WktArg, WktNode},
+    coordinate_system::{axis_direction::AxisDirection, axis_order::AxisOrder},
     error::WktParseError,
     id::Id,
     keywords::{ANGLEUNIT, AXIS, ID, LENGTHUNIT, ORDER, PARAMETRICUNIT, SCALEUNIT},
     units::SpatialUnit,
 };
-
-use super::{axis_direction::AxisDirection, axis_order::AxisOrder};
 
 pub struct SpatialAxis {
     pub axis_name_abbreviation: String,

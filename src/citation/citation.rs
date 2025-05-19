@@ -1,7 +1,7 @@
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
-    keywords::URI,
+    keywords::CITATION,
 };
 
 #[derive(Debug, PartialEq)]
@@ -11,8 +11,8 @@ impl TryFrom<&WktNode> for Citation {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
-        if value.keyword != URI {
-            let expected = vec![URI.to_string()];
+        if value.keyword != CITATION {
+            let expected = vec![CITATION.to_string()];
             return Err(WktParseError::IncorrectKeyword {
                 expected: expected.into(),
                 found: value.keyword.to_string(),
@@ -26,11 +26,11 @@ impl TryFrom<&WktNode> for Citation {
             });
         }
 
-        let uri = match &value.args[0] {
+        let cite = match &value.args[0] {
             WktArg::String(s) => s.clone(),
             _ => return Err(WktParseError::ExpectedString),
         };
 
-        Ok(Citation(uri))
+        Ok(Citation(cite))
     }
 }

@@ -17,3 +17,5 @@ pub const MERIDIAN: &str = "MERIDIAN";
 pub const BEARING: &str = "BEARING";
 pub const ORDER: &str = "ORDER";
 pub const CS: &str = "CS";
+pub const PRIMEM: &str = "PRIMEM";
+pub const PRIMEMERIDIAN: &str = "PRIMEMERIDIAN";

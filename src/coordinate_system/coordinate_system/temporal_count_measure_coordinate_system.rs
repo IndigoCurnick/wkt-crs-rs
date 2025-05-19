@@ -1,13 +1,12 @@
 use crate::{
     ast::{WktArg, WktNode},
+    coordinate_system::{
+        cs_type::TemporalCountMeasureCsType, dimension::Dimension,
+        temporal_count_measure_axis::TemporalCountMeasureAxis,
+    },
     error::WktParseError,
     id::Id,
     keywords::CS,
-};
-
-use super::{
-    spatial_coordinate_system::Dimension, temporal_count_measure_axis::TemporalCountMeasureAxis,
-    temporal_count_measure_cs_type::TemporalCountMeasureCsType,
 };
 
 pub struct TemporalCountMeasureCoordinateSystem {

@@ -2,9 +2,11 @@ use std::str::FromStr;
 
 use strum::{AsRefStr, EnumString};
 
-use crate::{ast::WktArg, error::WktParseError};
-
-use super::{bearing::Bearing, meridian::Meridian};
+use crate::{
+    ast::WktArg,
+    coordinate_system::{bearing::Bearing, meridian::Meridian},
+    error::WktParseError,
+};
 
 #[derive(Debug, PartialEq, EnumString)]
 pub enum AxisDirection {

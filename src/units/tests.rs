@@ -45,7 +45,7 @@ fn test_scale_unit() {
         unit_name: "parts per million".to_string(),
     };
 
-    let ast = parse_wkt(AU_EXAMPLE1);
+    let ast = parse_wkt(SU_EXAMPLE1);
 
     let su = ScaleUnit::try_from(&ast).unwrap();
 

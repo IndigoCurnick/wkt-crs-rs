@@ -1,11 +1,10 @@
 use crate::{
     ast::{WktArg, WktNode},
+    coordinate_system::{axis_direction::AxisDirection, axis_order::AxisOrder},
     error::WktParseError,
     id::Id,
     keywords::{AXIS, ID, ORDER},
 };
-
-use super::{axis_direction::AxisDirection, axis_order::AxisOrder};
 
 pub struct OrdinalDateTimeAxis {
     pub axis_name_abbreviation: String,

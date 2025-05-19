@@ -33,7 +33,14 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
             }
             c if c.is_ascii_digit() || c == '-' || c == '.' => {
                 let len = s
-                    .find(|ch: char| !ch.is_ascii_digit() && ch != '.' && ch != '-')
+                    .find(|ch: char| {
+                        !ch.is_ascii_digit()
+                            && ch != '.'
+                            && ch != '-'
+                            && ch != '+'
+                            && ch != 'e'
+                            && ch != 'E'
+                    }) // TODO: we might need more robust scientific notation handling in future
                     .unwrap_or(s.len());
                 let num_str = &s[..len];
                 let num = num_str.parse::<f64>().unwrap();

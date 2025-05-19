@@ -1,23 +1,23 @@
 use crate::{
     ast::{WktArg, WktNode},
+    coordinate_system::{cs_type::SpatialCsType, dimension::Dimension, spatial_axis::SpatialAxis},
     error::WktParseError,
     id::Id,
-    keywords::{AXIS, CS, ID},
+    keywords::{
+        ANGLEUNIT, AXIS, CS, ID, LENGTHUNIT, PARAMETRICUNIT, SCALEUNIT, TEMPORALQUANTITY, TIMEUNIT,
+    },
+    units::Unit,
 };
 
-use super::{
-    ordinal_date_time_axis::OrdinalDateTimeAxis, ordinal_date_time_cs_type::OrdinalDateTimeCsType,
-    spatial_coordinate_system::Dimension,
-};
-
-pub struct OrdinalDateTimeCoordinateSystem {
-    pub ordinal_date_time_cs_type: OrdinalDateTimeCsType,
+pub struct SpatialCoordinateSystem {
+    pub spatial_cs_type: SpatialCsType,
     pub dimension: Dimension,
-    pub identifier: Option<Id>, // TODO: technically the spec allows for many...
-    pub ordinal_date_time_axis: Vec<OrdinalDateTimeAxis>,
+    pub identifier: Option<Id>, // TODO: Technically the spec allows for any number of these
+    pub spatial_axis: Vec<SpatialAxis>,
+    pub cs_unit: Option<Unit>,
 }
 
-impl TryFrom<&WktNode> for OrdinalDateTimeCoordinateSystem {
+impl TryFrom<&WktNode> for SpatialCoordinateSystem {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
@@ -36,11 +36,12 @@ impl TryFrom<&WktNode> for OrdinalDateTimeCoordinateSystem {
             });
         }
 
-        let ordinal_date_time_cs_type = OrdinalDateTimeCsType::try_from(&value.args[0])?;
+        let spatial_cs_type = SpatialCsType::try_from(&value.args[0])?;
         let dimension = Dimension::try_from(&value.args[1])?;
 
         let mut identifier = None;
-        let mut ordinal_date_time_axis = vec![];
+        let mut spatial_axis = vec![];
+        let mut cs_unit = None;
 
         for i in 2..value.args.len() {
             let this_arg = &value.args[i];
@@ -50,7 +51,7 @@ impl TryFrom<&WktNode> for OrdinalDateTimeCoordinateSystem {
                     ID => {
                         // ID is before spatial axis and cs unti
 
-                        if !ordinal_date_time_axis.is_empty() {
+                        if !spatial_axis.is_empty() || cs_unit.is_some() {
                             return Err(WktParseError::IncorrectKeywordOrder);
                         }
 
@@ -63,12 +64,30 @@ impl TryFrom<&WktNode> for OrdinalDateTimeCoordinateSystem {
                     AXIS => {
                         // Spatial axis is before cs_unit
 
-                        let oa = OrdinalDateTimeAxis::try_from(node)?;
-                        ordinal_date_time_axis.push(oa);
+                        if cs_unit.is_some() {
+                            return Err(WktParseError::IncorrectKeywordOrder);
+                        }
+
+                        let sa = SpatialAxis::try_from(node)?;
+                        spatial_axis.push(sa);
+                    }
+                    LENGTHUNIT | ANGLEUNIT | SCALEUNIT | PARAMETRICUNIT | TIMEUNIT
+                    | TEMPORALQUANTITY => {
+                        cs_unit = Some(Unit::try_from(node)?);
                     }
                     _ => {
                         return Err(WktParseError::IncorrectKeyword {
-                            expected: vec![ID.to_string(), AXIS.to_string()].into(),
+                            expected: vec![
+                                ID.to_string(),
+                                AXIS.to_string(),
+                                LENGTHUNIT.to_string(),
+                                ANGLEUNIT.to_string(),
+                                SCALEUNIT.to_string(),
+                                PARAMETRICUNIT.to_string(),
+                                TIMEUNIT.to_string(),
+                                TEMPORALQUANTITY.to_string(),
+                            ]
+                            .into(),
                             found: node.keyword.clone(),
                         });
                     }
@@ -79,15 +98,16 @@ impl TryFrom<&WktNode> for OrdinalDateTimeCoordinateSystem {
 
         // Must be at least one spatial axis
 
-        if ordinal_date_time_axis.is_empty() {
+        if spatial_axis.is_empty() {
             return Err(WktParseError::TooFewKeyword(AXIS.to_string()));
         }
 
-        Ok(OrdinalDateTimeCoordinateSystem {
-            ordinal_date_time_cs_type,
+        Ok(SpatialCoordinateSystem {
+            spatial_cs_type,
             dimension,
             identifier,
-            ordinal_date_time_axis,
+            spatial_axis,
+            cs_unit,
         })
     }
 }

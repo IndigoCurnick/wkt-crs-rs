@@ -6,7 +6,7 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
 - [ ] Anchor - 8, 10, 11, 12
 - [X] Angle Unit - 7
 - [ ] Area - 7
-- [ ] Axis - 7
+- [X] Axis - 7
 - [ ] Base Eng CRS - 14
 - [ ] Base Geod CRS - 9, 14
 - [ ] Base Geog CRS - 9, 14
@@ -25,7 +25,7 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
 - [ ] Coord Epoch- 16
 - [ ] Coordinate Metadata - 16
 - [ ] Coordinate Operation - 17
-- [ ] Coordinate System - 7
+- [X] Coordinate System - 7
 - [ ] Datum - 8
 - [ ] Derived Proj CRS - 14
 - [ ] Deriving Conversion - 14
@@ -43,7 +43,7 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
 - [ ] Interpolation CRS - 17
 - [X] Length Unit - 7
 - [ ] Member - 7
-- [ ] Meridian - 7
+- [X] Meridian - 7
 - [ ] Method - 9, 14, 17, 18
 - [ ] Model - 7
 - [ ] Operation Accuracy - 17, 18

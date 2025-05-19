@@ -7,6 +7,7 @@ mod geodetic_reference_frame;
 mod id;
 mod keywords;
 mod map_projection;
+mod prime_meridian;
 mod proj_crs;
 mod units;
 mod uri;
