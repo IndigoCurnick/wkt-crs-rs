@@ -62,7 +62,14 @@ impl TryFrom<&WktNode> for PrimeMeridian {
 
                             angle_unit = Some(AngleUnit::try_from(node)?);
                         }
-                        ID => {}
+                        ID => {
+                            // Can only be one identifier (for now...)
+                            if identifier.is_some() {
+                                return Err(WktParseError::TooManyKeyword(ID.to_string()));
+                            }
+
+                            identifier = Some(Id::try_from(node)?);
+                        }
                         _ => {
                             return Err(WktParseError::IncorrectKeyword {
                                 expected: vec![ANGLEUNIT.to_string(), ID.to_string()].into(),
@@ -75,6 +82,11 @@ impl TryFrom<&WktNode> for PrimeMeridian {
             }
         }
 
-        todo!();
+        return Ok(PrimeMeridian {
+            prime_meridian_name,
+            irm_longitude,
+            angle_unit,
+            identifier,
+        });
     }
 }

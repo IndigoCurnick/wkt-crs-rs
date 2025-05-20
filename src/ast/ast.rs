@@ -3,6 +3,7 @@ pub enum Token {
     Ident(String),
     String(String),
     Number(f64),
+    DateTime(todo!()),
     LBracket,
     RBracket,
     Comma,
