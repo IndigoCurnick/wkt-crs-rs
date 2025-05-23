@@ -20,3 +20,4 @@ pub const CS: &str = "CS";
 pub const PRIMEM: &str = "PRIMEM";
 pub const PRIMEMERIDIAN: &str = "PRIMEMERIDIAN";
 pub const REMARK: &str = "REMARK";
+pub const TIMEEXTENT: &str = "TIMEEXTENT";

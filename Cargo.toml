@@ -7,4 +7,5 @@ edition = "2024"
 log = "0.4.27"
 strum = { version = "0.27.1", features = ["derive"] }
 strum_macros = "0.27.1"
-chrono = { version = "0.4.41", features = ["serde"] }
+time = { version = "0.3.41", features = ["parsing", "macros"] }
+horologium = { git = "https://github.com/IndigoCurnick/horologium.git", rev = "81a6bde" }

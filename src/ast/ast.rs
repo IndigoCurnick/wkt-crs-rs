@@ -1,9 +1,11 @@
+use horologium::Temporal;
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     Ident(String),
     String(String),
     Number(f64),
-    DateTime(todo!()),
+    DateTime(Temporal),
     LBracket,
     RBracket,
     Comma,
@@ -44,9 +46,17 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     }) // TODO: we might need more robust scientific notation handling in future
                     .unwrap_or(s.len());
                 let num_str = &s[..len];
-                let num = num_str.parse::<f64>().unwrap();
-                tokens.push(Token::Number(num));
-                s = &s[len..];
+
+                let rdate = Temporal::try_from(num_str);
+
+                if let Ok(date) = rdate {
+                    tokens.push(Token::DateTime(date));
+                    s = &s[len..];
+                } else {
+                    let num = num_str.parse::<f64>().unwrap();
+                    tokens.push(Token::Number(num));
+                    s = &s[len..];
+                }
             }
             c if c.is_ascii_alphabetic() => {
                 let len = s
@@ -119,4 +129,5 @@ pub enum WktArg {
     String(String),
     Number(f64),
     Node(WktNode),
+    DateTime(Temporal),
 }

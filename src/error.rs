@@ -35,6 +35,7 @@ pub enum WktParseError {
     ExpectedString,
     ExpectedNumber,
     ExpectedStringOrNumber,
+    ExpectedStringOrDate,
     ExpectedNode,
     IncorrectKeyword {
         expected: Allowed<String>,
@@ -60,6 +61,7 @@ impl Display for WktParseError {
             Self::ExpectedString => write!(f, "Expected String"),
             Self::ExpectedNumber => write!(f, "Expected Number"),
             Self::ExpectedStringOrNumber => write!(f, "Expected String or Number"),
+            Self::ExpectedStringOrDate => write!(f, "Expected String or DateTime"),
             Self::ExpectedNode => write!(f, "Expected Node"),
             Self::IncorrectKeyword { expected, found } => {
                 write!(
