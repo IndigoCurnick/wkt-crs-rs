@@ -5,8 +5,8 @@ use crate::{
     ast::{WktArg, WktNode},
     coordinate_system::{axis_direction::AxisDirection, axis_order::AxisOrder},
     error::WktParseError,
-    id::Id,
     keywords::{AXIS, ID, ORDER, TEMPORALQUANTITY, TIMEUNIT},
+    scope_extent_identifier_remark::Id,
     units::TimeUnit,
 };
 

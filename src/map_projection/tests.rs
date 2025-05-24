@@ -1,4 +1,4 @@
-use crate::{ast::parse_wkt, id::Id, units::AngleUnit, utils::NumText};
+use crate::{ast::parse_wkt, scope_extent_identifier_remark::Id, units::AngleUnit, utils::NumText};
 
 use super::map_projection::{
     MapProjection, MapProjectionMethod, MapProjectionParameter, MapProjectionParameterUnit,

@@ -6,11 +6,13 @@ use crate::{
     keywords::TIMEEXTENT,
 };
 
+#[derive(Debug, PartialEq)]
 pub enum DateOrString {
     Date(Temporal),
     String(String),
 }
 
+#[derive(Debug, PartialEq)]
 pub struct TemporalExtent {
     pub from: DateOrString,
     pub to: DateOrString,

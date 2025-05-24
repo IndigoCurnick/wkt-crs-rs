@@ -47,16 +47,17 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     .unwrap_or(s.len());
                 let num_str = &s[..len];
 
-                let rdate = Temporal::try_from(num_str);
-
-                if let Ok(date) = rdate {
+                // ! This is some premium jank
+                // TODO: Integer support?
+                if let Ok(num) = num_str.parse::<f64>() {
+                    tokens.push(Token::Number(num));
+                    s = &s[len..];
+                } else if let Ok(date) = Temporal::try_from(num_str) {
                     tokens.push(Token::DateTime(date));
                     s = &s[len..];
                 } else {
-                    let num = num_str.parse::<f64>().unwrap();
-                    tokens.push(Token::Number(num));
-                    s = &s[len..];
-                }
+                    panic!("Unknown number type")
+                };
             }
             c if c.is_ascii_alphabetic() => {
                 let len = s
@@ -100,6 +101,10 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
             }
             Some(Token::Number(n)) => {
                 args.push(WktArg::Number(*n));
+                tokens.remove(0);
+            }
+            Some(Token::DateTime(d)) => {
+                args.push(WktArg::DateTime(d.clone()));
                 tokens.remove(0);
             }
             Some(Token::Ident(_)) => {

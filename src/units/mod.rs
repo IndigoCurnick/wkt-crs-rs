@@ -6,9 +6,6 @@ mod spatial_unit;
 mod time_unit;
 mod unit;
 
-#[cfg(test)]
-mod tests;
-
 pub use angle_unit::AngleUnit;
 pub use length_unit::LengthUnit;
 pub use parametric_unit::ParametricUnit;

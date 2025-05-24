@@ -21,3 +21,7 @@ pub const PRIMEM: &str = "PRIMEM";
 pub const PRIMEMERIDIAN: &str = "PRIMEMERIDIAN";
 pub const REMARK: &str = "REMARK";
 pub const TIMEEXTENT: &str = "TIMEEXTENT";
+pub const SCOPE: &str = "SCOPE";
+pub const AREA: &str = "AREA";
+pub const BBOX: &str = "BBOX";
+pub const VERTICALEXTENT: &str = "VERTICALEXTENT";

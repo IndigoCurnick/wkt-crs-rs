@@ -5,8 +5,8 @@ use crate::{
         temporal_count_measure_axis::TemporalCountMeasureAxis,
     },
     error::WktParseError,
-    id::Id,
     keywords::CS,
+    scope_extent_identifier_remark::Id,
 };
 
 pub struct TemporalCountMeasureCoordinateSystem {

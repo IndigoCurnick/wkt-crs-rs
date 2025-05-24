@@ -1,20 +1,18 @@
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
-    keywords::REMARK,
+    keywords::AREA,
 };
 
 #[derive(Debug, PartialEq)]
-pub struct Remark {
-    pub remark: String,
-}
+pub struct AreaDescription(pub String);
 
-impl TryFrom<&WktNode> for Remark {
+impl TryFrom<&WktNode> for AreaDescription {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
-        if value.keyword != REMARK {
-            let expected = vec![REMARK.to_string()];
+        if value.keyword != AREA {
+            let expected = vec![AREA.to_string()];
             return Err(WktParseError::IncorrectKeyword {
                 expected: expected.into(),
                 found: value.keyword.to_string(),
@@ -28,11 +26,11 @@ impl TryFrom<&WktNode> for Remark {
             });
         }
 
-        let remark = match &value.args[0] {
+        let area = match &value.args[0] {
             WktArg::String(s) => s.clone(),
             _ => return Err(WktParseError::ExpectedString),
         };
 
-        return Ok(Remark { remark });
+        Ok(AreaDescription(area))
     }
 }

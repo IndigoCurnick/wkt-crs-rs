@@ -131,6 +131,7 @@ impl TryFrom<&WktNode> for Id {
                         }
                     }
                 }
+                _ => return Err(WktParseError::ExpectedNode),
             }
         }
 

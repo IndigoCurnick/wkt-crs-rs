@@ -1,26 +1,33 @@
+use log::warn;
+
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
-    id::Id,
-    keywords::PARAMETRICUNIT,
+    keywords::{SCALEUNIT, UNIT},
+    scope_extent_identifier_remark::Id,
 };
 
-pub struct ParametricUnit {
+#[derive(Debug, PartialEq)]
+pub struct ScaleUnit {
     pub unit_name: String,
     pub conversion_factor: f64,
-    pub identifier: Option<Id>, // TODO: Technically the Specification allows for multiple
+    pub identifier: Option<Id>, // TODO: Technically the spec allows for many IDs here
 }
 
-impl TryFrom<&WktNode> for ParametricUnit {
+impl TryFrom<&WktNode> for ScaleUnit {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
-        if value.keyword != PARAMETRICUNIT {
-            let expected = vec![PARAMETRICUNIT.to_string()];
+        if !(value.keyword == SCALEUNIT || value.keyword == UNIT) {
+            let expected = vec![SCALEUNIT.to_string(), UNIT.to_string()];
             return Err(WktParseError::IncorrectKeyword {
                 expected: expected.into(),
                 found: value.keyword.to_string(),
             });
+        }
+
+        if value.keyword == UNIT {
+            warn!("Keyword SPHEROID depreciated. Consider using ELLIPSOID instead");
         }
 
         if !(value.args.len() == 2 || value.args.len() == 3) {
@@ -51,7 +58,7 @@ impl TryFrom<&WktNode> for ParametricUnit {
             None => None,
         };
 
-        Ok(ParametricUnit {
+        Ok(ScaleUnit {
             unit_name,
             conversion_factor,
             identifier,

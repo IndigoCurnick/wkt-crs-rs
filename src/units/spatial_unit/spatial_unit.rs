@@ -3,32 +3,43 @@ use log::error;
 use crate::{
     ast::WktNode,
     error::WktParseError,
-    keywords::{
-        ANGLEUNIT, LENGTHUNIT, PARAMETRICUNIT, SCALEUNIT, TEMPORALQUANTITY, TIMEUNIT, UNIT,
-    },
+    keywords::{ANGLEUNIT, LENGTHUNIT, PARAMETRICUNIT, SCALEUNIT, UNIT},
+    units::{AngleUnit, LengthUnit, ParametricUnit, ScaleUnit},
 };
 
-use super::{spatial_unit::SpatialUnit, time_unit::TimeUnit};
-
-pub enum Unit {
-    SpatialUnit(SpatialUnit),
-    TimeUnit(TimeUnit),
+pub enum SpatialUnit {
+    AngleUnit(AngleUnit),
+    LengthUnit(LengthUnit),
+    ParametricUnit(ParametricUnit),
+    ScaleUnit(ScaleUnit),
 }
 
-impl TryFrom<&WktNode> for Unit {
+impl TryFrom<&WktNode> for SpatialUnit {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
         match value.keyword.as_str() {
-            LENGTHUNIT | ANGLEUNIT | SCALEUNIT | PARAMETRICUNIT => {
-                return match SpatialUnit::try_from(value) {
-                    Ok(x) => Ok(Self::SpatialUnit(x)),
+            LENGTHUNIT => {
+                return match LengthUnit::try_from(value) {
+                    Ok(x) => Ok(Self::LengthUnit(x)),
                     Err(y) => Err(y),
                 };
             }
-            TIMEUNIT | TEMPORALQUANTITY => {
-                return match TimeUnit::try_from(value) {
-                    Ok(x) => Ok(Self::TimeUnit(x)),
+            ANGLEUNIT => {
+                return match AngleUnit::try_from(value) {
+                    Ok(x) => Ok(Self::AngleUnit(x)),
+                    Err(y) => Err(y),
+                };
+            }
+            SCALEUNIT => {
+                return match ScaleUnit::try_from(value) {
+                    Ok(x) => Ok(Self::ScaleUnit(x)),
+                    Err(y) => Err(y),
+                };
+            }
+            PARAMETRICUNIT => {
+                return match ParametricUnit::try_from(value) {
+                    Ok(x) => Ok(Self::ParametricUnit(x)),
                     Err(y) => Err(y),
                 };
             }
@@ -41,9 +52,6 @@ impl TryFrom<&WktNode> for Unit {
                         LENGTHUNIT.to_string(),
                         ANGLEUNIT.to_string(),
                         SCALEUNIT.to_string(),
-                        PARAMETRICUNIT.to_string(),
-                        TEMPORALQUANTITY.to_string(),
-                        TIMEUNIT.to_string(),
                     ]
                     .into(),
                     found: UNIT.to_string(),

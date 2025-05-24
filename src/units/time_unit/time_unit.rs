@@ -1,38 +1,32 @@
-use log::warn;
-
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
-    id::Id,
-    keywords::{ANGLEUNIT, UNIT},
+    keywords::{TEMPORALQUANTITY, TIMEUNIT},
+    scope_extent_identifier_remark::Id,
 };
 
 #[derive(Debug, PartialEq)]
-pub struct AngleUnit {
+pub struct TimeUnit {
     pub unit_name: String,
-    pub conversion_factor: f64,
-    pub identifier: Option<Id>, // TODO: Technically the spec allows for many IDs here
+    pub conversion_factor: Option<f64>,
+    pub identifier: Option<Id>, // TODO: Technically the Specification allows for multiple
 }
 
-impl TryFrom<&WktNode> for AngleUnit {
+impl TryFrom<&WktNode> for TimeUnit {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
-        if !(value.keyword == ANGLEUNIT || value.keyword == UNIT) {
-            let expected = vec![ANGLEUNIT.to_string(), UNIT.to_string()];
+        if !(value.keyword == TIMEUNIT || value.keyword == TEMPORALQUANTITY) {
+            let expected = vec![TIMEUNIT.to_string(), TEMPORALQUANTITY.to_string()];
             return Err(WktParseError::IncorrectKeyword {
                 expected: expected.into(),
                 found: value.keyword.to_string(),
             });
         }
 
-        if value.keyword == UNIT {
-            warn!("Keyword SPHEROID depreciated. Consider using ELLIPSOID instead");
-        }
-
-        if !(value.args.len() == 2 || value.args.len() == 3) {
+        if !(value.args.len() == 1 || value.args.len() == 2 || value.args.len() == 3) {
             return Err(WktParseError::IncorrectArity {
-                expected: vec!["2".to_string(), "3".to_string()].into(),
+                expected: vec!["1".to_string(), "2".to_string(), "3".to_string()].into(),
                 found: value.args.len(),
             });
         }
@@ -42,9 +36,12 @@ impl TryFrom<&WktNode> for AngleUnit {
             _ => return Err(WktParseError::ExpectedString),
         };
 
-        let conversion_factor = match value.args[1] {
-            WktArg::Number(n) => n,
-            _ => return Err(WktParseError::ExpectedString),
+        let conversion_factor = match value.args.get(1) {
+            Some(x) => match x {
+                WktArg::Number(n) => Some(n.clone()),
+                _ => return Err(WktParseError::ExpectedNumber),
+            },
+            None => None,
         };
 
         let identifier = match value.args.get(2) {
@@ -58,7 +55,7 @@ impl TryFrom<&WktNode> for AngleUnit {
             None => None,
         };
 
-        Ok(AngleUnit {
+        Ok(TimeUnit {
             unit_name,
             conversion_factor,
             identifier,
