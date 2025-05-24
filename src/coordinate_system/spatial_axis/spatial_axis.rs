@@ -7,6 +7,7 @@ use crate::{
     units::SpatialUnit,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct SpatialAxis {
     pub axis_name_abbreviation: String,
     pub axis_direction: AxisDirection,
@@ -51,11 +52,18 @@ impl TryFrom<&WktNode> for SpatialAxis {
             });
         }
 
+        // If the AxisDirection used two args we start from 3 else 2
+        let j = match &axis_direction {
+            AxisDirection::Clockwise(_) | AxisDirection::CounterClockwise(_) => 3,
+            AxisDirection::North(Some(_)) | AxisDirection::South(Some(_)) => 3,
+            _ => 2,
+        };
+
         let mut axis_order = None;
         let mut spatial_unit = None;
         let mut identifier = None;
 
-        for i in 2..value.args.len() {
+        for i in j..value.args.len() {
             let this_value = &value.args[i];
 
             match this_value {
@@ -83,6 +91,7 @@ impl TryFrom<&WktNode> for SpatialAxis {
                             identifier = Some(Id::try_from(node)?);
                         }
                         _ => {
+                            println!("I hate you");
                             return Err(WktParseError::IncorrectKeyword {
                                 expected: vec![
                                     ORDER.to_string(),

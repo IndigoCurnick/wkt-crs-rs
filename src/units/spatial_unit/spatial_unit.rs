@@ -7,6 +7,14 @@ use crate::{
     units::{AngleUnit, LengthUnit, ParametricUnit, ScaleUnit},
 };
 
+pub fn is_spatial_unit_keyword(keyword: &str) -> bool {
+    return match keyword {
+        LENGTHUNIT | ANGLEUNIT | PARAMETRICUNIT | SCALEUNIT => true,
+        _ => false,
+    };
+}
+
+#[derive(Debug, PartialEq)]
 pub enum SpatialUnit {
     AngleUnit(AngleUnit),
     LengthUnit(LengthUnit),

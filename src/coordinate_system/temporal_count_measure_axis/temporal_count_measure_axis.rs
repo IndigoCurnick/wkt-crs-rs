@@ -10,6 +10,7 @@ use crate::{
     units::TimeUnit,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct TemporalCountMeasureAxis {
     pub axis_name_abbreviation: String,
     pub axis_direction: AxisDirection,

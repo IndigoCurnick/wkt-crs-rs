@@ -9,6 +9,15 @@ use crate::{
     units::{SpatialUnit, TimeUnit},
 };
 
+pub fn is_unit_keyword(keyword: &str) -> bool {
+    match keyword {
+        ANGLEUNIT | LENGTHUNIT | PARAMETRICUNIT | SCALEUNIT | TEMPORALQUANTITY | TIMEUNIT
+        | UNIT => true,
+        _ => false,
+    }
+}
+
+#[derive(Debug, PartialEq)]
 pub enum Unit {
     SpatialUnit(SpatialUnit),
     TimeUnit(TimeUnit),

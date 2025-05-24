@@ -1,3 +1,3 @@
 mod unit;
 
-pub use unit::Unit;
+pub use unit::{Unit, is_unit_keyword};

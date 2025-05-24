@@ -5,6 +5,7 @@ use super::{
     temporal_count_measure_cs_type::TemporalCountMeasureCsType,
 };
 
+#[derive(Debug, PartialEq)]
 pub enum CsType {
     SpatialCs(SpatialCsType),
     TemporalCountMeasureCs(TemporalCountMeasureCsType),

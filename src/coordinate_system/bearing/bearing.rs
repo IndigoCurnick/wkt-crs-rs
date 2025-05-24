@@ -4,6 +4,7 @@ use crate::{
     keywords::BEARING,
 };
 
+// TODO: Make a tuple struct
 #[derive(Debug, PartialEq)]
 pub struct Bearing {
     pub bearing: f64, // TODO: Technically this should only ever be a uint

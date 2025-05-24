@@ -1,9 +1,20 @@
 use crate::{ast::WktArg, error::WktParseError};
 
+#[derive(Debug, PartialEq)]
 pub enum Dimension {
     One,
     Two,
     Three,
+}
+
+impl From<&Dimension> for usize {
+    fn from(value: &Dimension) -> Self {
+        match value {
+            Dimension::One => 1,
+            Dimension::Two => 2,
+            Dimension::Three => 3,
+        }
+    }
 }
 
 impl TryFrom<f64> for Dimension {

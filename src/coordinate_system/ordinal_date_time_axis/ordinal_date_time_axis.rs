@@ -6,6 +6,7 @@ use crate::{
     scope_extent_identifier_remark::Id,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct OrdinalDateTimeAxis {
     pub axis_name_abbreviation: String,
     pub axis_direction: AxisDirection,

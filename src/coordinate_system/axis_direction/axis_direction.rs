@@ -206,7 +206,13 @@ impl TryFrom<(AxisDirectionInner, Option<&WktArg>)> for AxisDirection {
                     Some(arg) => match arg {
                         WktArg::Node(node) => match Meridian::try_from(node) {
                             Ok(x) => Some(x),
-                            Err(y) => return Err(y),
+                            // * Really not happy with this, but the standard says
+                            // that north or east can have a meridian. But it is
+                            // a sibling, not a child. Therefore, we may or may
+                            // not have a meridian here. But of course, if we
+                            // DO have a meridian, but it is poorly formatted
+                            // then it may slip us by :(
+                            Err(_y) => None,
                         },
                         _ => return Err(WktParseError::ExpectedNode),
                     },
@@ -220,7 +226,8 @@ impl TryFrom<(AxisDirectionInner, Option<&WktArg>)> for AxisDirection {
                     Some(arg) => match arg {
                         WktArg::Node(node) => match Meridian::try_from(node) {
                             Ok(x) => Some(x),
-                            Err(y) => return Err(y),
+
+                            Err(_y) => None,
                         },
                         _ => return Err(WktParseError::ExpectedNode),
                     },

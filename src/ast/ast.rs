@@ -64,7 +64,16 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     .find(|ch: char| !ch.is_ascii_alphabetic())
                     .unwrap_or(s.len());
                 let ident = &s[..len];
-                tokens.push(Token::Ident(ident.to_string()));
+
+                // All uppercase is a keyword. Lowercase strings without quotes
+                // indicate essentially enums, like `ellipsoidal` to delineate
+                // CS type
+                if is_all_upper(ident) {
+                    tokens.push(Token::Ident(ident.to_string()));
+                } else {
+                    tokens.push(Token::String(ident.to_string()));
+                }
+
                 s = &s[len..];
             }
             c if c.is_whitespace() => {
@@ -77,8 +86,27 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
     tokens
 }
 
+fn is_all_upper(s: &str) -> bool {
+    s.chars().any(|c| c.is_alphabetic()) && s.chars().all(|c| !c.is_lowercase())
+}
+
 fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
     let mut nodes = Vec::new();
+
+    loop {
+        match tokens.first() {
+            Some(Token::Ident(_)) => {
+                nodes.push(parse_node(tokens));
+            }
+            Some(Token::Comma) => {
+                tokens.remove(0);
+            }
+            None => {
+                break;
+            }
+            _ => panic!("Unexpected token"),
+        }
+    }
     while let Some(Token::Ident(_)) = tokens.first() {
         nodes.push(parse_node(tokens));
     }

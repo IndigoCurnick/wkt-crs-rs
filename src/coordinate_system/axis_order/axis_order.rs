@@ -4,6 +4,7 @@ use crate::{
     keywords::ORDER,
 };
 
+// TODO: Make a tuple struct
 #[derive(Debug, PartialEq)]
 pub struct AxisOrder {
     pub order: f64, // TODO: Technically this should only ever be a uint
