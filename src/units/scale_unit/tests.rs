@@ -11,8 +11,8 @@ fn test_scale_unit() {
     };
 
     let ast = parse_wkt(SU_EXAMPLE1);
-
-    let su = ScaleUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let su = ScaleUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, su);
 }

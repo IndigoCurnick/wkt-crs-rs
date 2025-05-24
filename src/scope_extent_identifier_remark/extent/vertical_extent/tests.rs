@@ -20,7 +20,9 @@ fn test_vertical_extent() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let vert = VerticalExtent::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let vert = VerticalExtent::try_from(&ast[0]).unwrap();
 
     assert_eq!(vert, correct);
 
@@ -34,7 +36,9 @@ fn test_vertical_extent() {
 
     let ast = parse_wkt(EXAMPLE2);
 
-    let vert = VerticalExtent::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let vert = VerticalExtent::try_from(&ast[0]).unwrap();
 
     assert_eq!(vert, correct);
 }

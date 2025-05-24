@@ -27,5 +27,6 @@ fn test_parse_wkt() {
 
     let node = parse_wkt(EXAMPLE1);
 
-    assert_eq!(correct, node);
+    assert_eq!(correct, node[0]);
+    assert_eq!(node.len(), 1);
 }

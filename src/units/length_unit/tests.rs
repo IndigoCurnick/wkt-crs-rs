@@ -13,7 +13,9 @@ fn test_parse_length_unit() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let lu = LengthUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let lu = LengthUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, lu);
 
@@ -26,7 +28,9 @@ fn test_parse_length_unit() {
 
     let ast = parse_wkt(EXAMPLE2);
 
-    let lu = LengthUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let lu = LengthUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, lu);
 }

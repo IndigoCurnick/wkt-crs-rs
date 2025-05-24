@@ -14,7 +14,9 @@ fn test_remark() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let remark = Remark::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let remark = Remark::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, remark);
 
@@ -26,7 +28,9 @@ fn test_remark() {
 
     let ast = parse_wkt(EXAMPLE2);
 
-    let remark = Remark::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let remark = Remark::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, remark);
 }

@@ -22,8 +22,8 @@ fn test_time_extent() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let time = TemporalExtent::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let time = TemporalExtent::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 
@@ -35,8 +35,9 @@ fn test_time_extent() {
     };
 
     let ast = parse_wkt(EXAMPLE2);
+    assert_eq!(ast.len(), 1);
 
-    let time = TemporalExtent::try_from(&ast).unwrap();
+    let time = TemporalExtent::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 }

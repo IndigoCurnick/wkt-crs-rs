@@ -10,7 +10,9 @@ fn test_scope() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let scope = Scope::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let scope = Scope::try_from(&ast[0]).unwrap();
 
     assert_eq!(scope, correct);
 }

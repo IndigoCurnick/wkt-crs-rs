@@ -16,7 +16,9 @@ fn test_gbbox() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let bbox = GeographicBoundingBox::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let bbox = GeographicBoundingBox::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, bbox);
 
@@ -30,7 +32,9 @@ fn test_gbbox() {
 
     let ast = parse_wkt(EXAMPLE2);
 
-    let bbox = GeographicBoundingBox::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let bbox = GeographicBoundingBox::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, bbox);
 }

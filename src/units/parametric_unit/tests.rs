@@ -14,7 +14,9 @@ fn test_parametric_unit() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let parametric = ParametricUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let parametric = ParametricUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, parametric);
 }

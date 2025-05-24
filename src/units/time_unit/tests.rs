@@ -17,8 +17,8 @@ fn test_time_unit() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let time = TimeUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let time = TimeUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 
@@ -30,8 +30,8 @@ fn test_time_unit() {
     };
 
     let ast = parse_wkt(EXAMPLE2);
-
-    let time = TimeUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let time = TimeUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 
@@ -43,8 +43,8 @@ fn test_time_unit() {
     };
 
     let ast = parse_wkt(EXAMPLE3);
-
-    let time = TimeUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let time = TimeUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 
@@ -56,8 +56,8 @@ fn test_time_unit() {
     };
 
     let ast = parse_wkt(EXAMPLE4);
-
-    let time = TimeUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let time = TimeUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(time, correct);
 }

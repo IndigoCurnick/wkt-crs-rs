@@ -20,8 +20,8 @@ fn test_ellipsoid() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let el = Ellipsoid::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let el = Ellipsoid::try_from(&ast[0]).unwrap();
 
     assert_eq!(el, correct);
 
@@ -34,8 +34,9 @@ fn test_ellipsoid() {
     };
 
     let ast = parse_wkt(EXAMPLE2);
+    assert_eq!(ast.len(), 1);
 
-    let el = Ellipsoid::try_from(&ast).unwrap();
+    let el = Ellipsoid::try_from(&ast[0]).unwrap();
 
     assert_eq!(el, correct);
 }

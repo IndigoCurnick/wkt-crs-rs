@@ -77,6 +77,14 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
     tokens
 }
 
+fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
+    let mut nodes = Vec::new();
+    while let Some(Token::Ident(_)) = tokens.first() {
+        nodes.push(parse_node(tokens));
+    }
+    nodes
+}
+
 pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
     let keyword = match tokens.remove(0) {
         Token::Ident(s) => s,
@@ -118,9 +126,9 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
     WktNode { keyword, args }
 }
 
-pub fn parse_wkt(s: &str) -> WktNode {
+pub fn parse_wkt(s: &str) -> Vec<WktNode> {
     let mut tokens = tokenize(s);
-    parse_node(&mut tokens)
+    parse_nodes(&mut tokens)
 }
 
 #[derive(Debug, PartialEq)]

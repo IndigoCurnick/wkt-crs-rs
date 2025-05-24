@@ -91,8 +91,8 @@ fn test_map_projection() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let map_proj = MapProjection::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let map_proj = MapProjection::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, map_proj);
 }

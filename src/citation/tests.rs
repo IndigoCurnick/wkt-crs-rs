@@ -9,7 +9,9 @@ fn test_citation() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let citation = Citation::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let citation = Citation::try_from(&ast[0]).unwrap();
 
     assert_eq!(citation, correct);
 }

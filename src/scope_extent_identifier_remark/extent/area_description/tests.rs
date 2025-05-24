@@ -8,8 +8,8 @@ fn test_area() {
     let correct = AreaDescription("Netherlands offshore.".to_string());
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let area = AreaDescription::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let area = AreaDescription::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, area);
 }

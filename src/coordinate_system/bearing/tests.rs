@@ -10,7 +10,9 @@ fn test_bearing() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let bearing = Bearing::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let bearing = Bearing::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, bearing);
 }

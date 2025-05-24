@@ -19,8 +19,8 @@ fn test_id() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
-    let id = Id::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let id = Id::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, id);
 
@@ -34,8 +34,8 @@ fn test_id() {
     };
 
     let ast = parse_wkt(EXAMPLE2);
-
-    let id = Id::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let id = Id::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, id);
 
@@ -49,8 +49,8 @@ fn test_id() {
     };
 
     let ast = parse_wkt(EXAMPLE3);
-
-    let id = Id::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let id = Id::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, id);
 
@@ -64,8 +64,8 @@ fn test_id() {
     };
 
     let ast = parse_wkt(EXAMPLE4);
-
-    let id = Id::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+    let id = Id::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, id);
 }

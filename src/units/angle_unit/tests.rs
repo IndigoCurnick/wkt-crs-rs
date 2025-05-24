@@ -12,7 +12,9 @@ fn test_angle_unit() {
 
     let ast = parse_wkt(AU_EXAMPLE1);
 
-    let au = AngleUnit::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let au = AngleUnit::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, au);
 }

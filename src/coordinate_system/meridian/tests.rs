@@ -15,7 +15,9 @@ fn test_meridian() {
 
     let ast = parse_wkt(EXAMPLE1);
 
-    let meridian = Meridian::try_from(&ast).unwrap();
+    assert_eq!(ast.len(), 1);
+
+    let meridian = Meridian::try_from(&ast[0]).unwrap();
 
     assert_eq!(correct, meridian);
 }
