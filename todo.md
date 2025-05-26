@@ -14,7 +14,7 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
   - [ ] 7.5: Coordinate system
     - [ ] 7.5.1: Syntax
     - [ ] 7.5.7: Examples of WKT describing coordinate systems
-  - [ ] 7.6: Datum ensemble
+  - [X] 7.6: Datum ensemble
   - [ ] 7.7: Dynamic coordinate reference systems
 - [ ] 8: WKT representation of geodetic and geographic coordinate reference systems
   - [ ] 8.1: Overview

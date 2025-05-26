@@ -1,5 +1,6 @@
 mod ellipsoid;
-mod keywords;
 
 #[cfg(test)]
 mod tests;
+
+pub use ellipsoid::Ellipsoid;

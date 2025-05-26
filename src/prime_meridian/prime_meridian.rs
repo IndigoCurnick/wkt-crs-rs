@@ -6,6 +6,7 @@ use crate::{
     units::AngleUnit,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct PrimeMeridian {
     pub prime_meridian_name: String,
     pub irm_longitude: f64,

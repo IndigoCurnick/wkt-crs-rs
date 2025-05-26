@@ -5,10 +5,9 @@ use log::warn;
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
+    keywords::{ELLIPSOID, SPHEROID},
     units::LengthUnit,
 };
-
-use super::keywords::{ELLIPSOID, SPHEROID};
 
 #[derive(Debug, PartialEq)]
 pub struct Ellipsoid {
