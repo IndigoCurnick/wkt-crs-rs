@@ -12,10 +12,15 @@ pub struct CsInner {
     pub identifier: Option<Id>, // TODO: Technically this can be many
 }
 
-impl TryFrom<&WktNode> for CsInner {
+impl TryFrom<&WktArg> for CsInner {
     type Error = WktParseError;
 
-    fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
+    fn try_from(value: &WktArg) -> Result<Self, Self::Error> {
+        let value = match value {
+            WktArg::Node(node) => node,
+            _ => return Err(WktParseError::ExpectedNode),
+        };
+
         if value.keyword != CS {
             let expected = vec![CS.to_string()];
             return Err(WktParseError::IncorrectKeyword {

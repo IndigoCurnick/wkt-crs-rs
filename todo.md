@@ -2,26 +2,26 @@
 
 Lists the name of the keyword, as well as the clause in the spec where it is defined
 
-- [ ] 7: WKT Representation of Common Attributes
-  - [ ] 7.3: Scope, extent, identifier and remark
-    - [ ] 7.3.2: Usage (scope and extent)
-    - [ ] 7.3.3: Identifier
-    - [ ] 7.3.4: Remark
-  - [ ] 7.4: Unit and unit conversion factor
-    - [ ] 7.4.1: Unit description
-    - [ ] 7.4.2: Conversion factor - spatial and parametric units
-    - [ ] 7.4.3: Conversion factor - temporal quantities
-  - [ ] 7.5: Coordinate system
-    - [ ] 7.5.1: Syntax
-    - [ ] 7.5.7: Examples of WKT describing coordinate systems
+- [X] 7: WKT Representation of Common Attributes
+  - [X] 7.3: Scope, extent, identifier and remark
+    - [X] 7.3.2: Usage (scope and extent)
+    - [X] 7.3.3: Identifier
+    - [X] 7.3.4: Remark
+  - [X] 7.4: Unit and unit conversion factor
+    - [X] 7.4.1: Unit description
+    - [X] 7.4.2: Conversion factor - spatial and parametric units
+    - [X] 7.4.3: Conversion factor - temporal quantities
+  - [X] 7.5: Coordinate system
+    - [X] 7.5.1: Syntax
+    - [X] 7.5.7: Examples of WKT describing coordinate systems
   - [X] 7.6: Datum ensemble
-  - [ ] 7.7: Dynamic coordinate reference systems
-- [ ] 8: WKT representation of geodetic and geographic coordinate reference systems
-  - [ ] 8.1: Overview
-  - [ ] 8.2: Geodetic reference frame
-    - [ ] 8.2.1: Ellipsoid
-    - [ ] 8.2.2: Prime meridian
-    - [ ] 8.2.3: Geodetic reference frame
+  - [X] 7.7: Dynamic coordinate reference systems
+- [X] 8: WKT representation of geodetic and geographic coordinate reference systems
+  - [X] 8.1: Overview
+  - [X] 8.2: Geodetic reference frame
+    - [X] 8.2.1: Ellipsoid
+    - [X] 8.2.2: Prime meridian
+    - [X] 8.2.3: Geodetic reference frame
   - [ ] 8.4: Examples of WKT describing a geodetic and geographic CRS
 - [ ] 9: WKT representation of projected CRSs
   - [ ] 9.1: overview

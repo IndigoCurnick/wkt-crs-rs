@@ -1,4 +1,8 @@
-use crate::{ast::WktNode, error::WktParseError};
+use crate::{
+    ast::{WktArg, WktNode},
+    error::WktParseError,
+    keywords::{AREA, BBOX, TIMEEXTENT, VERTICALEXTENT},
+};
 
 use super::{
     area_description::AreaDescription, geographic_bounding_box::GeographicBoundingBox,
@@ -6,59 +10,86 @@ use super::{
 };
 
 // TODO: Do we really need this?
-pub enum Extent {
-    Area(AreaDescription),
-    Geographic(GeographicBoundingBox),
-    Vertical(VerticalExtent),
-    Temporal(TemporalExtent),
-    AreaGeographic {
-        area: AreaDescription,
-        geographic: GeographicBoundingBox,
-    },
-    AreaVertical {
-        area: AreaDescription,
-        vertical: VerticalExtent,
-    },
-    AreaTemporal {
-        area: AreaDescription,
-        temporal: TemporalExtent,
-    },
-    GeographicVertical {
-        geographic: GeographicBoundingBox,
-        vertical: VerticalExtent,
-    },
-    GeographicTemporal {
-        geographic: GeographicBoundingBox,
-        temporal: TemporalExtent,
-    },
-    VerticalTemporal {
-        vertical: VerticalExtent,
-        temporal: TemporalExtent,
-    },
-    AreaGeographicVertical {
-        area: AreaDescription,
-        geographic: GeographicBoundingBox,
-        vertical: VerticalExtent,
-    },
-    AreaGeographicTemporal {
-        area: AreaDescription,
-        geographic: GeographicBoundingBox,
-        temporal: TemporalExtent,
-    },
-    AreaVerticalTemporal {
-        area: AreaDescription,
-        vertical: VerticalExtent,
-        temporal: TemporalExtent,
-    },
-    GeographicVerticalTemporal {
-        geographic: GeographicBoundingBox,
-        vertical: VerticalExtent,
-        temporal: TemporalExtent,
-    },
-    AreaGeographicVerticalTemporal {
-        area: AreaDescription,
-        geographic: GeographicBoundingBox,
-        vertical: VerticalExtent,
-        temporal: TemporalExtent,
-    },
+#[derive(Debug, PartialEq)]
+pub struct Extent {
+    pub area_description: Option<AreaDescription>,
+    pub geographic_bounding_box: Option<GeographicBoundingBox>,
+    pub vertical_extent: Option<VerticalExtent>,
+    pub temporal_extent: Option<TemporalExtent>,
+}
+
+impl TryFrom<&[WktArg]> for Extent {
+    type Error = WktParseError;
+
+    fn try_from(value: &[WktArg]) -> Result<Self, Self::Error> {
+        if value.len() == 0 || value.len() > 4 {
+            return Err(WktParseError::IncorrectArity {
+                expected: vec!["1".into(), "2".into(), "3".into(), "4".into()].into(),
+                found: value.len(),
+            });
+        }
+
+        let mut area = None;
+        let mut geo = None;
+        let mut vert = None;
+        let mut temp = None;
+
+        for i in 0..value.len() {
+            let this_arg = &value[i];
+
+            match this_arg {
+                WktArg::Node(this_node) => match this_node.keyword.as_str() {
+                    AREA => {
+                        if area.is_some() {
+                            return Err(WktParseError::TooManyKeyword(AREA.into()));
+                        }
+
+                        area = Some(AreaDescription::try_from(this_node)?)
+                    }
+                    BBOX => {
+                        if geo.is_some() {
+                            return Err(WktParseError::TooManyKeyword(BBOX.into()));
+                        }
+
+                        geo = Some(GeographicBoundingBox::try_from(this_node)?)
+                    }
+                    VERTICALEXTENT => {
+                        if vert.is_some() {
+                            return Err(WktParseError::TooManyKeyword(VERTICALEXTENT.into()));
+                        }
+
+                        vert = Some(VerticalExtent::try_from(this_node)?)
+                    }
+                    TIMEEXTENT => {
+                        if temp.is_some() {
+                            return Err(WktParseError::TooManyKeyword(TIMEEXTENT.into()));
+                        }
+
+                        temp = Some(TemporalExtent::try_from(this_node)?)
+                    }
+                    _ => {
+                        return Err(WktParseError::IncorrectKeyword {
+                            expected: vec![
+                                AREA.into(),
+                                BBOX.into(),
+                                VERTICALEXTENT.into(),
+                                TIMEEXTENT.into(),
+                            ]
+                            .into(),
+                            found: this_node.keyword.clone(),
+                        });
+                    }
+                },
+                _ => return Err(WktParseError::ExpectedNode),
+            }
+        }
+
+        // TODO: What if they're all None?
+        return Ok(Extent {
+            area_description: area,
+            geographic_bounding_box: geo,
+            vertical_extent: vert,
+            temporal_extent: temp,
+        });
+    }
 }

@@ -1,7 +1,7 @@
 use std::vec;
 
 use crate::{
-    ast::parse_wkt,
+    ast::{WktArg, parse_wkt},
     coordinate_system::{
         self,
         axis_direction::AxisDirection,
@@ -168,9 +168,14 @@ fn test_example_1() {
             conversion_factor: 0.0174,
             identifier: None,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE1);
+
+    // TODO: Yes it's jank but right now this makes some sense. Already left todos
+    // elsewhere as to implementing a TryFrom<&[WktNode]>
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -209,9 +214,12 @@ fn test_example_2() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 5,
     });
 
     let ast = parse_wkt(EXAMPLE2);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -250,9 +258,12 @@ fn test_example_3() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 5,
     });
 
     let ast = parse_wkt(EXAMPLE3);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -299,9 +310,12 @@ fn test_example_4() {
             },
         ],
         cs_unit: None,
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE4);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -348,9 +362,12 @@ fn test_example_5() {
             },
         ],
         cs_unit: None,
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE5);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -383,9 +400,12 @@ fn test_example_6() {
             conversion_factor: 0.017,
             identifier: None,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE6);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -420,9 +440,12 @@ fn test_example_7() {
             },
         ],
         cs_unit: None,
+        needed_args: 3,
     });
 
     let ast = parse_wkt(EXAMPLE7);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -454,9 +477,12 @@ fn test_example_8() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE8);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -488,9 +514,12 @@ fn test_example_9() {
             unit_name: "German legal metre".to_string(),
             conversion_factor: 1.0000135965,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE9);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -536,9 +565,12 @@ fn test_example_10() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE10);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -577,9 +609,12 @@ fn test_example_11() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 5,
     });
 
     let ast = parse_wkt(EXAMPLE11);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -602,9 +637,12 @@ fn test_example_12() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 3,
     });
 
     let ast = parse_wkt(EXAMPLE12);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -627,9 +665,12 @@ fn test_example_13() {
             })),
         }],
         cs_unit: None,
+        needed_args: 2,
     });
 
     let ast = parse_wkt(EXAMPLE13);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -661,9 +702,12 @@ fn test_example_14() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 4,
     });
 
     let ast = parse_wkt(EXAMPLE14);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -699,9 +743,12 @@ fn test_example_15() {
             },
         ],
         cs_unit: None,
+        needed_args: 3,
     });
 
     let ast = parse_wkt(EXAMPLE15);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -740,9 +787,12 @@ fn test_example_16() {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
         }))),
+        needed_args: 5,
     });
 
     let ast = parse_wkt(EXAMPLE16);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 
@@ -768,9 +818,12 @@ fn test_example_17() {
                 identifier: None,
             },
         ],
+        needed_args: 3,
     });
 
     let ast = parse_wkt(EXAMPLE17);
+
+    let ast: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
 
     let cs = CoordinateSystem::try_from(ast.as_slice()).unwrap();
 

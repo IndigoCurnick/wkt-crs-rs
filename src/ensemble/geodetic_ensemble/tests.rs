@@ -6,7 +6,7 @@ use crate::{
     units::{AngleUnit, LengthUnit},
 };
 
-use super::GeodeticEnsemble;
+use super::GeodeticDatumEnsemble;
 
 const EXAMPLE1: &str = r#"ENSEMBLE["WGS 84 ensemble",
 MEMBER["WGS 84 (TRANSIT)"],
@@ -19,7 +19,7 @@ PRIMEM["Greenwich",0.0,ANGLEUNIT["degree",0.017]]
 
 #[test]
 fn test_geodetic_ensemble() {
-    let correct = GeodeticEnsemble {
+    let correct = GeodeticDatumEnsemble {
         datum_ensemble_name: "WGS 84 ensemble".into(),
         datum_ensemble_member: vec![
             EnsembleMember {
@@ -59,7 +59,7 @@ fn test_geodetic_ensemble() {
 
     let pm = PrimeMeridian::try_from(&ast[1]).unwrap();
 
-    let geo = GeodeticEnsemble::try_from((&ast[0], pm)).unwrap();
+    let geo = GeodeticDatumEnsemble::try_from((&ast[0], pm)).unwrap();
 
     assert_eq!(correct, geo);
 }

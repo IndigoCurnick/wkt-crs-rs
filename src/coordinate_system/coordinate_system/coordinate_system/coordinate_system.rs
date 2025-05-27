@@ -1,5 +1,5 @@
 use crate::{
-    ast::WktNode,
+    ast::{WktArg, WktNode},
     coordinate_system::{
         coordinate_system::{
             ordinal_date_time_coordinate_system::OrdinalDateTimeCoordinateSystem,
@@ -21,10 +21,27 @@ pub enum CoordinateSystem {
     OrdinalDateTimeCS(OrdinalDateTimeCoordinateSystem),
 }
 
-impl TryFrom<&[WktNode]> for CoordinateSystem {
+impl CoordinateSystem {
+    pub fn needed_args(&self) -> usize {
+        match self {
+            CoordinateSystem::SpatialCS(spatial_coordinate_system) => {
+                spatial_coordinate_system.needed_args()
+            }
+            CoordinateSystem::TemporalCountMeasureCS(temporal_count_measure_coordinate_system) => {
+                temporal_count_measure_coordinate_system.needed_args()
+            }
+            CoordinateSystem::OrdinalDateTimeCS(ordinal_date_time_coordinate_system) => {
+                ordinal_date_time_coordinate_system.needed_args()
+            }
+        }
+    }
+}
+
+// TODO: It would also make sense to impl a TryFrom for &[WktNode]!
+impl TryFrom<&[WktArg]> for CoordinateSystem {
     type Error = WktParseError;
 
-    fn try_from(value: &[WktNode]) -> Result<Self, Self::Error> {
+    fn try_from(value: &[WktArg]) -> Result<Self, Self::Error> {
         if value.len() == 0 {
             return Err(WktParseError::ExpectedNode);
         }

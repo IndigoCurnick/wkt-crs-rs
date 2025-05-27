@@ -4,6 +4,7 @@ use super::area_description::AreaDescription;
 
 const EXAMPLE1: &str = r#"AREA["Netherlands offshore."]"#;
 
+#[test]
 fn test_area() {
     let correct = AreaDescription("Netherlands offshore.".to_string());
 

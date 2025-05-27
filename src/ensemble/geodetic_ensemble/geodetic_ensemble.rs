@@ -9,7 +9,7 @@ use crate::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct GeodeticEnsemble {
+pub struct GeodeticDatumEnsemble {
     pub datum_ensemble_name: String,
     pub datum_ensemble_member: Vec<EnsembleMember>,
     pub ellipsoid: Ellipsoid,
@@ -17,7 +17,7 @@ pub struct GeodeticEnsemble {
     pub prime_meridian: PrimeMeridian,
 }
 
-impl TryFrom<(&WktNode, PrimeMeridian)> for GeodeticEnsemble {
+impl TryFrom<(&WktNode, PrimeMeridian)> for GeodeticDatumEnsemble {
     type Error = WktParseError;
 
     fn try_from(value: (&WktNode, PrimeMeridian)) -> Result<Self, Self::Error> {
@@ -136,7 +136,7 @@ impl TryFrom<(&WktNode, PrimeMeridian)> for GeodeticEnsemble {
             None => return Err(WktParseError::TooFewKeyword(ELLIPSOID.into())),
         };
 
-        return Ok(GeodeticEnsemble {
+        return Ok(GeodeticDatumEnsemble {
             datum_ensemble_name,
             datum_ensemble_member,
             ellipsoid,

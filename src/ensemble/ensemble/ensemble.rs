@@ -1,6 +1,6 @@
 use crate::{
     ast::WktNode,
-    ensemble::{geodetic_ensemble::GeodeticEnsemble, vertical_ensemble::VerticalEnsemble},
+    ensemble::{geodetic_ensemble::GeodeticDatumEnsemble, vertical_ensemble::VerticalEnsemble},
     error::WktParseError,
     keywords::PRIMEMERIDIAN,
     prime_meridian::PrimeMeridian,
@@ -8,7 +8,7 @@ use crate::{
 
 #[derive(Debug, PartialEq)]
 pub enum DataEnsemble {
-    GeodeticEnsemble(GeodeticEnsemble),
+    GeodeticEnsemble(GeodeticDatumEnsemble),
     VerticalEnsemble(VerticalEnsemble),
 }
 
@@ -30,7 +30,7 @@ impl TryFrom<(&WktNode, Option<&WktNode>)> for DataEnsemble {
             None => return Err(WktParseError::TooFewKeyword(PRIMEMERIDIAN.to_string())),
         };
 
-        return match GeodeticEnsemble::try_from((node, pm)) {
+        return match GeodeticDatumEnsemble::try_from((node, pm)) {
             Ok(x) => Ok(DataEnsemble::GeodeticEnsemble(x)),
             Err(y) => Err(y),
         };

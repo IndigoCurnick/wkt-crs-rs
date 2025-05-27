@@ -3,7 +3,7 @@ use crate::{
     ellipsoid::Ellipsoid,
     ensemble::{
         ensemble_accuracy::EnsembleAccuracy, ensemble_member::EnsembleMember,
-        geodetic_ensemble::GeodeticEnsemble, vertical_ensemble::VerticalEnsemble,
+        geodetic_ensemble::GeodeticDatumEnsemble, vertical_ensemble::VerticalEnsemble,
     },
     prime_meridian::PrimeMeridian,
     units::{AngleUnit, LengthUnit},
@@ -30,7 +30,7 @@ ENSEMBLEACCURACY[0.01]]
 fn test_ensemble() {
     // Example 1
 
-    let correct = DataEnsemble::GeodeticEnsemble(GeodeticEnsemble {
+    let correct = DataEnsemble::GeodeticEnsemble(GeodeticDatumEnsemble {
         datum_ensemble_name: "WGS 84 ensemble".into(),
         datum_ensemble_member: vec![
             EnsembleMember {

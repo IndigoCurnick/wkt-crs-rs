@@ -1,16 +1,17 @@
-use crate::{
-    ast::{WktArg, WktNode},
-    error::WktParseError,
-    keywords::SCOPE,
-};
+use crate::{ast::WktArg, error::WktParseError, keywords::SCOPE};
 
 #[derive(Debug, PartialEq)]
 pub struct Scope(pub String);
 
-impl TryFrom<&WktNode> for Scope {
+impl TryFrom<&WktArg> for Scope {
     type Error = WktParseError;
 
-    fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
+    fn try_from(value: &WktArg) -> Result<Self, Self::Error> {
+        let value = match value {
+            WktArg::Node(node) => node,
+            _ => return Err(WktParseError::ExpectedNode),
+        };
+
         if value.keyword != SCOPE {
             let expected = vec![SCOPE.to_string()];
             return Err(WktParseError::IncorrectKeyword {

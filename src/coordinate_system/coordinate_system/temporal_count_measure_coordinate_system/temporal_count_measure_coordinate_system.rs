@@ -7,7 +7,6 @@ use crate::{
         temporal_count_measure_axis::TemporalCountMeasureAxis,
     },
     error::WktParseError,
-    keywords::CS,
     scope_extent_identifier_remark::Id,
 };
 
@@ -17,16 +16,24 @@ pub struct TemporalCountMeasureCoordinateSystem {
     pub dimension: Dimension,
     pub identifier: Option<Id>, // TODO: Technically this can be multiple
     pub temporal_count_measure_axis: TemporalCountMeasureAxis,
+    pub needed_args: usize, // Need to make these not `pub` as they are not part of the actual spec
+                            // But instead something for me, but it would mess up the tests right now. Maybe a builder?
+}
+
+impl TemporalCountMeasureCoordinateSystem {
+    pub fn needed_args(&self) -> usize {
+        return self.needed_args;
+    }
 }
 
 // TODO: this implementation is simpler but also means we parse the `CSInner`
 // twice. It's also easier to test the individual units this way. I'm not really
 // sure if we ought to keep this or implement the technically more complex but
 // also marginally more efficient system. For now this should do
-impl TryFrom<&[WktNode]> for TemporalCountMeasureCoordinateSystem {
+impl TryFrom<&[WktArg]> for TemporalCountMeasureCoordinateSystem {
     type Error = WktParseError;
 
-    fn try_from(value: &[WktNode]) -> Result<Self, Self::Error> {
+    fn try_from(value: &[WktArg]) -> Result<Self, Self::Error> {
         if value.len() == 0 {
             return Err(WktParseError::ExpectedNode);
         }
@@ -57,14 +64,19 @@ impl TryFrom<&[WktNode]> for TemporalCountMeasureCoordinateSystem {
             });
         }
 
-        // From 1 to the number of claimed axis, we should find an axis
-        let axis = TemporalCountMeasureAxis::try_from(&value[1])?;
+        let axis_node = match &value[1] {
+            WktArg::Node(node) => node,
+            _ => return Err(WktParseError::ExpectedNode),
+        };
+
+        let axis = TemporalCountMeasureAxis::try_from(axis_node)?;
 
         return Ok(TemporalCountMeasureCoordinateSystem {
             temporal_count_measure_cs_type: ty,
             dimension: inner.dimension,
             identifier: inner.identifier,
             temporal_count_measure_axis: axis,
+            needed_args: 2,
         });
     }
 }

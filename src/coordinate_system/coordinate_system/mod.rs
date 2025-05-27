@@ -4,3 +4,4 @@ mod spatial_coordinate_system;
 mod temporal_count_measure_coordinate_system;
 
 pub use coordinate_system::CoordinateSystem;
+pub use spatial_coordinate_system::SpatialCoordinateSystem;

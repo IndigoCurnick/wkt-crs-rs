@@ -1,4 +1,4 @@
-use crate::ast::parse_wkt;
+use crate::ast::{WktArg, parse_wkt};
 
 use super::Scope;
 
@@ -12,7 +12,9 @@ fn test_scope() {
 
     assert_eq!(ast.len(), 1);
 
-    let scope = Scope::try_from(&ast[0]).unwrap();
+    let arg: Vec<WktArg> = ast.into_iter().map(|z| WktArg::Node(z)).collect();
+
+    let scope = Scope::try_from(&arg[0]).unwrap();
 
     assert_eq!(scope, correct);
 }

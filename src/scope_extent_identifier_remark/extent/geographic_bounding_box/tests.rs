@@ -5,6 +5,7 @@ use super::geographic_bounding_box::GeographicBoundingBox;
 const EXAMPLE1: &str = "BBOX[51.43,2.54,55.77,6.40]";
 const EXAMPLE2: &str = "BBOX[-55.95,160.60,-25.88,-171.20]";
 
+#[test]
 fn test_gbbox() {
     // Example 1
     let correct = GeographicBoundingBox {

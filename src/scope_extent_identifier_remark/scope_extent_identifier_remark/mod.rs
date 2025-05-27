@@ -1,0 +1,3 @@
+mod scope_extent_identifier_remark;
+
+pub use scope_extent_identifier_remark::ScopeExtentIdentifierRemark;
