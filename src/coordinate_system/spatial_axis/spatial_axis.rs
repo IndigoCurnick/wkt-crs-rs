@@ -91,7 +91,6 @@ impl TryFrom<&WktNode> for SpatialAxis {
                             identifier = Some(Id::try_from(node)?);
                         }
                         _ => {
-                            println!("I hate you");
                             return Err(WktParseError::IncorrectKeyword {
                                 expected: vec![
                                     ORDER.to_string(),

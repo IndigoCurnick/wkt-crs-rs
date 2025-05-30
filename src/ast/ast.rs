@@ -1,3 +1,5 @@
+use core::num;
+
 use horologium::Temporal;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -56,7 +58,7 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     tokens.push(Token::DateTime(date));
                     s = &s[len..];
                 } else {
-                    panic!("Unknown number type")
+                    panic!("Unknown number type - `{}`", num_str)
                 };
             }
             c if c.is_ascii_alphabetic() => {

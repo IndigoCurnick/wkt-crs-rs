@@ -6,7 +6,7 @@ mod geographic_crs;
 mod static_geodetic_crs;
 
 #[derive(Debug, PartialEq)]
-enum GeodeticData {
+pub enum GeodeticData {
     GeodeticReferenceFrame(GeodeticReferenceFrameDatum),
     GeodeticDatumEnsemble(GeodeticDatumEnsemble),
 }

@@ -3,7 +3,7 @@ use crate::{
     datum::datum_anchor::DatumAnchor,
     ellipsoid::Ellipsoid,
     error::WktParseError,
-    keywords::{DATUM, GEODETICDATUM, TRF},
+    keywords::{ANCHOR, DATUM, GEODETICDATUM, ID, TRF},
     prime_meridian::PrimeMeridian,
     scope_extent_identifier_remark::Id,
 };
@@ -47,26 +47,38 @@ impl TryFrom<(&WktNode, Option<PrimeMeridian>)> for GeodeticReferenceFrameDatum 
             _ => return Err(WktParseError::ExpectedNode),
         };
 
-        let mut i = 2;
+        let mut anchor = None;
+        let mut identifier = None;
 
-        let anchor = match value.args.get(i) {
-            Some(x) => match x {
-                WktArg::Node(node) => {
-                    i += 1;
-                    Some(DatumAnchor::try_from(node)?)
-                }
-                _ => return Err(WktParseError::ExpectedNode),
-            },
-            None => None,
-        };
+        for i in 2..value.args.len() {
+            let arg = &value.args[i];
 
-        let identifier = match value.args.get(i) {
-            Some(x) => match x {
-                WktArg::Node(node) => Some(Id::try_from(node)?),
+            match arg {
+                WktArg::Node(node) => match node.keyword.as_str() {
+                    ANCHOR => {
+                        if anchor.is_some() {
+                            return Err(WktParseError::TooManyKeyword(ANCHOR.to_string()));
+                        }
+
+                        anchor = Some(DatumAnchor::try_from(node)?);
+                    }
+                    ID => {
+                        if identifier.is_some() {
+                            return Err(WktParseError::TooManyKeyword(ID.to_string()));
+                        }
+
+                        identifier = Some(Id::try_from(node)?);
+                    }
+                    _ => {
+                        return Err(WktParseError::IncorrectKeyword {
+                            expected: vec![ANCHOR.into(), ID.into()].into(),
+                            found: node.keyword.clone(),
+                        });
+                    }
+                },
                 _ => return Err(WktParseError::ExpectedNode),
-            },
-            None => None,
-        };
+            }
+        }
 
         return Ok(GeodeticReferenceFrameDatum {
             datum_name,

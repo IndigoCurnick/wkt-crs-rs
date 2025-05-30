@@ -22,7 +22,7 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
     - [X] 8.2.1: Ellipsoid
     - [X] 8.2.2: Prime meridian
     - [X] 8.2.3: Geodetic reference frame
-  - [ ] 8.4: Examples of WKT describing a geodetic and geographic CRS
+  - [X] 8.4: Examples of WKT describing a geodetic and geographic CRS
 - [ ] 9: WKT representation of projected CRSs
   - [ ] 9.1: overview
   - [ ] 9.2: Base CRS

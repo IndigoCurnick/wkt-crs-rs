@@ -45,3 +45,5 @@ pub const GEODETICCRS: &str = "GEODETICCRS";
 pub const GEOGCRS: &str = "GEOGCRS";
 pub const GEOGRAPHICCRS: &str = "GEOGRAPHICCRS";
 pub const USAGE: &str = "USAGE";
+pub const BASEGEODCRS: &str = "BASEGEODCRS";
+pub const BASEGEOGCRS: &str = "BASEGEOGCRS";
