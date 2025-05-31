@@ -5,3 +5,4 @@ mod geodetic_ensemble;
 mod vertical_ensemble;
 
 pub use geodetic_ensemble::GeodeticDatumEnsemble;
+pub use vertical_ensemble::VerticalEnsemble;
