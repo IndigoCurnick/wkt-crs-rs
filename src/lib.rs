@@ -4,6 +4,7 @@ mod coordinate_system;
 mod datum;
 mod dynamic_crs;
 mod ellipsoid;
+mod engineering_crs;
 mod ensemble;
 mod error;
 mod geodetic_crs;

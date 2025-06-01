@@ -23,17 +23,17 @@ Lists the name of the keyword, as well as the clause in the spec where it is def
     - [X] 8.2.2: Prime meridian
     - [X] 8.2.3: Geodetic reference frame
   - [X] 8.4: Examples of WKT describing a geodetic and geographic CRS
-- [ ] 9: WKT representation of projected CRSs
-  - [ ] 9.1: overview
-  - [ ] 9.2: Base CRS
-    - [ ] 9.2.1: General
-  - [ ] 9.3: Map projection
-    - [ ] 9.3.1: Introduction
-  - [ ] 9.4: Coordinate systems for projected CRSs
-- [ ] 10: WKT representation of vertical CRSs
-  - [ ] 10.1: Overview
-  - [ ] 10.2: Vertical reference frame
-  - [ ] 10.4: Example of WKT describing a vertical CRS
+- [X] 9: WKT representation of projected CRSs
+  - [X] 9.1: overview
+  - [X] 9.2: Base CRS
+    - [X] 9.2.1: General
+  - [X] 9.3: Map projection
+    - [X] 9.3.1: Introduction
+  - [X] 9.4: Coordinate systems for projected CRSs
+- [X] 10: WKT representation of vertical CRSs
+  - [X] 10.1: Overview
+  - [X] 10.2: Vertical reference frame
+  - [X] 10.4: Example of WKT describing a vertical CRS
 - [ ] 11: WKT representation of engineering CRSs
   - [ ] 11.1: Overview
   - [ ] 11.2: Engineering datum

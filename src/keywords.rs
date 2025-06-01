@@ -53,3 +53,7 @@ pub const VERTICALCRS: &str = "VERTICALCRS";
 pub const VDATUM: &str = "VDATUM";
 pub const VRF: &str = "VRF";
 pub const VERTICALDATUM: &str = "VERTICALDATUM";
+pub const ENGCRS: &str = "ENGCRS";
+pub const ENGINEERINGCRS: &str = "ENGINEERINGCRS";
+pub const EDATUM: &str = "EDATUM";
+pub const ENGINEERINGDATUM: &str = "ENGINEERINGDATUM";
