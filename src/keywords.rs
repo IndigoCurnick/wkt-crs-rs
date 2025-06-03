@@ -57,3 +57,6 @@ pub const ENGCRS: &str = "ENGCRS";
 pub const ENGINEERINGCRS: &str = "ENGINEERINGCRS";
 pub const EDATUM: &str = "EDATUM";
 pub const ENGINEERINGDATUM: &str = "ENGINEERINGDATUM";
+pub const PARAMETRICCRS: &str = "PARAMETRICCRS";
+pub const PDATUM: &str = "PDATUM";
+pub const PARAMETRICDATUM: &str = "PARAMETRICDATUM";

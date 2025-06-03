@@ -10,6 +10,7 @@ mod error;
 mod geodetic_crs;
 mod keywords;
 mod map_projection;
+mod parametric_crs;
 mod prime_meridian;
 mod proj_crs;
 mod scope_extent_identifier_remark;
