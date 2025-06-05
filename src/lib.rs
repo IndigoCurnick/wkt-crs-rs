@@ -14,6 +14,7 @@ mod parametric_crs;
 mod prime_meridian;
 mod proj_crs;
 mod scope_extent_identifier_remark;
+mod temporal_crs;
 mod units;
 mod uri;
 mod utils;
