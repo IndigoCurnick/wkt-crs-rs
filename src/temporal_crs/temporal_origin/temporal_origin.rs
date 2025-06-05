@@ -5,6 +5,7 @@ use crate::{
     scope_extent_identifier_remark::DateOrString,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct TemporalOrigin(pub DateOrString);
 
 impl TryFrom<&WktNode> for TemporalOrigin {

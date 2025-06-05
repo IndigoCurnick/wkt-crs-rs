@@ -7,6 +7,7 @@ use crate::{
     temporal_crs::temporal_datum::TemporalDatum,
 };
 
+#[derive(Debug, PartialEq)]
 pub struct TemporalCrs {
     pub crs_name: String,
     pub temporal_datum: TemporalDatum,
@@ -18,7 +19,7 @@ impl TryFrom<&WktNode> for TemporalCrs {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
-        if value.keyword == TIMECRS {
+        if value.keyword != TIMECRS {
             return Err(WktParseError::IncorrectKeyword {
                 expected: vec![TIMECRS.into()].into(),
                 found: value.keyword.clone(),

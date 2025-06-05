@@ -3,12 +3,14 @@ use std::{num::IntErrorKind, process::id};
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,
-    keywords::{CALENDAR, ID, TDATUM, TIMEDATUM},
+    keywords::{CALENDAR, ID, TDATUM, TIMEDATUM, TIMEORIGIN},
     scope_extent_identifier_remark::Id,
     temporal_crs::{calendar::Calendar, temporal_origin::TemporalOrigin},
 };
 
+#[derive(Debug, PartialEq)]
 pub struct TemporalDatum {
+    pub datum_name: String,
     pub calendar: Option<Calendar>,
     pub temporal_origin: Option<TemporalOrigin>,
     pub identifier: Option<Id>,
@@ -25,12 +27,17 @@ impl TryFrom<&WktNode> for TemporalDatum {
             });
         }
 
+        let datum_name = match &value.args[0] {
+            WktArg::String(s) => s.clone(),
+            _ => return Err(WktParseError::ExpectedString),
+        };
+
         // TODO: arity?
         let mut calendar = None;
         let mut temporal_origin = None;
         let mut identifier = None;
 
-        for i in 0..value.args.len() {
+        for i in 1..value.args.len() {
             match &value.args[i] {
                 WktArg::Node(node) => match node.keyword.as_str() {
                     CALENDAR => {
@@ -44,7 +51,7 @@ impl TryFrom<&WktNode> for TemporalDatum {
 
                         calendar = Some(Calendar::try_from(node)?);
                     }
-                    TIMEDATUM => {
+                    TIMEORIGIN => {
                         if identifier.is_some() {
                             return Err(WktParseError::IncorrectKeywordOrder);
                         }
@@ -64,8 +71,8 @@ impl TryFrom<&WktNode> for TemporalDatum {
                     }
                     _ => {
                         return Err(WktParseError::IncorrectKeyword {
-                            expected: vec![CALENDAR.into(), TIMEDATUM.into(), ID.into()].into(),
-                            found: value.keyword.clone(),
+                            expected: vec![CALENDAR.into(), TIMEORIGIN.into(), ID.into()].into(),
+                            found: node.keyword.clone(),
                         });
                     }
                 },
@@ -74,6 +81,7 @@ impl TryFrom<&WktNode> for TemporalDatum {
         }
 
         return Ok(TemporalDatum {
+            datum_name,
             calendar,
             temporal_origin,
             identifier,

@@ -45,7 +45,10 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                             && ch != '+'
                             && ch != 'e'
                             && ch != 'E'
-                    }) // TODO: we might need more robust scientific notation handling in future
+                            && ch != ':'
+                            && ch != 'Z'
+                            && ch != 'T'
+                    }) // TODO: we might need more robust scientific notation handling in future (and dates)
                     .unwrap_or(s.len());
                 let num_str = &s[..len];
 
@@ -120,6 +123,8 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
         Token::Ident(s) => s,
         _ => panic!("expected keyword"),
     };
+
+    println!("tokens {:?}", tokens);
 
     assert!(matches!(tokens.remove(0), Token::LBracket));
 
