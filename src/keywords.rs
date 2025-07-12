@@ -65,3 +65,5 @@ pub const TIMEORIGIN: &str = "TIMEORIGIN";
 pub const TDATUM: &str = "TDATUM";
 pub const TIMEDATUM: &str = "TIMEDATUM";
 pub const TIMECRS: &str = "TIMECRS";
+pub const DERIVINGCONVERSION: &str = "DERIVINGCONVERSION";
+pub const PARAMETERFILE: &str = "PARAMETERFILE";

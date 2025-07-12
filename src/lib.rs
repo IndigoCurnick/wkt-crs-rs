@@ -2,6 +2,7 @@ mod ast;
 mod citation;
 mod coordinate_system;
 mod datum;
+mod derived_crs;
 mod dynamic_crs;
 mod ellipsoid;
 mod engineering_crs;

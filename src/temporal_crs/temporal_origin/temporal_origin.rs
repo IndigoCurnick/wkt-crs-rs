@@ -1,3 +1,5 @@
+use horologium::Temporal;
+
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,

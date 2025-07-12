@@ -54,6 +54,7 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 
                 // ! This is some premium jank
                 // TODO: Integer support?
+
                 if let Ok(num) = num_str.parse::<f64>() {
                     tokens.push(Token::Number(num));
                     s = &s[len..];
