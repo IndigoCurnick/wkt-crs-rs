@@ -5,6 +5,7 @@ mod datum;
 mod derived_crs;
 mod derived_engineering_crs;
 mod derived_geodetic_geographic_crs;
+mod derived_parametric_crs;
 mod derived_projected_crs;
 mod derived_vertical_crs;
 mod dynamic_crs;
