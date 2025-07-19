@@ -19,7 +19,7 @@ use crate::{
 };
 
 use super::{
-    base_geodetic_crs::{BaseGeodeticCrs, BaseStaticGeographicCrs},
+    base_geodetic_crs::{BaseGeodeticGeographicCrs, BaseStaticGeographicCrs},
     proj_crs::ProjectedCrs,
 };
 
@@ -134,32 +134,34 @@ fn test_proj_crs() {
 fn test_example_1() {
     let correct = ProjectedCrs {
         crs_name: "ETRS89 Lambert Azimuthal Equal Area CRS".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "ETRS89".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
-                datum_name: "ETRS89".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "GRS 80".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.25,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "metre".into(),
-                        conversion_factor: 1.0,
-                    }),
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: Some(Id {
-                authority_name: "EuroGeographics".into(),
-                authority_unique_identifier: NumText::Text("ETRS89-LatLon".into()),
-                version: None,
-                authority_citation: None,
-                id_uri: None,
-            }),
-        }),
+        base_geodetic_crs: BaseGeodeticGeographicCrs::BaseStaticGeographicCrs(
+            BaseStaticGeographicCrs {
+                base_crs_name: "ETRS89".into(),
+                geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
+                    datum_name: "ETRS89".into(),
+                    ellipsoid: Ellipsoid {
+                        ellipsoid_name: "GRS 80".into(),
+                        semi_major_axis: 6378137.0,
+                        inverse_flattening: 298.25,
+                        length_unit: Some(LengthUnit {
+                            unit_name: "metre".into(),
+                            conversion_factor: 1.0,
+                        }),
+                    },
+                    anchor: None,
+                    identifier: None,
+                    prime_meridian: None,
+                }),
+                ellipsoidal_cs_unit: None,
+                identifier: Some(Id {
+                    authority_name: "EuroGeographics".into(),
+                    authority_unique_identifier: NumText::Text("ETRS89-LatLon".into()),
+                    version: None,
+                    authority_citation: None,
+                    id_uri: None,
+                }),
+            },
+        ),
         map_projection: MapProjection {
             map_projection_name: "LAEA".into(),
             map_projection_method: MapProjectionMethod {
@@ -279,26 +281,28 @@ fn test_example_1() {
 fn test_example_2() {
     let correct = ProjectedCrs {
         crs_name: "NAD27 / Texas South Central".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "NAD27".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
-                datum_name: "North American Datum 1927".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "Clarke 1866".into(),
-                    semi_major_axis: 20925832.164,
-                    inverse_flattening: 294.97,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "US survey foot".into(),
-                        conversion_factor: 0.304,
-                    }),
-                },
-                anchor: None,
+        base_geodetic_crs: BaseGeodeticGeographicCrs::BaseStaticGeographicCrs(
+            BaseStaticGeographicCrs {
+                base_crs_name: "NAD27".into(),
+                geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
+                    datum_name: "North American Datum 1927".into(),
+                    ellipsoid: Ellipsoid {
+                        ellipsoid_name: "Clarke 1866".into(),
+                        semi_major_axis: 20925832.164,
+                        inverse_flattening: 294.97,
+                        length_unit: Some(LengthUnit {
+                            unit_name: "US survey foot".into(),
+                            conversion_factor: 0.304,
+                        }),
+                    },
+                    anchor: None,
+                    identifier: None,
+                    prime_meridian: None,
+                }),
+                ellipsoidal_cs_unit: None,
                 identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
+            },
+        ),
         map_projection: MapProjection {
             map_projection_name: "Texas South Central SPCS27".into(),
             map_projection_method: MapProjectionMethod {
@@ -466,28 +470,30 @@ fn test_example_2() {
 fn test_example_3() {
     let correct = ProjectedCrs {
         crs_name: "NAD83 UTM 10".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "NAD83(86)".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
-                datum_name: "North American Datum 1983".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "GRS 1980".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.257,
-                    length_unit: None,
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: Some(PrimeMeridian {
-                    prime_meridian_name: "Greenwich".into(),
-                    irm_longitude: 0.0,
-                    angle_unit: None,
+        base_geodetic_crs: BaseGeodeticGeographicCrs::BaseStaticGeographicCrs(
+            BaseStaticGeographicCrs {
+                base_crs_name: "NAD83(86)".into(),
+                geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
+                    datum_name: "North American Datum 1983".into(),
+                    ellipsoid: Ellipsoid {
+                        ellipsoid_name: "GRS 1980".into(),
+                        semi_major_axis: 6378137.0,
+                        inverse_flattening: 298.257,
+                        length_unit: None,
+                    },
+                    anchor: None,
                     identifier: None,
+                    prime_meridian: Some(PrimeMeridian {
+                        prime_meridian_name: "Greenwich".into(),
+                        irm_longitude: 0.0,
+                        angle_unit: None,
+                        identifier: None,
+                    }),
                 }),
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
+                ellipsoidal_cs_unit: None,
+                identifier: None,
+            },
+        ),
         map_projection: MapProjection {
             map_projection_name: "UTM zone 10N".into(),
             map_projection_method: MapProjectionMethod {
@@ -579,26 +585,28 @@ fn test_example_3() {
 fn test_example_4() {
     let correct = ProjectedCrs {
         crs_name: "WGS 84 (G1762) / UTM zone 31N 3D".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "WGS 84".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
-                datum_name: "World Geodetic System of 1984 (G1762)".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "WGS 84".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.257,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "metre".into(),
-                        conversion_factor: 1.0,
-                    }),
-                },
-                anchor: None,
+        base_geodetic_crs: BaseGeodeticGeographicCrs::BaseStaticGeographicCrs(
+            BaseStaticGeographicCrs {
+                base_crs_name: "WGS 84".into(),
+                geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrameDatum {
+                    datum_name: "World Geodetic System of 1984 (G1762)".into(),
+                    ellipsoid: Ellipsoid {
+                        ellipsoid_name: "WGS 84".into(),
+                        semi_major_axis: 6378137.0,
+                        inverse_flattening: 298.257,
+                        length_unit: Some(LengthUnit {
+                            unit_name: "metre".into(),
+                            conversion_factor: 1.0,
+                        }),
+                    },
+                    anchor: None,
+                    identifier: None,
+                    prime_meridian: None,
+                }),
+                ellipsoidal_cs_unit: None,
                 identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
+            },
+        ),
         map_projection: MapProjection {
             map_projection_name: "UTM zone 31N 3D".into(),
             map_projection_method: MapProjectionMethod {

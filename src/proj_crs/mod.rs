@@ -4,5 +4,7 @@ mod proj_crs;
 #[cfg(test)]
 mod tests;
 
-pub use base_geodetic_crs::BaseDynamicGeographicCrs;
-pub use base_geodetic_crs::{BaseDynamicCrs, BaseStaticCrs};
+pub use base_geodetic_crs::{
+    BaseDynamicCrs, BaseDynamicGeographicCrs, BaseGeodeticGeographicCrs, BaseStaticCrs,
+    BaseStaticGeographicCrs,
+};

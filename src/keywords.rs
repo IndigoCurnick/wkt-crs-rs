@@ -67,3 +67,5 @@ pub const TIMEDATUM: &str = "TIMEDATUM";
 pub const TIMECRS: &str = "TIMECRS";
 pub const DERIVINGCONVERSION: &str = "DERIVINGCONVERSION";
 pub const PARAMETERFILE: &str = "PARAMETERFILE";
+pub const BASEPROJCRS: &str = "BASEPROJCRS";
+pub const DERIVEDPROJCRS: &str = "DERIVEDPROJCRS";

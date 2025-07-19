@@ -48,37 +48,37 @@ impl TryFrom<&WktNode> for BaseStaticCrs {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum BaseGeodeticCrs {
+pub enum BaseGeodeticGeographicCrs {
     BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
     BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
     BaseStaticGeographicCrs(BaseStaticGeographicCrs),
     BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
 }
 
-impl TryFrom<&WktNode> for BaseGeodeticCrs {
+impl TryFrom<&WktNode> for BaseGeodeticGeographicCrs {
     type Error = WktParseError;
 
     fn try_from(value: &WktNode) -> Result<Self, Self::Error> {
         match value.keyword.as_str() {
             BASEGEODCRS => {
                 match BaseDynamicGeodeticCrs::try_from(value) {
-                    Ok(x) => return Ok(BaseGeodeticCrs::BaseDynamicGeodeticCrs(x)),
+                    Ok(x) => return Ok(BaseGeodeticGeographicCrs::BaseDynamicGeodeticCrs(x)),
                     _ => {}
                 };
 
                 return match BaseStaticGeodeticCrs::try_from(value) {
-                    Ok(x) => Ok(BaseGeodeticCrs::BaseStaticGeodeticCrs(x)),
+                    Ok(x) => Ok(BaseGeodeticGeographicCrs::BaseStaticGeodeticCrs(x)),
                     Err(y) => Err(y),
                 };
             }
             BASEGEOGCRS => {
                 match BaseDynamicGeographicCrs::try_from(value) {
-                    Ok(x) => return Ok(BaseGeodeticCrs::BaseDynamicGeographicCrs(x)),
+                    Ok(x) => return Ok(BaseGeodeticGeographicCrs::BaseDynamicGeographicCrs(x)),
                     _ => {}
                 };
 
                 return match BaseStaticGeographicCrs::try_from(value) {
-                    Ok(x) => Ok(BaseGeodeticCrs::BaseStaticGeographicCrs(x)),
+                    Ok(x) => Ok(BaseGeodeticGeographicCrs::BaseStaticGeographicCrs(x)),
                     Err(y) => Err(y),
                 };
             }
