@@ -3,6 +3,7 @@ mod citation;
 mod coordinate_system;
 mod datum;
 mod derived_crs;
+mod derived_engineering_crs;
 mod derived_geodetic_geographic_crs;
 mod derived_projected_crs;
 mod derived_vertical_crs;

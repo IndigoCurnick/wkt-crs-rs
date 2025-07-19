@@ -70,3 +70,4 @@ pub const PARAMETERFILE: &str = "PARAMETERFILE";
 pub const BASEPROJCRS: &str = "BASEPROJCRS";
 pub const DERIVEDPROJCRS: &str = "DERIVEDPROJCRS";
 pub const BASEVERTCRS: &str = "BASEVERTCRS";
+pub const BASEENGCRS: &str = "BASEENGCRS";
