@@ -1,13 +1,16 @@
-use dynamic_vertical_crs::DynamicVerticalCrs;
-use static_vertical_crs::StaticVerticalCrs;
-
-use crate::{ast::WktNode, error::WktParseError};
-
 mod dynamic_vertical_crs;
 mod geoid_model_id;
 mod static_vertical_crs;
 mod vertical_crs;
 mod vertical_reference_frame;
+
+use dynamic_vertical_crs::DynamicVerticalCrs;
+use static_vertical_crs::StaticVerticalCrs;
+
+use crate::{ast::WktNode, error::WktParseError};
+
+pub use static_vertical_crs::VerticalFrameDatum;
+pub use vertical_reference_frame::VerticalReferenceFrame;
 
 #[cfg(test)]
 mod tests;
