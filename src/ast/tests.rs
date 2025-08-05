@@ -1,16 +1,18 @@
-use super::ast::{Token, WktArg, WktNode, parse_node, parse_wkt, tokenize};
+use crate::keywords::Keywords;
+
+use super::ast::{Token, WktArg, WktNode, parse_wkt, tokenize};
 
 const EXAMPLE1: &str = r#"LENGTHUNIT["metre",1]"#;
 
 #[test]
 fn test_tokenise() {
     let correct = vec![
-        Token::Ident("LENGTHUNIT".to_string()),
-        Token::LBracket,
-        Token::String("metre".to_string()),
-        Token::Comma,
-        Token::Number(1.0),
-        Token::RBracket,
+        Token::Keyword(Keywords::LengthUnit),
+        Token::LDelimiter,
+        Token::Data("\"metre\"".to_string()),
+        Token::WktSeparator,
+        Token::Data("1".to_string()),
+        Token::RDelimiter,
     ];
 
     let tokens = tokenize(EXAMPLE1);
@@ -21,8 +23,11 @@ fn test_tokenise() {
 #[test]
 fn test_parse_wkt() {
     let correct = WktNode {
-        keyword: "LENGTHUNIT".to_string(),
-        args: vec![WktArg::String("metre".to_string()), WktArg::Number(1.0)],
+        keyword: Keywords::LengthUnit,
+        args: vec![
+            WktArg::Data("metre".to_string()),
+            WktArg::Data("1".to_string()),
+        ],
     };
 
     let node = parse_wkt(EXAMPLE1);

@@ -3,4 +3,4 @@ mod ast;
 #[cfg(test)]
 mod tests;
 
-pub use ast::{WktArg, WktNode, parse_wkt};
+pub use ast::{Parse, WktArg, WktNode, parse_wkt};

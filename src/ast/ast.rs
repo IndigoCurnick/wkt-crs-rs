@@ -1,16 +1,21 @@
-use core::num;
+use std::str::FromStr;
 
 use horologium::Temporal;
 
+use crate::{
+    data_types::{DateOrString, NumText},
+    error::WktParseError,
+    keywords::Keywords,
+    types::WktBaseType,
+};
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
-    Ident(String),
-    String(String),
-    Number(f64),
-    DateTime(Temporal),
-    LBracket,
-    RBracket,
-    Comma,
+    Keyword(Keywords),
+    Data(String),
+    LDelimiter,
+    RDelimiter,
+    WktSeparator,
 }
 
 pub fn tokenize(mut s: &str) -> Vec<Token> {
@@ -19,21 +24,21 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
     while let Some(c) = s.chars().next() {
         match c {
             '[' => {
-                tokens.push(Token::LBracket);
+                tokens.push(Token::LDelimiter);
                 s = &s[1..];
             }
             ']' => {
-                tokens.push(Token::RBracket);
+                tokens.push(Token::RDelimiter);
                 s = &s[1..];
             }
             ',' => {
-                tokens.push(Token::Comma);
+                tokens.push(Token::WktSeparator);
                 s = &s[1..];
             }
             '"' => {
                 let end = s[1..].find('"').unwrap() + 1;
                 let content = &s[1..end];
-                tokens.push(Token::String(content.to_string()));
+                tokens.push(Token::Data(content.to_string()));
                 s = &s[end + 1..];
             }
             c if c.is_ascii_digit() || c == '-' || c == '.' => {
@@ -52,32 +57,18 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     .unwrap_or(s.len());
                 let num_str = &s[..len];
 
-                // ! This is some premium jank
-                // TODO: Integer support?
-
-                if let Ok(num) = num_str.parse::<f64>() {
-                    tokens.push(Token::Number(num));
-                    s = &s[len..];
-                } else if let Ok(date) = Temporal::try_from(num_str) {
-                    tokens.push(Token::DateTime(date));
-                    s = &s[len..];
-                } else {
-                    panic!("Unknown number type - `{}`", num_str)
-                };
+                tokens.push(Token::Data(num_str.to_string()));
             }
             c if c.is_ascii_alphabetic() => {
                 let len = s
                     .find(|ch: char| !ch.is_ascii_alphabetic())
                     .unwrap_or(s.len());
-                let ident = &s[..len];
+                let ident_candidate = &s[..len];
 
-                // All uppercase is a keyword. Lowercase strings without quotes
-                // indicate essentially enums, like `ellipsoidal` to delineate
-                // CS type
-                if is_all_upper(ident) {
-                    tokens.push(Token::Ident(ident.to_string()));
+                if let Ok(ident) = Keywords::from_str(ident_candidate) {
+                    tokens.push(Token::Keyword(ident));
                 } else {
-                    tokens.push(Token::String(ident.to_string()));
+                    tokens.push(Token::Data(ident_candidate.to_string()));
                 }
 
                 s = &s[len..];
@@ -101,10 +92,10 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
 
     loop {
         match tokens.first() {
-            Some(Token::Ident(_)) => {
+            Some(Token::Keyword(_)) => {
                 nodes.push(parse_node(tokens));
             }
-            Some(Token::Comma) => {
+            Some(Token::WktSeparator) => {
                 tokens.remove(0);
             }
             None => {
@@ -113,7 +104,7 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
             _ => panic!("Unexpected token"),
         }
     }
-    while let Some(Token::Ident(_)) = tokens.first() {
+    while let Some(Token::Keyword(_)) = tokens.first() {
         nodes.push(parse_node(tokens));
     }
     nodes
@@ -121,37 +112,29 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
 
 pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
     let keyword = match tokens.remove(0) {
-        Token::Ident(s) => s,
+        Token::Keyword(s) => s,
         _ => panic!("expected keyword"),
     };
 
     println!("tokens {:?}", tokens);
 
-    assert!(matches!(tokens.remove(0), Token::LBracket));
+    assert!(matches!(tokens.remove(0), Token::LDelimiter));
 
     let mut args = Vec::new();
     loop {
         match tokens.first() {
-            Some(Token::RBracket) => {
+            Some(Token::RDelimiter) => {
                 tokens.remove(0);
                 break;
             }
-            Some(Token::Comma) => {
+            Some(Token::WktSeparator) => {
                 tokens.remove(0);
             }
-            Some(Token::String(s)) => {
-                args.push(WktArg::String(s.clone()));
+            Some(Token::Data(s)) => {
+                args.push(WktArg::Data(s.clone()));
                 tokens.remove(0);
             }
-            Some(Token::Number(n)) => {
-                args.push(WktArg::Number(*n));
-                tokens.remove(0);
-            }
-            Some(Token::DateTime(d)) => {
-                args.push(WktArg::DateTime(d.clone()));
-                tokens.remove(0);
-            }
-            Some(Token::Ident(_)) => {
+            Some(Token::Keyword(_)) => {
                 let node = parse_node(tokens);
                 args.push(WktArg::Node(node));
             }
@@ -167,16 +150,88 @@ pub fn parse_wkt(s: &str) -> Vec<WktNode> {
     parse_nodes(&mut tokens)
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct WktNode {
-    pub keyword: String,
+    pub keyword: Keywords,
     pub args: Vec<WktArg>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum WktArg {
-    String(String),
-    Number(f64),
+    Data(String),
     Node(WktNode),
-    DateTime(Temporal),
+}
+
+pub trait Parse<T> {
+    fn parse(&self) -> Result<T, WktParseError>;
+}
+
+impl Parse<String> for WktArg {
+    fn parse(&self) -> Result<String, WktParseError> {
+        match self {
+            Self::Data(s) => Ok(s.clone()),
+            Self::Node(_) => return Err(WktParseError::ExpectedString),
+        }
+    }
+}
+
+impl Parse<f64> for WktArg {
+    fn parse(&self) -> Result<f64, WktParseError> {
+        let num_str = match self {
+            Self::Data(s) => s,
+            Self::Node(_) => return Err(WktParseError::ExpectedNumber),
+        };
+
+        return match num_str.parse::<f64>() {
+            Ok(x) => Ok(x),
+            Err(_) => Err(WktParseError::ExpectedNumber),
+        };
+    }
+}
+
+impl Parse<i32> for WktArg {
+    fn parse(&self) -> Result<i32, WktParseError> {
+        let num_str = match self {
+            Self::Data(s) => s,
+            Self::Node(_) => return Err(WktParseError::ExpectedNumber),
+        };
+
+        return match num_str.parse::<i32>() {
+            Ok(x) => Ok(x),
+            Err(_) => Err(WktParseError::ExpectedNumber),
+        };
+    }
+}
+
+impl Parse<NumText> for WktArg {
+    fn parse(&self) -> Result<NumText, WktParseError> {
+        return match self {
+            Self::Data(s) => Ok(NumText::from(s.as_str())),
+            Self::Node(_) => Err(WktParseError::ExpectedStringOrNumber),
+        };
+    }
+}
+
+impl Parse<DateOrString> for WktArg {
+    fn parse(&self) -> Result<DateOrString, WktParseError> {
+        let date_str = match self {
+            Self::Data(s) => s,
+            Self::Node(_) => return Err(WktParseError::ExpectedStringOrDate),
+        };
+
+        return if let Ok(date) = Temporal::try_from(date_str.as_str()) {
+            Ok(DateOrString::Date(date))
+        } else {
+            Ok(DateOrString::String(date_str.clone()))
+        };
+    }
+}
+
+impl<T: WktBaseType> Parse<T> for WktArg {
+    fn parse(&self) -> Result<T, WktParseError> {
+        return match self {
+            Self::Node(node) => Ok(T::from_nodes(vec![node])?.result),
+            Self::Data(_) => Err(WktParseError::ExpectedNode),
+        };
+    }
 }

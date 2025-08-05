@@ -2,6 +2,8 @@ use std::{error::Error, fmt::Display};
 
 use strum::ParseError;
 
+use crate::keywords::Keywords;
+
 #[derive(Debug)]
 pub struct Allowed<T: ToString>(Vec<T>);
 
@@ -29,7 +31,8 @@ impl<T: ToString> From<Vec<T>> for Allowed<T> {
 pub enum WktParseError {
     UnknownKeyword(String),
     IncorrectArity {
-        expected: Allowed<String>,
+        min: usize,
+        max: usize,
         found: usize,
     },
     ExpectedString,
@@ -38,15 +41,16 @@ pub enum WktParseError {
     ExpectedStringOrDate,
     ExpectedNode,
     IncorrectKeyword {
-        expected: Allowed<String>,
-        found: String,
+        expected: Allowed<Keywords>,
+        found: Keywords,
     },
-    TooManyKeyword(String),
+    TooManyKeyword(Keywords),
     TooFewKeyword(String),
     IncorrectKeywordOrder,
     ParseError(ParseError),
     IncorrectValue,
     CouldNotDetermineType,
+    NotEnoughNodes,
 }
 
 impl Display for WktParseError {
@@ -79,6 +83,7 @@ impl Display for WktParseError {
                 "A value which is not supported for this field was provided"
             ),
             Self::CouldNotDetermineType => write!(f, "Could not determine type of this node"),
+            Self::NotEnoughNodes => write!(f, "Not enough nodes to construct this type"),
         }
     }
 }
