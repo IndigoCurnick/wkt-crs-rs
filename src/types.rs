@@ -1,14 +1,24 @@
 use crate::{
-    ast::WktNode,
+    ast::{WktArg, WktNode},
     base_types::{
-        AngleUnit, AreaDescription, Citation, GeographicBoundingBox, Id, LengthUnit,
-        ParametricUnit, PrimeMeridian, Remark, ScaleUnit, Scope, TemporalExtent, TimeUnit,
-        VerticalExtent,
+        AngleUnit, AreaDescription, Axis, BaseEngineeringCrs, BaseGeodeticCrs, BaseParametricCrs,
+        BaseProjectedCrs, BaseTemporalCrs, BaseVerticalCrs, Bearing, Calendar, Citation,
+        CompoundCrs, CoordinateSystem, DatumAnchor, DatumEnsembleAccuracy, DatumEnsembleMember,
+        DeformationModelId, DerivedCrsConversionMethod, DerivedCrsConversionParameter,
+        DerivedCrsConversionParameterFile, DerivedEngineeringCrs, DerivedGeodeticCrs,
+        DerivedParametricCrs, DerivedProjectedCrs, DerivedTemporalCrs, DerivedVerticalCrs,
+        DerivingConversion, DynamicCrs, Ellipsoid, EngineeringCrs, EngineeringDatum, Extent,
+        FrameEpoch, GeodeticCrs, GeodeticDatumEnsemble, GeodeticReferenceFrame,
+        GeographicBoundingBox, GeographicCrs, GeoidModelId, Id, LengthUnit, MapProjection,
+        MapProjectionMethod, MapProjectionParameter, Meridian, OperationMethod, Order,
+        ParametricCrs, ParametricDatum, ParametricUnit, PrimeMeridian, ProjectedCrs, Remark,
+        ScaleUnit, Scope, TemporalDatum, TemporalExtent, TimeCrs, TimeOrigin, TimeUnit, Usage,
+        VerticalCrs, VerticalDatumEnsemble, VerticalExtent, VerticalReferenceFrame,
     },
     error::WktParseError,
 };
 
-pub struct WktResult<T: WktBaseType + Sized> {
+pub struct WktBaseTypeResult<T: WktBaseType + Sized> {
     pub result: T,
     pub consumed: usize,
 }
@@ -17,14 +27,29 @@ pub trait WktBaseType
 where
     Self: Sized,
 {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>;
+}
+
+pub struct WktInlineResult<T: WktInlineType + Sized> {
+    pub result: T,
+    pub consumed: usize,
+}
+
+pub trait WktInlineType
+where
+    Self: Sized,
+{
+    fn from_args<'a, I>(wkt_args: I) -> Result<WktInlineResult<Self>, WktParseError>
+    where
+        I: IntoIterator<Item = &'a WktArg>;
 }
 
 pub enum WktCrsTypes {
     Scope(Scope),
     Extent(Extent),
+    Usage(Usage),
     AreaDescription(AreaDescription),
     GeographicBoundingBox(GeographicBoundingBox),
     VerticalExtent(VerticalExtent),
@@ -37,6 +62,7 @@ pub enum WktCrsTypes {
     ScaleUnit(ScaleUnit),
     TimeUnit(TimeUnit),
     AngleUnit(AngleUnit),
+    Axis(Axis),
     CoordinateSystem(CoordinateSystem),
     Meridian(Meridian),
     Bearing(Bearing),
@@ -55,12 +81,11 @@ pub enum WktCrsTypes {
     GeodeticReferenceFrame(GeodeticReferenceFrame),
     ProjectedCrs(ProjectedCrs),
     BaseGeodeticCrs(BaseGeodeticCrs),
-    BaseGeographicCrs(BaseGeographicCrs),
     MapProjection(MapProjection),
     MapProjectionMethod(MapProjectionMethod),
     MapProjectionParameter(MapProjectionParameter),
     VerticalCrs(VerticalCrs),
-    GeoidModel(GeoidModel),
+    GeoidModel(GeoidModelId),
     VerticalReferenceFrame(VerticalReferenceFrame),
     DatumAnchor(DatumAnchor),
     EngineeringCrs(EngineeringCrs),
@@ -75,6 +100,7 @@ pub enum WktCrsTypes {
     DerivedCrsConversionMethod(DerivedCrsConversionMethod),
     DerivedCrsConversionParameter(DerivedCrsConversionParameter),
     DerivedCrsConversionParameterFile(DerivedCrsConversionParameterFile),
+    DerivedGeodeticCrs(DerivedGeodeticCrs),
     DerivedProjectedCrs(DerivedProjectedCrs),
     BaseProjectedCrs(BaseProjectedCrs),
     DerivedVerticalCrs(DerivedVerticalCrs),
@@ -86,19 +112,19 @@ pub enum WktCrsTypes {
     DerivedTemporalCrs(DerivedTemporalCrs),
     BaseTemporalCrs(BaseTemporalCrs),
     CompoundCrs(CompoundCrs),
-    MetadataCoordinateEpoch(MetadataCoordinateEpoch),
-    CoordinateMetadata(CoordinateMetadata),
-    CoordinateOperation(CoordinateOperation),
-    OperationVersion(OperationVersion),
-    SourceCrs(SourceCrs),
-    TargetCrs(TargetCrs),
+    // MetadataCoordinateEpoch(MetadataCoordinateEpoch),
+    // CoordinateMetadata(CoordinateMetadata),
+    // CoordinateOperation(CoordinateOperation),
+    // OperationVersion(OperationVersion),
+    // SourceCrs(SourceCrs),
+    // TargetCrs(TargetCrs),
     OperationMethod(OperationMethod),
-    OperationParameter(OperationParameter),
-    OperationParameterFile(OperationParameterFile),
-    InterpolationCrs(InterpolationCrs),
-    OperationAccuracy(OperationAccuracy),
-    PointMotionOperation(PointMotionOperation),
-    ConcatenatedOperation(ConcatenatedOperation),
-    BoundCrs(BoundCrs),
-    AbridgedCoordinateTransformation(AbridgedCoordinateTransformation),
+    // OperationParameter(OperationParameter),
+    // OperationParameterFile(OperationParameterFile),
+    // InterpolationCrs(InterpolationCrs),
+    // OperationAccuracy(OperationAccuracy),
+    // PointMotionOperation(PointMotionOperation),
+    // ConcatenatedOperation(ConcatenatedOperation),
+    // BoundCrs(BoundCrs),
+    // AbridgedCoordinateTransformation(AbridgedCoordinateTransformation),
 }

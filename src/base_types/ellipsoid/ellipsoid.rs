@@ -8,7 +8,7 @@ use crate::{
     base_types::LengthUnit,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -20,7 +20,7 @@ pub struct Ellipsoid {
 }
 
 impl WktBaseType for Ellipsoid {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<crate::types::WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -56,7 +56,7 @@ impl WktBaseType for Ellipsoid {
             semi_major_axis,
         };
 
-        let res = WktResult {
+        let res = WktBaseTypeResult {
             consumed: 1,
             result: ellipsoid,
         };

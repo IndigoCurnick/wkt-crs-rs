@@ -1,0 +1,64 @@
+use crate::{
+    arity::match_arity,
+    ast::{Parse, WktNode},
+    base_types::{AngleUnit, DynamicCrs, GeodeticReferenceFrame, Id},
+    error::WktParseError,
+    keywords::{Keywords, match_keywords},
+    types::{WktBaseType, WktBaseTypeResult},
+};
+
+#[derive(Debug, PartialEq)]
+pub struct BaseDynamicGeographicCrs {
+    pub base_crs_name: String,
+    pub dynamic_crs: DynamicCrs,
+    pub geodetic_data: GeodeticReferenceFrame,
+    pub ellipsoidal_cs_unit: Option<AngleUnit>,
+    pub identifier: Option<Id>,
+}
+
+impl WktBaseType for BaseDynamicGeographicCrs {
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
+    where
+        I: IntoIterator<Item = &'a WktNode>,
+    {
+        let node = match wkt_nodes.into_iter().next() {
+            Some(x) => x,
+            None => return Err(WktParseError::NotEnoughNodes),
+        };
+
+        match_keywords(&node.keyword, vec![Keywords::BaseGeogCrs])?;
+        match_arity(node.args.len(), 3, 5);
+
+        let base_crs_name = node.args[0].parse()?;
+        let dynamic_crs = node.args[1].parse()?;
+        let geodetic_data = node.args[2].parse()?;
+
+        let mut i = 3;
+
+        let ellipsoidal_cs_unit = match node.args.get(i) {
+            Some(x) => {
+                i += 1;
+                Some(x.parse()?)
+            }
+            None => None,
+        };
+
+        let identifier = match node.args.get(i) {
+            Some(x) => Some(x.parse()?),
+            None => None,
+        };
+
+        let res = BaseDynamicGeographicCrs {
+            base_crs_name,
+            geodetic_data,
+            dynamic_crs,
+            ellipsoidal_cs_unit,
+            identifier,
+        };
+
+        Ok(WktBaseTypeResult {
+            result: res,
+            consumed: 1,
+        })
+    }
+}

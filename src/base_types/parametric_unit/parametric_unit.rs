@@ -4,7 +4,7 @@ use crate::{
     base_types::Id,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -15,7 +15,7 @@ pub struct ParametricUnit {
 }
 
 impl WktBaseType for ParametricUnit {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -43,7 +43,7 @@ impl WktBaseType for ParametricUnit {
             unit_name,
         };
 
-        let res = WktResult {
+        let res = WktBaseTypeResult {
             consumed: 1,
             result: unit,
         };

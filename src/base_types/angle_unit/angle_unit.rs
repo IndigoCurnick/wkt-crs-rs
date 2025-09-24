@@ -6,7 +6,7 @@ use crate::{
     base_types::Id,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -17,7 +17,7 @@ pub struct AngleUnit {
 }
 
 impl WktBaseType for AngleUnit {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -50,7 +50,7 @@ impl WktBaseType for AngleUnit {
             unit_name,
         };
 
-        let res = WktResult {
+        let res = WktBaseTypeResult {
             consumed: 1,
             result: unit,
         };

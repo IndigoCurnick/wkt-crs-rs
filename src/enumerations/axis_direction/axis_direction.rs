@@ -1,0 +1,283 @@
+use std::str::FromStr;
+
+use strum::{AsRefStr, EnumString};
+
+use crate::{
+    ast::WktArg,
+    base_types::{Bearing, Meridian},
+    error::WktParseError,
+    types::WktBaseType,
+};
+
+#[derive(Debug, PartialEq, EnumString)]
+pub enum AxisDirection {
+    #[strum(disabled)]
+    North(Option<Meridian>),
+    #[strum(serialize = "northNorthEast")]
+    NorthNorthEast,
+    #[strum(serialize = "northEast")]
+    NorthEast,
+    #[strum(serialize = "eastNorthEast")]
+    EastNorthEast,
+    #[strum(serialize = "east")]
+    East,
+    #[strum(serialize = "eastSouthEast")]
+    EastSouthEast,
+    #[strum(serialize = "southEast")]
+    SouthEast,
+    #[strum(serialize = "southSouthEast")]
+    SouthSouthEast,
+    #[strum(disabled)]
+    South(Option<Meridian>),
+    #[strum(serialize = "southSouthWest")]
+    SouthSouthWest,
+    #[strum(serialize = "southWest")]
+    SouthWest,
+    #[strum(serialize = "westSouthWest")]
+    WestSouthWest,
+    #[strum(serialize = "west")]
+    West,
+    #[strum(serialize = "westNorthWest")]
+    WestNorthWest,
+    #[strum(serialize = "northWest")]
+    NorthWest,
+    #[strum(serialize = "northNorthWest")]
+    NorthNorthWest,
+    #[strum(serialize = "geocentricX")]
+    GeocentricX,
+    #[strum(serialize = "geocentricY")]
+    GeocentricY,
+    #[strum(serialize = "geocentricZ")]
+    GeocentricZ,
+    #[strum(serialize = "up")]
+    Up,
+    #[strum(serialize = "down")]
+    Down,
+    #[strum(serialize = "forward")]
+    Forward,
+    #[strum(serialize = "aft")]
+    Aft,
+    #[strum(serialize = "port")]
+    Port,
+    #[strum(serialize = "starboard")]
+    Starboard,
+    #[strum(disabled)]
+    Clockwise(Bearing),
+    #[strum(disabled)]
+    CounterClockwise(Bearing),
+    #[strum(serialize = "columnPositive")]
+    ColumnPositive,
+    #[strum(serialize = "columnNegative")]
+    ColumnNegative,
+    #[strum(serialize = "rowPositive")]
+    RowPositive,
+    #[strum(serialize = "rowNegative")]
+    RowNegative,
+    #[strum(serialize = "displayRight")]
+    DisplayRight,
+    #[strum(serialize = "displayLeft")]
+    DisplayLeft,
+    #[strum(serialize = "displayUp")]
+    DisplayUp,
+    #[strum(serialize = "displayDown")]
+    DisplayDown,
+    #[strum(serialize = "future")]
+    Future,
+    #[strum(serialize = "past")]
+    Past,
+    #[strum(serialize = "towards")]
+    Towards,
+    #[strum(serialize = "awayFrom")]
+    AwayFrom,
+    #[strum(serialize = "unspecified")]
+    Unspecified,
+}
+
+impl AxisDirection {
+    pub fn used_second(&self) -> bool {
+        return match self {
+            Self::North(y) => y.is_some(),
+            Self::South(y) => y.is_some(),
+            Self::Clockwise(_) => true,
+            Self::CounterClockwise(_) => true,
+            _ => false,
+        };
+    }
+}
+
+#[derive(Debug, PartialEq, EnumString, AsRefStr)]
+enum AxisDirectionInner {
+    #[strum(serialize = "north")]
+    North,
+    #[strum(serialize = "northNorthEast")]
+    NorthNorthEast,
+    #[strum(serialize = "northEast")]
+    NorthEast,
+    #[strum(serialize = "eastNorthEast")]
+    EastNorthEast,
+    #[strum(serialize = "east")]
+    East,
+    #[strum(serialize = "eastSouthEast")]
+    EastSouthEast,
+    #[strum(serialize = "southEast")]
+    SouthEast,
+    #[strum(serialize = "southSouthEast")]
+    SouthSouthEast,
+    #[strum(serialize = "south")]
+    South,
+    #[strum(serialize = "southSouthWest")]
+    SouthSouthWest,
+    #[strum(serialize = "southWest")]
+    SouthWest,
+    #[strum(serialize = "westSouthWest")]
+    WestSouthWest,
+    #[strum(serialize = "west")]
+    West,
+    #[strum(serialize = "westNorthWest")]
+    WestNorthWest,
+    #[strum(serialize = "northWest")]
+    NorthWest,
+    #[strum(serialize = "northNorthWest")]
+    NorthNorthWest,
+    #[strum(serialize = "geocentricX")]
+    GeocentricX,
+    #[strum(serialize = "geocentricY")]
+    GeocentricY,
+    #[strum(serialize = "geocentricZ")]
+    GeocentricZ,
+    #[strum(serialize = "up")]
+    Up,
+    #[strum(serialize = "down")]
+    Down,
+    #[strum(serialize = "forward")]
+    Forward,
+    #[strum(serialize = "aft")]
+    Aft,
+    #[strum(serialize = "port")]
+    Port,
+    #[strum(serialize = "starboard")]
+    Starboard,
+    #[strum(serialize = "clockwise")]
+    Clockwise,
+    #[strum(serialize = "counterClockwise")]
+    CounterClockwise,
+    #[strum(serialize = "columnPositive")]
+    ColumnPositive,
+    #[strum(serialize = "columnNegative")]
+    ColumnNegative,
+    #[strum(serialize = "rowPositive")]
+    RowPositive,
+    #[strum(serialize = "rowNegative")]
+    RowNegative,
+    #[strum(serialize = "displayRight")]
+    DisplayRight,
+    #[strum(serialize = "displayLeft")]
+    DisplayLeft,
+    #[strum(serialize = "displayUp")]
+    DisplayUp,
+    #[strum(serialize = "displayDown")]
+    DisplayDown,
+    #[strum(serialize = "future")]
+    Future,
+    #[strum(serialize = "past")]
+    Past,
+    #[strum(serialize = "towards")]
+    Towards,
+    #[strum(serialize = "awayFrom")]
+    AwayFrom,
+    #[strum(serialize = "unspecified")]
+    Unspecified,
+}
+
+impl TryFrom<(&WktArg, Option<&WktArg>)> for AxisDirection {
+    type Error = WktParseError;
+
+    fn try_from(value: (&WktArg, Option<&WktArg>)) -> Result<Self, Self::Error> {
+        let (definite, maybe) = value;
+
+        let inner = match definite {
+            WktArg::Data(s) => match AxisDirectionInner::from_str(s) {
+                Ok(x) => x,
+                Err(y) => return Err(WktParseError::ParseError(y)),
+            },
+            _ => return Err(WktParseError::ExpectedString),
+        };
+
+        return AxisDirection::try_from((inner, maybe));
+    }
+}
+
+impl TryFrom<(AxisDirectionInner, Option<&WktArg>)> for AxisDirection {
+    type Error = WktParseError;
+
+    fn try_from(value: (AxisDirectionInner, Option<&WktArg>)) -> Result<Self, Self::Error> {
+        let (inner, node) = value;
+
+        match inner {
+            AxisDirectionInner::North => {
+                let meridian = match node {
+                    Some(arg) => match arg {
+                        WktArg::Node(node) => match Meridian::from_nodes(vec![node]) {
+                            Ok(x) => Some(x.result),
+                            // * Really not happy with this, but the standard says
+                            // that north or east can have a meridian. But it is
+                            // a sibling, not a child. Therefore, we may or may
+                            // not have a meridian here. But of course, if we
+                            // DO have a meridian, but it is poorly formatted
+                            // then it may slip us by :(
+                            Err(_y) => None,
+                        },
+                        _ => return Err(WktParseError::ExpectedNode),
+                    },
+                    None => None,
+                };
+
+                return Ok(AxisDirection::North(meridian));
+            }
+            AxisDirectionInner::South => {
+                let meridian = match node {
+                    Some(arg) => match arg {
+                        WktArg::Node(node) => match Meridian::from_nodes(vec![node]) {
+                            Ok(x) => Some(x.result),
+
+                            Err(_y) => None,
+                        },
+                        _ => return Err(WktParseError::ExpectedNode),
+                    },
+                    None => None,
+                };
+
+                return Ok(AxisDirection::South(meridian));
+            }
+            AxisDirectionInner::Clockwise => {
+                let bearing = match node {
+                    Some(arg) => match arg {
+                        WktArg::Node(node) => match Bearing::from_nodes(vec![node]) {
+                            Ok(x) => x.result,
+                            Err(y) => return Err(y),
+                        },
+                        _ => return Err(WktParseError::ExpectedNode),
+                    },
+                    None => return Err(WktParseError::ExpectedNode),
+                };
+
+                return Ok(AxisDirection::Clockwise(bearing));
+            }
+            AxisDirectionInner::CounterClockwise => {
+                let bearing = match node {
+                    Some(arg) => match arg {
+                        WktArg::Node(node) => match Bearing::from_nodes(vec![node]) {
+                            Ok(x) => x.result,
+                            Err(y) => return Err(y),
+                        },
+                        _ => return Err(WktParseError::ExpectedNode),
+                    },
+                    None => return Err(WktParseError::ExpectedNode),
+                };
+
+                return Ok(AxisDirection::CounterClockwise(bearing));
+            }
+            _ => return Ok(AxisDirection::from_str(inner.as_ref()).unwrap()),
+        }
+    }
+}

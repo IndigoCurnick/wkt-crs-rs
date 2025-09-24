@@ -7,7 +7,7 @@ use crate::{
     ast::{Parse, WktNode},
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 // TODO: Can take an ID too optionally
@@ -18,7 +18,7 @@ pub struct LengthUnit {
 }
 
 impl WktBaseType for LengthUnit {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -42,7 +42,7 @@ impl WktBaseType for LengthUnit {
             conversion_factor,
         };
 
-        Ok(WktResult {
+        Ok(WktBaseTypeResult {
             result: lu,
             consumed: 1,
         })

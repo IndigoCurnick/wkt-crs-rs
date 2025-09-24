@@ -1,7 +1,9 @@
 mod arity;
 mod ast;
 mod base_types;
+mod compound_types;
 mod data_types;
+mod enumerations;
 mod error;
 mod keywords;
 mod types;

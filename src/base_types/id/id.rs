@@ -5,7 +5,7 @@ use crate::{
     data_types::NumText,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -18,7 +18,7 @@ pub struct Id {
 }
 
 impl WktBaseType for Id {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -105,7 +105,7 @@ impl WktBaseType for Id {
             id_uri,
         };
 
-        return Ok(WktResult {
+        return Ok(WktBaseTypeResult {
             result: id,
             consumed: 1,
         });

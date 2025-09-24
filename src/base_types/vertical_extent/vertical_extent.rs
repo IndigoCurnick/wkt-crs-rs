@@ -6,7 +6,7 @@ use crate::{
     base_types::LengthUnit,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -23,7 +23,7 @@ pub struct VerticalExtent {
 }
 
 impl WktBaseType for VerticalExtent {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -51,7 +51,7 @@ impl WktBaseType for VerticalExtent {
             length_unit,
         };
 
-        return Ok(WktResult {
+        return Ok(WktBaseTypeResult {
             result: ve,
             consumed: 1,
         });

@@ -9,7 +9,7 @@ fn test_tokenise() {
     let correct = vec![
         Token::Keyword(Keywords::LengthUnit),
         Token::LDelimiter,
-        Token::Data("\"metre\"".to_string()),
+        Token::Data("metre".to_string()),
         Token::WktSeparator,
         Token::Data("1".to_string()),
         Token::RDelimiter,
@@ -22,6 +22,7 @@ fn test_tokenise() {
 
 #[test]
 fn test_parse_wkt() {
+    println!("About to run parse wkt test");
     let correct = WktNode {
         keyword: Keywords::LengthUnit,
         args: vec![

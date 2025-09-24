@@ -3,14 +3,14 @@ use crate::{
     ast::{Parse, WktNode},
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
 pub struct Citation(pub String);
 
 impl WktBaseType for Citation {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -26,7 +26,7 @@ impl WktBaseType for Citation {
 
         let cite = Citation(citation);
 
-        return Ok(WktResult {
+        return Ok(WktBaseTypeResult {
             result: cite,
             consumed: 1,
         });

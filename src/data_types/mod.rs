@@ -15,10 +15,10 @@ pub enum NumText {
 
 impl From<&str> for NumText {
     fn from(value: &str) -> Self {
-        return if let Ok(float) = value.parse() {
-            Self::Float(float)
-        } else if let Ok(int) = value.parse() {
+        return if let Ok(int) = value.parse() {
             Self::Int(int)
+        } else if let Ok(float) = value.parse() {
+            Self::Float(float)
         } else {
             Self::Text(value.to_string())
         };

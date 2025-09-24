@@ -4,7 +4,7 @@ use crate::{
     data_types::DateOrString,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
@@ -14,7 +14,7 @@ pub struct TemporalExtent {
 }
 
 impl WktBaseType for TemporalExtent {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<crate::types::WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -33,7 +33,7 @@ impl WktBaseType for TemporalExtent {
 
         let res = TemporalExtent { from, to };
 
-        return Ok(WktResult {
+        return Ok(WktBaseTypeResult {
             result: res,
             consumed: 1,
         });

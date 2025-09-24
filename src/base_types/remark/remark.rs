@@ -3,7 +3,7 @@ use crate::{
     ast::{Parse, WktNode},
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktResult},
+    types::{WktBaseType, WktBaseTypeResult},
 };
 
 // TODO: Make this a tuple struct
@@ -11,7 +11,7 @@ use crate::{
 pub struct Remark(pub String);
 
 impl WktBaseType for Remark {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
@@ -27,7 +27,7 @@ impl WktBaseType for Remark {
 
         let rem = node.args[0].parse()?;
 
-        let res = WktResult {
+        let res = WktBaseTypeResult {
             consumed: 1,
             result: Remark(rem),
         };

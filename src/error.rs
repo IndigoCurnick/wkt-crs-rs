@@ -32,7 +32,7 @@ pub enum WktParseError {
     UnknownKeyword(String),
     IncorrectArity {
         min: usize,
-        max: usize,
+        max: Option<usize>,
         found: usize,
     },
     ExpectedString,
@@ -45,7 +45,7 @@ pub enum WktParseError {
         found: Keywords,
     },
     TooManyKeyword(Keywords),
-    TooFewKeyword(String),
+    TooFewKeyword(Keywords),
     IncorrectKeywordOrder,
     ParseError(ParseError),
     IncorrectValue,
@@ -57,11 +57,21 @@ impl Display for WktParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::UnknownKeyword(k) => write!(f, "Unknown Keyword: `{}`", k),
-            Self::IncorrectArity { expected, found } => write!(
-                f,
-                "Incorrect array length. Expected: {}. Got: {}",
-                expected, found
-            ),
+            Self::IncorrectArity { min, max, found } => {
+                if let Some(m) = max {
+                    write!(
+                        f,
+                        "Incorrect arity. Expected between `{}` and `{}`, got `{}`",
+                        min, m, found
+                    )
+                } else {
+                    write!(
+                        f,
+                        "Incorrect arity. Expected at least `{}`, got `{}",
+                        min, found
+                    )
+                }
+            }
             Self::ExpectedString => write!(f, "Expected String"),
             Self::ExpectedNumber => write!(f, "Expected Number"),
             Self::ExpectedStringOrNumber => write!(f, "Expected String or Number"),

@@ -41,29 +41,16 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                 tokens.push(Token::Data(content.to_string()));
                 s = &s[end + 1..];
             }
-            c if c.is_ascii_digit() || c == '-' || c == '.' => {
-                let len = s
-                    .find(|ch: char| {
-                        !ch.is_ascii_digit()
-                            && ch != '.'
-                            && ch != '-'
-                            && ch != '+'
-                            && ch != 'e'
-                            && ch != 'E'
-                            && ch != ':'
-                            && ch != 'Z'
-                            && ch != 'T'
-                    }) // TODO: we might need more robust scientific notation handling in future (and dates)
-                    .unwrap_or(s.len());
-                let num_str = &s[..len];
-
-                tokens.push(Token::Data(num_str.to_string()));
+            c if c.is_whitespace() => {
+                s = &s[1..];
             }
-            c if c.is_ascii_alphabetic() => {
+            _ => {
                 let len = s
-                    .find(|ch: char| !ch.is_ascii_alphabetic())
+                    .find(|ch: char| ch == ',' || ch == '[' || ch == ']')
                     .unwrap_or(s.len());
                 let ident_candidate = &s[..len];
+
+                println!("Ident candidate: {}, len: {}", ident_candidate, len);
 
                 if let Ok(ident) = Keywords::from_str(ident_candidate) {
                     tokens.push(Token::Keyword(ident));
@@ -73,10 +60,6 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 
                 s = &s[len..];
             }
-            c if c.is_whitespace() => {
-                s = &s[1..];
-            }
-            _ => panic!("unhandled char {:?}", c),
         }
     }
 
@@ -146,7 +129,9 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
 }
 
 pub fn parse_wkt(s: &str) -> Vec<WktNode> {
+    println!("About to tokenise");
     let mut tokens = tokenize(s);
+    println!("{:?}", tokens);
     parse_nodes(&mut tokens)
 }
 
@@ -156,10 +141,38 @@ pub struct WktNode {
     pub args: Vec<WktArg>,
 }
 
+impl<'a> WktElement<'a> for WktNode {
+    fn get_node(&'a self) -> Option<&'a WktNode> {
+        return Some(self);
+    }
+
+    fn get_arg(&'a self) -> Option<&'a WktArg> {
+        return None;
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum WktArg {
     Data(String),
     Node(WktNode),
+}
+
+impl<'a> WktElement<'a> for WktArg {
+    fn get_node(&'a self) -> Option<&'a WktNode> {
+        return match self {
+            Self::Node(n) => Some(n),
+            Self::Data(_) => None,
+        };
+    }
+
+    fn get_arg(&'a self) -> Option<&'a WktArg> {
+        return Some(self);
+    }
+}
+
+pub trait WktElement<'a> {
+    fn get_node(&'a self) -> Option<&'a WktNode>;
+    fn get_arg(&'a self) -> Option<&'a WktArg>;
 }
 
 pub trait Parse<T> {
@@ -183,6 +196,20 @@ impl Parse<f64> for WktArg {
         };
 
         return match num_str.parse::<f64>() {
+            Ok(x) => Ok(x),
+            Err(_) => Err(WktParseError::ExpectedNumber),
+        };
+    }
+}
+
+impl Parse<u8> for WktArg {
+    fn parse(&self) -> Result<u8, WktParseError> {
+        let num_str = match self {
+            Self::Data(s) => s,
+            Self::Node(_) => return Err(WktParseError::ExpectedNumber),
+        };
+
+        return match num_str.parse::<u8>() {
             Ok(x) => Ok(x),
             Err(_) => Err(WktParseError::ExpectedNumber),
         };
@@ -233,5 +260,11 @@ impl<T: WktBaseType> Parse<T> for WktArg {
             Self::Node(node) => Ok(T::from_nodes(vec![node])?.result),
             Self::Data(_) => Err(WktParseError::ExpectedNode),
         };
+    }
+}
+
+impl<T: WktBaseType> Parse<T> for WktNode {
+    fn parse(&self) -> Result<T, WktParseError> {
+        Ok(T::from_nodes(vec![self])?.result)
     }
 }
