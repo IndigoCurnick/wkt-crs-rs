@@ -38,8 +38,8 @@ impl WktBaseType for MapProjection {
             let this_value = &node.args[i];
 
             match this_value {
-                WktArg::Node(node) => {
-                    match node.keyword {
+                WktArg::Node(this_node) => {
+                    match this_node.keyword {
                         Keywords::Parameter => {
                             // Parameters must come before identifier
 
@@ -47,17 +47,17 @@ impl WktBaseType for MapProjection {
                                 return Err(WktParseError::IncorrectKeywordOrder);
                             }
 
-                            let param = node.parse()?;
+                            let param = this_node.parse()?;
 
                             v.push(param);
                         }
                         Keywords::Id => {
-                            identifier = Some(node.parse()?);
+                            identifier = Some(this_node.parse()?);
                         }
                         _ => {
                             return Err(WktParseError::IncorrectKeyword {
                                 expected: vec![Keywords::Parameter, Keywords::Id].into(),
-                                found: node.keyword.clone(),
+                                found: this_node.keyword.clone(),
                             });
                         }
                     }

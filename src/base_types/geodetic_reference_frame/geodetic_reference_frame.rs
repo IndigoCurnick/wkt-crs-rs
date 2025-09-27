@@ -54,7 +54,9 @@ impl WktBaseType for GeodeticReferenceFrame {
 
         // Second node
 
-        let prime_meridian = match it.next() {
+        let next = it.next();
+
+        let prime_meridian = match next {
             Some(second) => match second.parse() {
                 Ok(x) => Some(x),
                 Err(_) => None,

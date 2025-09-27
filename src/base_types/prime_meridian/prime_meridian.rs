@@ -25,7 +25,10 @@ impl WktBaseType for PrimeMeridian {
             None => return Err(WktParseError::NotEnoughNodes),
         };
 
-        match_keywords(&node.keyword, vec![Keywords::Id])?;
+        match_keywords(
+            &node.keyword,
+            vec![Keywords::PrimeM, Keywords::PrimeMeridian],
+        )?;
         match_arity(node.args.len(), 2, 4)?;
 
         let prime_meridian_name = node.args[0].parse()?;

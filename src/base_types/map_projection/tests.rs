@@ -67,7 +67,7 @@ fn test_example_1() {
             map_projection_method_name: "Transverse Mercator".to_string(),
             identifier: Some(Id {
                 authority_name: "EPSG".to_string(),
-                authority_unique_identifier: NumText::Float(9807.0),
+                authority_unique_identifier: NumText::Int(9807),
                 version: None,
                 authority_citation: None,
                 id_uri: None,
@@ -83,7 +83,7 @@ fn test_example_1() {
                         conversion_factor: 0.0174532925199433,
                         identifier: Some(Id {
                             authority_name: "EPSG".to_string(),
-                            authority_unique_identifier: NumText::Float(9102.0),
+                            authority_unique_identifier: NumText::Int(9102),
                             version: None,
                             authority_citation: None,
                             id_uri: None,
@@ -92,7 +92,7 @@ fn test_example_1() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8801.0),
+                    authority_unique_identifier: NumText::Int(8801),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -107,7 +107,7 @@ fn test_example_1() {
                         conversion_factor: 0.0174532925199433,
                         identifier: Some(Id {
                             authority_name: "EPSG".to_string(),
-                            authority_unique_identifier: NumText::Float(9102.0),
+                            authority_unique_identifier: NumText::Int(9102),
                             version: None,
                             authority_citation: None,
                             id_uri: None,
@@ -116,7 +116,7 @@ fn test_example_1() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8802.0),
+                    authority_unique_identifier: NumText::Int(8802),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -125,7 +125,7 @@ fn test_example_1() {
         ]),
         identifier: Some(Id {
             authority_name: "EPSG".to_string(),
-            authority_unique_identifier: NumText::Float(7689.0),
+            authority_unique_identifier: NumText::Int(7689),
             version: None,
             authority_citation: None,
             id_uri: None,
@@ -146,7 +146,7 @@ fn test_example_2() {
             map_projection_method_name: "Transverse Mercator".to_string(),
             identifier: Some(Id {
                 authority_name: "EPSG".to_string(),
-                authority_unique_identifier: NumText::Float(9807.0),
+                authority_unique_identifier: NumText::Int(9807),
                 version: None,
                 authority_citation: None,
                 id_uri: None,
@@ -165,7 +165,7 @@ fn test_example_2() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8801.0),
+                    authority_unique_identifier: NumText::Int(8801),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -183,7 +183,7 @@ fn test_example_2() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8802.0),
+                    authority_unique_identifier: NumText::Int(8802),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -201,7 +201,7 @@ fn test_example_2() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8805.0),
+                    authority_unique_identifier: NumText::Int(8805),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -218,7 +218,7 @@ fn test_example_2() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8806.0),
+                    authority_unique_identifier: NumText::Int(8806),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -235,7 +235,7 @@ fn test_example_2() {
                 )),
                 identifier: Some(Id {
                     authority_name: "EPSG".to_string(),
-                    authority_unique_identifier: NumText::Float(8807.0),
+                    authority_unique_identifier: NumText::Int(8807),
                     version: None,
                     authority_citation: None,
                     id_uri: None,
@@ -321,7 +321,7 @@ fn test_example_3() {
         ]),
         identifier: Some(Id {
             authority_name: "EPSG".into(),
-            authority_unique_identifier: NumText::Float(16010.0),
+            authority_unique_identifier: NumText::Int(16010),
             version: None,
             authority_citation: None,
             id_uri: None,

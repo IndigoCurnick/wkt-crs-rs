@@ -144,10 +144,10 @@ fn test_example_1() {
                     }),
                     vertical_extent: None,
                     temporal_extent: Some(TemporalExtent {
-                        from: DateOrString::Date(Temporal::Date(
+                        from: DateOrString::Date(Temporal::CalendarDay(
                             Date::from_calendar_date(2002, Month::April, 1).unwrap(),
                         )),
-                        to: DateOrString::Date(Temporal::Date(
+                        to: DateOrString::Date(Temporal::CalendarDay(
                             Date::from_calendar_date(2011, Month::October, 21).unwrap(),
                         )),
                     }),

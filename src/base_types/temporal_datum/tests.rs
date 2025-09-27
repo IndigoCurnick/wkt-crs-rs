@@ -28,7 +28,7 @@ fn test_example_1() {
     let correct = TemporalDatum {
         datum_name: "Gregorian Calendar".to_string(),
         calendar: Some(Calendar("proleptic Gregorian".to_string())),
-        temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::Date(
+        temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::CalendarDay(
             Date::from_calendar_date(0, Month::January, 1).unwrap(),
         )))),
         identifier: None,

@@ -37,7 +37,7 @@ impl WktBaseType for MapProjectionParameter {
             None => None,
         };
 
-        let identifier = match node.args.get(2) {
+        let identifier = match node.args.get(3) {
             Some(x) => Some(x.parse()?),
             None => None,
         };

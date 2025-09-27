@@ -26,7 +26,7 @@ impl WktBaseType for Usage {
         match_keywords(&node.keyword, vec![Keywords::Usage])?;
         match_arity(node.args.len(), 2, 5)?; // ! Keep in mind, Extent is NOT a "real" type, and so its members just how you say extend this
 
-        let scope = node.args[1].parse()?;
+        let scope = node.args[0].parse()?;
 
         let extent = Extent::from_args(&node.args[1..node.args.len()])?.result;
 

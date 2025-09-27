@@ -30,7 +30,7 @@ impl WktBaseType for EngineeringCrs {
             &node.keyword,
             vec![Keywords::EngCrs, Keywords::EngineeringCrs],
         )?;
-        lower_bound_arity(node.args.len(), 4);
+        lower_bound_arity(node.args.len(), 4)?;
 
         let crs_name = node.args[0].parse()?;
         let engineering_datum = node.args[1].parse()?;

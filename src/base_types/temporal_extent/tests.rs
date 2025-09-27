@@ -13,10 +13,10 @@ fn test_time_extent() {
     // Example 1
 
     let correct = TemporalExtent {
-        from: DateOrString::Date(Temporal::Date(
+        from: DateOrString::Date(Temporal::CalendarDay(
             Date::from_calendar_date(2013, Month::January, 1).unwrap(),
         )),
-        to: DateOrString::Date(Temporal::Date(
+        to: DateOrString::Date(Temporal::CalendarDay(
             Date::from_calendar_date(2013, Month::December, 31).unwrap(),
         )),
     };

@@ -50,8 +50,6 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
                     .unwrap_or(s.len());
                 let ident_candidate = &s[..len];
 
-                println!("Ident candidate: {}, len: {}", ident_candidate, len);
-
                 if let Ok(ident) = Keywords::from_str(ident_candidate) {
                     tokens.push(Token::Keyword(ident));
                 } else {
@@ -99,8 +97,6 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
         _ => panic!("expected keyword"),
     };
 
-    println!("tokens {:?}", tokens);
-
     assert!(matches!(tokens.remove(0), Token::LDelimiter));
 
     let mut args = Vec::new();
@@ -129,9 +125,7 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
 }
 
 pub fn parse_wkt(s: &str) -> Vec<WktNode> {
-    println!("About to tokenise");
     let mut tokens = tokenize(s);
-    println!("{:?}", tokens);
     parse_nodes(&mut tokens)
 }
 
@@ -245,7 +239,7 @@ impl Parse<DateOrString> for WktArg {
             Self::Data(s) => s,
             Self::Node(_) => return Err(WktParseError::ExpectedStringOrDate),
         };
-
+        println!("String I am trying to date `{}`", date_str);
         return if let Ok(date) = Temporal::try_from(date_str.as_str()) {
             Ok(DateOrString::Date(date))
         } else {

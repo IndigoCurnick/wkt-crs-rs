@@ -1,4 +1,5 @@
 use crate::{
+    arity::lower_bound_arity,
     ast::{Parse, WktArg, WktNode},
     base_types::{DatumEnsembleAccuracy, DatumEnsembleMember, Ellipsoid, Id, PrimeMeridian},
     error::WktParseError,
@@ -30,7 +31,7 @@ impl WktBaseType for GeodeticDatumEnsemble {
         };
 
         match_keywords(&base_node.keyword, vec![Keywords::Ensemble])?;
-        // match_arity(node.args.len(), 1, 2)?; // TODO How to handle arity in this case?
+        lower_bound_arity(base_node.args.len(), 1)?;
 
         let datum_ensemble_name = base_node.args[0].parse()?;
 
@@ -39,7 +40,7 @@ impl WktBaseType for GeodeticDatumEnsemble {
         let mut datum_ensemble_accuracy = None;
         let mut identifier = None;
 
-        for i in 2..base_node.args.len() {
+        for i in 1..base_node.args.len() {
             let this_value = &base_node.args[i];
 
             match this_value {
