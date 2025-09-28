@@ -31,21 +31,27 @@ impl WktBaseType for ProjectedCrs {
             &node.keyword,
             vec![Keywords::ProjCrs, Keywords::ProjectedCrs],
         )?;
-        lower_bound_arity(node.args.len(), 4);
+        lower_bound_arity(node.args.len(), 4)?;
 
         let crs_name = node.args[0].parse()?;
-        let base_geodetic_crs = node.args[1].parse()?;
-        let map_projection = node.args[2].parse()?;
 
-        let coordinate_system = CoordinateSystem::from_args(&node.args[3..node.args.len()])?;
+        let base_geodetic_crs = BaseGeodeticCrs::from_args(&node.args[1..node.args.len()])?;
 
-        let scope_extent_identifier_remark = ScopeExtentIdentifierRemark::from_args(
-            &node.args[3 + coordinate_system.consumed..node.args.len()],
-        )?;
+        let mut i = 1 + base_geodetic_crs.consumed;
+
+        let map_projection = node.args[i].parse()?;
+
+        i += 1;
+
+        let coordinate_system = CoordinateSystem::from_args(&node.args[i..node.args.len()])?;
+
+        i += coordinate_system.consumed;
+        let scope_extent_identifier_remark =
+            ScopeExtentIdentifierRemark::from_args(&node.args[i..node.args.len()])?;
 
         let res = ProjectedCrs {
             crs_name,
-            base_geodetic_crs,
+            base_geodetic_crs: base_geodetic_crs.result,
             map_projection,
             coordinate_system: coordinate_system.result,
             scope_extent_identifier_remark: scope_extent_identifier_remark.result,

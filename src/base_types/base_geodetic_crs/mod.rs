@@ -4,9 +4,9 @@ mod base_static_geodetic_crs;
 mod base_static_geographic_crs;
 
 use crate::{
-    ast::WktNode,
+    ast::{WktArg, WktNode},
     error::WktParseError,
-    types::{WktBaseType, WktBaseTypeResult},
+    types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
 pub use base_dynamic_geodetic_crs::BaseDynamicGeodeticCrs;
@@ -54,6 +54,45 @@ pub enum BaseGeodeticCrs {
     BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
     BaseStaticGeographicCrs(BaseStaticGeographicCrs),
     BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
+}
+
+impl WktInlineType for BaseGeodeticCrs {
+    fn from_args<'a, I>(wkt_args: I) -> Result<crate::types::WktInlineResult<Self>, WktParseError>
+    where
+        I: IntoIterator<Item = &'a crate::ast::WktArg>,
+    {
+        let iter: Vec<&'a WktArg> = wkt_args.into_iter().collect();
+
+        if let Ok(base_static) = BaseStaticGeodeticCrs::from_args(iter.clone()) {
+            return Ok(WktInlineResult {
+                result: Self::BaseStaticGeodeticCrs(base_static.result),
+                consumed: base_static.consumed,
+            });
+        }
+
+        if let Ok(base_dynamic) = BaseDynamicGeodeticCrs::from_args(iter.clone()) {
+            return Ok(WktInlineResult {
+                result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
+                consumed: base_dynamic.consumed,
+            });
+        }
+
+        if let Ok(base_static) = BaseStaticGeographicCrs::from_args(iter.clone()) {
+            return Ok(WktInlineResult {
+                result: Self::BaseStaticGeographicCrs(base_static.result),
+                consumed: base_static.consumed,
+            });
+        }
+
+        if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_args(iter) {
+            return Ok(WktInlineResult {
+                result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
+                consumed: base_dynamic.consumed,
+            });
+        }
+
+        return Err(WktParseError::CouldNotDetermineType);
+    }
 }
 
 impl WktBaseType for BaseGeodeticCrs {

@@ -76,7 +76,6 @@ impl WktInlineType for CoordinateSystem {
                 consumed: temporal.consumed,
             });
         }
-
         return Err(WktParseError::CouldNotDetermineType);
     }
 }

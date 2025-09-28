@@ -239,7 +239,7 @@ impl Parse<DateOrString> for WktArg {
             Self::Data(s) => s,
             Self::Node(_) => return Err(WktParseError::ExpectedStringOrDate),
         };
-        println!("String I am trying to date `{}`", date_str);
+
         return if let Ok(date) = Temporal::try_from(date_str.as_str()) {
             Ok(DateOrString::Date(date))
         } else {

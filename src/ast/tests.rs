@@ -22,7 +22,6 @@ fn test_tokenise() {
 
 #[test]
 fn test_parse_wkt() {
-    println!("About to run parse wkt test");
     let correct = WktNode {
         keyword: Keywords::LengthUnit,
         args: vec![

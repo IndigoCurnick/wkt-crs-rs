@@ -1,10 +1,10 @@
 use crate::{
     arity::match_arity,
-    ast::{Parse, WktNode},
+    ast::{Parse, WktArg, WktNode},
     base_types::{AngleUnit, DynamicCrs, GeodeticReferenceFrame, Id},
     error::WktParseError,
     keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktBaseTypeResult},
+    types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
 #[derive(Debug, PartialEq)]
@@ -14,6 +14,36 @@ pub struct BaseDynamicGeodeticCrs {
     pub geodetic_data: GeodeticReferenceFrame,
     pub ellipsoidal_cs_unit: Option<AngleUnit>,
     pub identifier: Option<Id>,
+}
+
+impl WktInlineType for BaseDynamicGeodeticCrs {
+    fn from_args<'a, I>(wkt_args: I) -> Result<WktInlineResult<Self>, WktParseError>
+    where
+        I: IntoIterator<Item = &'a crate::ast::WktArg>,
+    {
+        // Note that only nodes are necessary, so we can basically iterate the
+        // args, consuming all nodes
+        // when we hit not a node we can stop and just throw it into the base type
+        let mut it = wkt_args.into_iter();
+
+        let mut nodes = vec![];
+
+        while let Some(arg) = it.next() {
+            let node = match arg {
+                WktArg::Node(n) => n,
+                _ => break,
+            };
+
+            nodes.push(node);
+        }
+
+        let res = BaseDynamicGeodeticCrs::from_nodes(nodes)?;
+
+        return Ok(WktInlineResult {
+            consumed: res.consumed,
+            result: res.result,
+        });
+    }
 }
 
 impl WktBaseType for BaseDynamicGeodeticCrs {

@@ -46,7 +46,7 @@ impl WktBaseType for GeodeticCrs {
                 consumed: temporal.consumed,
             });
         }
-        println!("JERE");
+
         return Err(WktParseError::CouldNotDetermineType);
     }
 }

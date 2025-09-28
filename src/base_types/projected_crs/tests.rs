@@ -23,7 +23,7 @@ const EXAMPLE1: &str = r#"PROJCRS["ETRS89 Lambert Azimuthal Equal Area CRS",
     ],
     CONVERSION["LAEA",
         METHOD["Lambert Azimuthal Equal Area",ID["EPSG",9820]],
-        PARAMETER["Latitude of origin",52.0
+        PARAMETER["Latitude of origin",52.0,
             ANGLEUNIT["degree",0.017]]
         PARAMETER["Longitude of origin",10.0,
             ANGLEUNIT["degree",0.017]],

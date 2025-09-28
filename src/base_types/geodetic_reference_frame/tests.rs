@@ -114,8 +114,6 @@ fn test_datum() {
 
     let ast = parse_wkt(EXAMPLE3);
 
-    println!("Ast: {:?}", ast);
-
     let datum = GeodeticReferenceFrame::from_nodes(&ast).unwrap();
 
     assert_eq!(correct, datum.result);

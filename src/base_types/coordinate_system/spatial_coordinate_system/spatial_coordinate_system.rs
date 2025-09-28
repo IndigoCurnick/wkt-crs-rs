@@ -61,9 +61,11 @@ impl WktBaseType for SpatialCoordinateSystem {
         };
 
         match_keywords(&node.keyword, vec![Keywords::Cs])?;
+
         match_arity(node.args.len(), 1, 3)?;
 
         let spatial_cs_type = SpatialCsType::try_from(&node.args[0])?;
+
         let dimension = Dimension::try_from(&node.args[1])?;
 
         let identifier = match node.args.get(2) {

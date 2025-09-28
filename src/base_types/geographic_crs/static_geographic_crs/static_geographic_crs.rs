@@ -1,6 +1,6 @@
 use crate::{
     arity::lower_bound_arity,
-    ast::{Parse, WktNode},
+    ast::{Parse, WktArg, WktNode},
     base_types::CoordinateSystem,
     compound_types::{GeodeticData, ScopeExtentIdentifierRemark},
     error::WktParseError,
@@ -25,25 +25,26 @@ impl WktBaseType for StaticGeographicCrs {
             Some(x) => x,
             None => return Err(WktParseError::NotEnoughNodes),
         };
-
         match_keywords(
             &node.keyword,
             vec![Keywords::GeogCrs, Keywords::GeographicCrs],
         )?;
-        lower_bound_arity(node.args.len(), 4);
-
+        lower_bound_arity(node.args.len(), 4)?;
         let crs_name = node.args[0].parse()?;
-        let frame = node.args[1].parse()?;
 
-        let coordinate_system = CoordinateSystem::from_args(&node.args[2..node.args.len()])?;
+        let frame = GeodeticData::from_args(&node.args[1..node.args.len()])?;
 
-        let scope_extent_identifier_remark = ScopeExtentIdentifierRemark::from_args(
-            &node.args[2 + coordinate_system.consumed..node.args.len()],
-        )?;
+        let mut i = 1 + frame.consumed;
+
+        let coordinate_system = CoordinateSystem::from_args(&node.args[i..node.args.len()])?;
+        i += coordinate_system.consumed;
+
+        let scope_extent_identifier_remark =
+            ScopeExtentIdentifierRemark::from_args(&node.args[i..node.args.len()])?;
 
         let res = StaticGeographicCrs {
             crs_name,
-            frame,
+            frame: frame.result,
             coordinate_system: coordinate_system.result,
             scope_extent_identifier_remark: scope_extent_identifier_remark.result,
         };
