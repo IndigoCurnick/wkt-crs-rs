@@ -1,12 +1,15 @@
 use crate::{
-    ast::WktNode,
+    arity::lower_bound_arity,
+    ast::{Parse, WktNode},
     compound_types::{ScopeExtentIdentifierRemark, SingleCrs},
     error::WktParseError,
     keywords::{Keywords, match_keywords},
     types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
+#[derive(Debug, PartialEq)]
 pub struct CompoundCrs {
+    pub compound_crs_name: String,
     pub crs_one: SingleCrs,
     pub crs_two: SingleCrs,
     pub additional_crs: Option<Vec<SingleCrs>>,
@@ -24,16 +27,19 @@ impl WktBaseType for CompoundCrs {
         };
 
         match_keywords(&node.keyword, vec![Keywords::CompoundCrs])?;
+        lower_bound_arity(node.args.len(), 3)?;
 
-        let mut i = 0;
+        let compound_crs_name = node.args[0].parse()?;
+
+        let mut i = 1;
         let len = node.args.len();
 
         let crs_one = SingleCrs::from_args(&node.args[i..len])?;
         i += crs_one.consumed;
-
+        println!("Got here");
         let crs_two = SingleCrs::from_args(&node.args[i..len])?;
         i += crs_two.consumed;
-
+        println!("Got here now");
         let mut crss = vec![];
 
         loop {
@@ -56,6 +62,7 @@ impl WktBaseType for CompoundCrs {
         let consumed = i + scope_extent_identifier_remark.consumed;
 
         let compound = CompoundCrs {
+            compound_crs_name,
             crs_one: crs_one.result,
             crs_two: crs_two.result,
             additional_crs,

@@ -60,8 +60,10 @@ impl WktBaseType for OrdinalDateTimeCoordinateSystem {
 
         match_keywords(&node.keyword, vec![Keywords::Cs])?;
         match_arity(node.args.len(), 1, 3)?;
-
+        println!("found a CS keyword");
+        println!("I am about to try and parse: {:?}", node.args[0]);
         let ordinal_date_time_cs_type = OrdinalDateTimeCsType::try_from(&node.args[0])?;
+        println!("got cs type");
         let dimension = Dimension::try_from(&node.args[1])?;
 
         let identifier = match node.args.get(2) {

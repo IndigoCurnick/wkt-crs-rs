@@ -7,6 +7,7 @@ use crate::{
     types::{WktBaseType, WktBaseTypeResult},
 };
 
+#[derive(Debug, PartialEq)]
 pub struct BaseParametricCrs {
     pub base_crs_name: String,
     pub parametric_datum: ParametricDatum,
@@ -24,7 +25,7 @@ impl WktBaseType for BaseParametricCrs {
         };
 
         match_keywords(&node.keyword, vec![Keywords::BaseParamCrs])?;
-        match_arity(node.args.len(), 2, 3);
+        match_arity(node.args.len(), 2, 3)?;
 
         let base_crs_name = node.args[0].parse()?;
         let parametric_datum = node.args[1].parse()?;

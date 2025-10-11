@@ -16,7 +16,9 @@ pub enum MapProjectionParameterUnit {
 }
 
 impl WktBaseType for MapProjectionParameterUnit {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
+    fn from_nodes<'a, I>(
+        wkt_nodes: I,
+    ) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
     {

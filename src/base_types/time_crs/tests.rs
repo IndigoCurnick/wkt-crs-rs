@@ -1,10 +1,7 @@
 use std::vec;
 
-use horologium::{
-    Temporal,
-    types::{CalendarDateTime, Year},
-};
-use time::{Date, Month, OffsetDateTime, PrimitiveDateTime, Time, UtcOffset};
+use horologium::{Temporal, types::Year};
+use time::{Date, Month, OffsetDateTime, Time, UtcOffset};
 
 use crate::{
     ast::parse_wkt,
@@ -103,13 +100,13 @@ fn test_example_2() {
         temporal_datum: TemporalDatum {
             datum_name: "GPS time origin".into(),
             calendar: None,
-            temporal_origin: Some(TimeOrigin(DateOrString::Date(
-                Temporal::MillisecondPrecision(OffsetDateTime::new_in_offset(
+            temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::OffsetDateTime(
+                OffsetDateTime::new_in_offset(
                     Date::from_calendar_date(1980, Month::January, 1).unwrap(),
                     Time::from_hms_milli(0, 0, 0, 0).unwrap(),
                     UtcOffset::from_hms(0, 0, 0).unwrap(),
-                )),
-            ))),
+                ),
+            )))),
             identifier: None,
         },
         coordinate_system: CoordinateSystem::TemporalCountMeasureCS(
@@ -152,11 +149,12 @@ fn test_example_3() {
         temporal_datum: TemporalDatum {
             datum_name: "29 December 1979".into(),
             calendar: None,
-            temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::CalendarDateTime(
-                CalendarDateTime {
-                    date: Date::from_calendar_date(1979, Month::December, 29).unwrap(),
-                    hour: 0,
-                },
+            temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::OffsetDateTime(
+                OffsetDateTime::new_in_offset(
+                    Date::from_calendar_date(1979, Month::December, 29).unwrap(),
+                    Time::from_hms(0, 0, 0).unwrap(),
+                    UtcOffset::from_hms(0, 0, 0).unwrap(),
+                ),
             )))),
             identifier: None,
         },
@@ -243,12 +241,12 @@ fn test_example_5() {
         temporal_datum: TemporalDatum {
             datum_name: "Unix epoch".into(),
             calendar: None,
-            temporal_origin: Some(TimeOrigin(DateOrString::Date(
-                Temporal::SecondPrecisionOffset(OffsetDateTime::new_utc(
+            temporal_origin: Some(TimeOrigin(DateOrString::Date(Temporal::OffsetDateTime(
+                OffsetDateTime::new_utc(
                     Date::from_calendar_date(1970, Month::January, 1).unwrap(),
                     Time::from_hms(0, 0, 0).unwrap(),
-                )),
-            ))),
+                ),
+            )))),
             identifier: None,
         },
         coordinate_system: CoordinateSystem::TemporalCountMeasureCS(

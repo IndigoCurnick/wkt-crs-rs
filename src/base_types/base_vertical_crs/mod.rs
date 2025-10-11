@@ -9,6 +9,7 @@ use crate::{
 mod base_dynamic_vertical_crs;
 mod base_static_vertical_crs;
 
+#[derive(Debug, PartialEq)]
 pub enum BaseVerticalCrs {
     BaseDynamicVerticalCrs(BaseDynamicVerticalCrs),
     BaseStaticVerticalCrs(BaseStaticVerticalCrs),

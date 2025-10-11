@@ -8,4 +8,4 @@ log = "0.4.27"
 strum = { version = "0.27.1", features = ["derive"] }
 strum_macros = "0.27.1"
 time = { version = "0.3.41", features = ["parsing", "macros"] }
-horologium = { git = "https://github.com/IndigoCurnick/horologium.git", rev = "b7d8de6" }
+horologium = { git = "https://github.com/IndigoCurnick/horologium.git", rev = "1f4bf2f" }

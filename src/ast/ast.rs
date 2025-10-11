@@ -98,7 +98,6 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
     };
 
     assert!(matches!(tokens.remove(0), Token::LDelimiter));
-
     let mut args = Vec::new();
     loop {
         match tokens.first() {

@@ -11,6 +11,7 @@ use crate::{
     types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
+#[derive(Debug, PartialEq)]
 pub enum SingleCrs {
     GeodeticCrs(GeodeticCrs),
     DerivedGeodeticCrs(DerivedGeodeticCrs),
