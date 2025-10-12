@@ -1,0 +1,3 @@
+mod dynamic_crs_coordinate_metadata;
+
+pub use dynamic_crs_coordinate_metadata::DynamicCrsCoordinateMetadata;

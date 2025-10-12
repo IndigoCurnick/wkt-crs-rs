@@ -1,16 +1,16 @@
 use crate::{
     ast::{WktArg, WktNode},
     base_types::{
-        DerivedEngineeringCrs, DerivedGeodeticCrs, DerivedParametricCrs, DerivedProjectedCrs,
-        DerivedTemporalCrs, DerivedVerticalCrs, EngineeringCrs, GeodeticCrs, ParametricCrs,
-        ProjectedCrs, TimeCrs, VerticalCrs,
+        CompoundCrs, DerivedEngineeringCrs, DerivedGeodeticCrs, DerivedParametricCrs,
+        DerivedProjectedCrs, DerivedTemporalCrs, DerivedVerticalCrs, EngineeringCrs, GeodeticCrs,
+        ParametricCrs, ProjectedCrs, TimeCrs, VerticalCrs,
     },
     error::WktParseError,
     types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
 #[derive(Debug, PartialEq)]
-pub enum SingleCrs {
+pub enum StaticCrsCoordinateMetadata {
     GeodeticCrs(GeodeticCrs),
     DerivedGeodeticCrs(DerivedGeodeticCrs),
     ProjectedCrs(ProjectedCrs),
@@ -23,9 +23,10 @@ pub enum SingleCrs {
     DerivedParametricCrs(DerivedParametricCrs),
     TimeCrs(TimeCrs),
     DerivedTemporalCrs(DerivedTemporalCrs),
+    CompoundCrs(CompoundCrs),
 }
 
-impl WktInlineType for SingleCrs {
+impl WktInlineType for StaticCrsCoordinateMetadata {
     fn from_args<'a, I>(wkt_args: I) -> Result<WktInlineResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a crate::ast::WktArg>,
@@ -43,7 +44,7 @@ impl WktInlineType for SingleCrs {
             nodes.push(node);
         }
 
-        let res = SingleCrs::from_nodes(nodes)?;
+        let res = StaticCrsCoordinateMetadata::from_nodes(nodes)?;
 
         return Ok(WktInlineResult {
             consumed: res.consumed,
@@ -52,7 +53,7 @@ impl WktInlineType for SingleCrs {
     }
 }
 
-impl WktBaseType for SingleCrs {
+impl WktBaseType for StaticCrsCoordinateMetadata {
     fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
@@ -139,6 +140,13 @@ impl WktBaseType for SingleCrs {
         if let Ok(stati) = DerivedTemporalCrs::from_nodes(iter.clone()) {
             return Ok(WktBaseTypeResult {
                 result: Self::DerivedTemporalCrs(stati.result),
+                consumed: stati.consumed,
+            });
+        }
+
+        if let Ok(stati) = CompoundCrs::from_nodes(iter.clone()) {
+            return Ok(WktBaseTypeResult {
+                result: Self::CompoundCrs(stati.result),
                 consumed: stati.consumed,
             });
         }

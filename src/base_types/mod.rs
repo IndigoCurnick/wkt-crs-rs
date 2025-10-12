@@ -11,6 +11,8 @@ mod bearing;
 mod calendar;
 mod citation;
 mod compound_crs;
+mod coordinate_epoch;
+mod coordinate_metadata;
 mod coordinate_system;
 mod datum_anchor;
 mod datum_ensemble_accuracy;
@@ -82,6 +84,10 @@ pub use bearing::Bearing;
 pub use calendar::Calendar;
 pub use citation::Citation;
 pub use compound_crs::CompoundCrs;
+pub use coordinate_epoch::CoordinateEpoch;
+pub use coordinate_metadata::{
+    CoordinateMetadata, DynamicCoordinateMetadata, StaticCoordinateMetadata,
+};
 pub use coordinate_system::{
     CoordinateSystem, OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
     TemporalCountMeasureCoordinateSystem,

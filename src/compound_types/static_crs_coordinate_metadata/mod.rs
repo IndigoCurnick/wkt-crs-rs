@@ -1,0 +1,3 @@
+mod static_crs_coordinate_metadata;
+
+pub use static_crs_coordinate_metadata::StaticCrsCoordinateMetadata;
