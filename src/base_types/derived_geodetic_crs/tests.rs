@@ -2,7 +2,7 @@ use crate::{
     ast::parse_wkt,
     base_types::{
         AngleUnit, BaseDynamicCrs, BaseDynamicGeographicCrs, CoordinateSystem,
-        DerivedCrsConversionParameter, DerivedDynamicGeogCrs, DerivedGeodeticCrs,
+        OperationParameter, DerivedDynamicGeogCrs, DerivedGeodeticCrs,
         DerivedGeographicCrs, DerivingConversion, DynamicCrs, Ellipsoid, FrameEpoch,
         GeodeticReferenceFrame, Id, LengthUnit, OperationMethod, Order, SpatialAxis,
         SpatialCoordinateSystem,
@@ -73,7 +73,7 @@ fn test_derived_geodetic_crs() {
                     }),
                 },
                 operation_parameter: Some(vec![OperationParameterWrapper::OperationParameter(
-                    DerivedCrsConversionParameter {
+                    OperationParameter {
                         parameter_name: "Latitude of rotated pole".into(),
                         parameter_value: 52.0,
                         parameter_unit: Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {

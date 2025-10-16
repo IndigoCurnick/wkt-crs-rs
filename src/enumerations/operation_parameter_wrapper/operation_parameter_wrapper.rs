@@ -1,5 +1,5 @@
 use crate::{
-    base_types::{DerivedCrsConversionParameter, DerivedCrsConversionParameterFile},
+    base_types::{OperationParameter, OperationParameterFile},
     error::WktParseError,
     keywords::Keywords,
     types::{WktBaseType, WktBaseTypeResult},
@@ -7,8 +7,8 @@ use crate::{
 
 #[derive(Debug, PartialEq)]
 pub enum OperationParameterWrapper {
-    OperationParameter(DerivedCrsConversionParameter),
-    OperationParameterFile(DerivedCrsConversionParameterFile),
+    OperationParameter(OperationParameter),
+    OperationParameterFile(OperationParameterFile),
 }
 
 impl WktBaseType for OperationParameterWrapper {
@@ -26,13 +26,13 @@ impl WktBaseType for OperationParameterWrapper {
         return match node.keyword {
             Keywords::Parameter => Ok(WktBaseTypeResult {
                 result: Self::OperationParameter(
-                    DerivedCrsConversionParameter::from_nodes(vec![node])?.result,
+                    OperationParameter::from_nodes(vec![node])?.result,
                 ),
                 consumed: 1,
             }),
             Keywords::ParameterFile => Ok(WktBaseTypeResult {
                 result: Self::OperationParameterFile(
-                    DerivedCrsConversionParameterFile::from_nodes(vec![node])?.result,
+                    OperationParameterFile::from_nodes(vec![node])?.result,
                 ),
                 consumed: 1,
             }),

@@ -1,3 +1,4 @@
+mod coordinate_reference_system;
 mod dynamic_crs_coordinate_metadata;
 mod geodetic_data;
 mod map_projection_parameter_unit;
@@ -8,6 +9,7 @@ mod static_crs_coordinate_metadata;
 mod unit;
 mod vertical_frame_datum;
 
+pub use coordinate_reference_system::CoordinateReferenceSystem;
 pub use dynamic_crs_coordinate_metadata::DynamicCrsCoordinateMetadata;
 pub use geodetic_data::GeodeticData;
 pub use map_projection_parameter_unit::MapProjectionParameterUnit;

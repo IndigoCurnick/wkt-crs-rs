@@ -7,9 +7,9 @@ use crate::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct Bearing(pub f64);
+pub struct OperationVersion(pub String);
 
-impl WktBaseType for Bearing {
+impl WktBaseType for OperationVersion {
     fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
         I: IntoIterator<Item = &'a WktNode>,
@@ -21,14 +21,14 @@ impl WktBaseType for Bearing {
             None => return Err(WktParseError::NotEnoughNodes),
         };
 
-        match_keywords(&node.keyword, vec![Keywords::Bearing])?;
+        match_keywords(&node.keyword, vec![Keywords::Version])?;
         match_arity(node.args.len(), 1, 1)?;
 
-        let bearing = node.args[0].parse()?;
+        let version = node.args[0].parse()?;
 
         let res = WktBaseTypeResult {
             consumed: 1,
-            result: Bearing(bearing),
+            result: OperationVersion(version),
         };
 
         Ok(res)

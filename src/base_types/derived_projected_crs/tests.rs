@@ -2,7 +2,7 @@ use crate::{
     ast::parse_wkt,
     base_types::{
         AngleUnit, BaseGeodeticCrs, BaseProjectedCrs, BaseStaticGeographicCrs, CoordinateSystem,
-        DerivedCrsConversionParameter, DerivingConversion, Ellipsoid, GeodeticReferenceFrame, Id,
+        OperationParameter, DerivingConversion, Ellipsoid, GeodeticReferenceFrame, Id,
         LengthUnit, MapProjection, MapProjectionMethod, MapProjectionParameter, OperationMethod,
         OrdinalDateTimeAxis, OrdinalDateTimeCoordinateSystem, ScaleUnit,
         derived_projected_crs::DerivedProjectedCrs,
@@ -113,7 +113,7 @@ fn test_derived_projected_crs() {
                 }),
             },
             operation_parameter: Some(vec![OperationParameterWrapper::OperationParameter(
-                DerivedCrsConversionParameter {
+                OperationParameter {
                     parameter_name: "Bin grid origin".to_string(),
                     parameter_value: 5000.0,
                     parameter_unit: Unit::SpatialUnit(SpatialUnit::ScaleUnit(ScaleUnit {
