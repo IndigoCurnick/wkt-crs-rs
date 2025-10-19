@@ -197,21 +197,21 @@ fn test_example_1() {
                             SpatialAxis {
                                 axis_name_abbreviation: "(X)".into(),
                                 axis_direction: AxisDirection::GeocentricX,
-                                axis_order: Some(Order(1)),
+                                axis_order: None,
                                 spatial_unit: None,
                                 identifier: None,
                             },
                             SpatialAxis {
                                 axis_name_abbreviation: "(Y)".into(),
                                 axis_direction: AxisDirection::GeocentricY,
-                                axis_order: Some(Order(2)),
+                                axis_order: None,
                                 spatial_unit: None,
                                 identifier: None,
                             },
                             SpatialAxis {
                                 axis_name_abbreviation: "(Z)".into(),
                                 axis_direction: AxisDirection::GeocentricZ,
-                                axis_order: Some(Order(3)),
+                                axis_order: None,
                                 spatial_unit: None,
                                 identifier: None,
                             },
@@ -248,7 +248,7 @@ fn test_example_1() {
                     conversion_factor: 1.0,
                 })),
                 identifier: Some(Id {
-                    authority_name: "EPGS".into(),
+                    authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8605),
                     version: None,
                     authority_citation: None,
@@ -263,7 +263,7 @@ fn test_example_1() {
                     conversion_factor: 1.0,
                 })),
                 identifier: Some(Id {
-                    authority_name: "EPGS".into(),
+                    authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8606),
                     version: None,
                     authority_citation: None,
@@ -278,7 +278,7 @@ fn test_example_1() {
                     conversion_factor: 1.0,
                 })),
                 identifier: Some(Id {
-                    authority_name: "EPGS".into(),
+                    authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8607),
                     version: None,
                     authority_citation: None,
@@ -296,14 +296,17 @@ fn test_example_1() {
     };
 
     let ast = parse_wkt(EXAMPLE1);
-
     assert_eq!(ast.len(), 1);
 
     let acc = CoordinateOperation::from_nodes(&ast).unwrap();
 
     assert_eq!(correct, acc.result);
 }
+
 fn test_example_2() {}
+
 fn test_example_3() {}
+
 fn test_example_4() {}
+
 fn test_example_5() {}

@@ -21,7 +21,6 @@ impl WktBaseType for TimeCrs {
     where
         I: IntoIterator<Item = &'a WktNode>,
     {
-        println!("looking at time");
         let node = match wkt_nodes.into_iter().next() {
             Some(x) => x,
             None => return Err(WktParseError::NotEnoughNodes),
@@ -29,18 +28,16 @@ impl WktBaseType for TimeCrs {
 
         match_keywords(&node.keyword, vec![Keywords::TimeCrs])?;
         lower_bound_arity(node.args.len(), 4)?;
-        println!("Right keywords and arity");
+
         let crs_name = node.args[0].parse()?;
         let temporal_datum = node.args[1].parse()?;
-        println!("now");
+
         let coordinate_system = CoordinateSystem::from_args(&node.args[2..node.args.len()])?;
 
-        println!("tuna");
         let scope_extent_identifier_remark = ScopeExtentIdentifierRemark::from_args(
             &node.args[2 + coordinate_system.consumed..node.args.len()],
         )?;
 
-        println!("apple");
         let res = TimeCrs {
             crs_name,
             temporal_datum,

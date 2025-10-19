@@ -36,10 +36,10 @@ impl WktBaseType for CompoundCrs {
 
         let crs_one = SingleCrs::from_args(&node.args[i..len])?;
         i += crs_one.consumed;
-        println!("Got here");
+
         let crs_two = SingleCrs::from_args(&node.args[i..len])?;
         i += crs_two.consumed;
-        println!("Got here now");
+
         let mut crss = vec![];
 
         loop {

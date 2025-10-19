@@ -93,10 +93,7 @@ impl WktBaseType for CoordinateOperation {
             let op = match node.args.get(i) {
                 Some(a) => match a {
                     WktArg::Node(n) => match OperationParameterWrapper::from_nodes(vec![n]) {
-                        Ok(x) => {
-                            i += 1;
-                            Some(x.result)
-                        }
+                        Ok(x) => Some(x.result),
                         Err(_) => None,
                     },
                     _ => None,
