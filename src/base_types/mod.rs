@@ -11,6 +11,7 @@ mod bearing;
 mod calendar;
 mod citation;
 mod compound_crs;
+mod concatenated_operation;
 mod coordinate_epoch;
 mod coordinate_metadata;
 mod coordinate_operation;
@@ -91,10 +92,12 @@ pub use bearing::Bearing;
 pub use calendar::Calendar;
 pub use citation::Citation;
 pub use compound_crs::CompoundCrs;
+pub use concatenated_operation::ConcatenatedOperation;
 pub use coordinate_epoch::CoordinateEpoch;
 pub use coordinate_metadata::{
     CoordinateMetadata, DynamicCoordinateMetadata, StaticCoordinateMetadata,
 };
+pub use coordinate_operation::CoordinateOperation;
 pub use coordinate_system::{
     CoordinateSystem, OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
     TemporalCountMeasureCoordinateSystem,

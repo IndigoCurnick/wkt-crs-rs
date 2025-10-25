@@ -6,6 +6,7 @@ mod scope_extent_identifier_remark;
 mod single_crs;
 mod spatial_unit;
 mod static_crs_coordinate_metadata;
+mod step;
 mod unit;
 mod vertical_frame_datum;
 
@@ -17,5 +18,6 @@ pub use scope_extent_identifier_remark::ScopeExtentIdentifierRemark;
 pub use single_crs::SingleCrs;
 pub use spatial_unit::SpatialUnit;
 pub use static_crs_coordinate_metadata::StaticCrsCoordinateMetadata;
+pub use step::Step;
 pub use unit::Unit;
 pub use vertical_frame_datum::VerticalFrameDatum;
