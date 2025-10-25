@@ -1,3 +1,4 @@
+mod abridged_coordinate_transformation;
 mod angle_unit;
 mod area_description;
 mod axis;
@@ -8,6 +9,7 @@ mod base_projected_crs;
 mod base_temporal_crs;
 mod base_vertical_crs;
 mod bearing;
+mod bound_crs;
 mod calendar;
 mod citation;
 mod compound_crs;
@@ -76,6 +78,7 @@ mod vertical_datum_ensemble;
 mod vertical_extent;
 mod vertical_reference_frame;
 
+pub use abridged_coordinate_transformation::AbridgedCoordinateTransformation;
 pub use angle_unit::AngleUnit;
 pub use area_description::AreaDescription;
 pub use axis::{Axis, OrdinalDateTimeAxis, SpatialAxis, TemporalCountMeasureAxis};
@@ -89,6 +92,7 @@ pub use base_projected_crs::BaseProjectedCrs;
 pub use base_temporal_crs::BaseTemporalCrs;
 pub use base_vertical_crs::{BaseDynamicVerticalCrs, BaseStaticVerticalCrs, BaseVerticalCrs};
 pub use bearing::Bearing;
+pub use bound_crs::BoundCrs;
 pub use calendar::Calendar;
 pub use citation::Citation;
 pub use compound_crs::CompoundCrs;

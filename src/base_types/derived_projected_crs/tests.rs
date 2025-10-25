@@ -2,8 +2,8 @@ use crate::{
     ast::parse_wkt,
     base_types::{
         AngleUnit, BaseGeodeticCrs, BaseProjectedCrs, BaseStaticGeographicCrs, CoordinateSystem,
-        OperationParameter, DerivingConversion, Ellipsoid, GeodeticReferenceFrame, Id,
-        LengthUnit, MapProjection, MapProjectionMethod, MapProjectionParameter, OperationMethod,
+        DerivingConversion, Ellipsoid, GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
+        MapProjectionMethod, MapProjectionParameter, OperationMethod, OperationParameter,
         OrdinalDateTimeAxis, OrdinalDateTimeCoordinateSystem, ScaleUnit,
         derived_projected_crs::DerivedProjectedCrs,
     },
@@ -116,11 +116,11 @@ fn test_derived_projected_crs() {
                 OperationParameter {
                     parameter_name: "Bin grid origin".to_string(),
                     parameter_value: 5000.0,
-                    parameter_unit: Unit::SpatialUnit(SpatialUnit::ScaleUnit(ScaleUnit {
+                    parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::ScaleUnit(ScaleUnit {
                         unit_name: "Bin".to_string(),
                         conversion_factor: 1.0,
                         identifier: None,
-                    })),
+                    }))),
                     identifier: Some(Id {
                         authority_name: "EPSG".to_string(),
                         authority_unique_identifier: NumText::Int(8733),

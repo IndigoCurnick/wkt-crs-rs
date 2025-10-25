@@ -12,7 +12,7 @@ use crate::{
 pub struct OperationParameter {
     pub parameter_name: String,
     pub parameter_value: f64,
-    pub parameter_unit: Unit,
+    pub parameter_unit: Option<Unit>,
     pub identifier: Option<Id>, // TODO: technically allowed multiple of these
 }
 
@@ -31,8 +31,20 @@ impl WktBaseType for OperationParameter {
 
         let parameter_name = node.args[0].parse()?;
         let parameter_value = node.args[1].parse()?;
-        let parameter_unit = node.args[2].parse()?;
-        let identifier = match node.args.get(3) {
+
+        let mut i = 2;
+        let parameter_unit = match node.args.get(i) {
+            Some(x) => match x.parse() {
+                Ok(x) => {
+                    i += 1;
+                    Some(x)
+                }
+                Err(_) => None,
+            },
+            None => None,
+        };
+
+        let identifier = match node.args.get(i) {
             Some(x) => Some(x.parse()?),
             None => None,
         };

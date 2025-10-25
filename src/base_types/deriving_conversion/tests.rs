@@ -1,8 +1,7 @@
 use crate::{
     ast::parse_wkt,
     base_types::{
-        AngleUnit, OperationParameter, Id, OperationMethod,
-        deriving_conversion::DerivingConversion,
+        AngleUnit, Id, OperationMethod, OperationParameter, deriving_conversion::DerivingConversion,
     },
     compound_types::{SpatialUnit, Unit},
     data_types::NumText,
@@ -41,11 +40,11 @@ fn test_derived_conversion() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "parameter 1 name".to_string(),
                 parameter_value: 0.0,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
                     unit_name: "degree".to_string(),
                     conversion_factor: 0.017,
                     identifier: None,
-                })),
+                }))),
                 identifier: Some(Id {
                     authority_name: "authority".to_string(),
                     authority_unique_identifier: NumText::Int(456),
@@ -57,11 +56,11 @@ fn test_derived_conversion() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "parameter 2 name".to_string(),
                 parameter_value: -123.0,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
                     unit_name: "degree".to_string(),
                     conversion_factor: 0.017,
                     identifier: None,
-                })),
+                }))),
                 identifier: Some(Id {
                     authority_name: "authority".to_string(),
                     authority_unique_identifier: NumText::Int(789),

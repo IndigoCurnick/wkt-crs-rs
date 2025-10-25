@@ -61,8 +61,6 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
         }
     }
 
-    println!("{:?}", tokens);
-
     tokens
 }
 
@@ -72,10 +70,10 @@ fn is_all_upper(s: &str) -> bool {
 
 fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
     let mut nodes = Vec::new();
-    println!("{:?}", tokens);
+
     loop {
         let first = tokens.first();
-        println!("First: {:?}", first);
+
         match first {
             Some(Token::Keyword(_)) => {
                 nodes.push(parse_node(tokens));

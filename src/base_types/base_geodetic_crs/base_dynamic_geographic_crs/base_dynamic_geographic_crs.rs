@@ -57,7 +57,7 @@ impl WktBaseType for BaseDynamicGeographicCrs {
         };
 
         match_keywords(&node.keyword, vec![Keywords::BaseGeogCrs])?;
-        match_arity(node.args.len(), 3, 5);
+        match_arity(node.args.len(), 3, 5)?;
 
         let base_crs_name = node.args[0].parse()?;
         let dynamic_crs = node.args[1].parse()?;

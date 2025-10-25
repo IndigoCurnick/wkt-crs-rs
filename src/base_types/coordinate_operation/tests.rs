@@ -1,5 +1,3 @@
-use std::ops::Rem;
-
 use crate::{
     ast::parse_wkt,
     base_types::{
@@ -337,10 +335,10 @@ fn test_example_1() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "X-axis translation".into(),
                 parameter_value: -146.414,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: Some(Id {
                     authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8605),
@@ -352,10 +350,10 @@ fn test_example_1() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Y-axis translation".into(),
                 parameter_value: 507.337,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: Some(Id {
                     authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8606),
@@ -367,10 +365,10 @@ fn test_example_1() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Z-axis translation".into(),
                 parameter_value: 680.507,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: Some(Id {
                     authority_name: "EPSG".into(),
                     authority_unique_identifier: NumText::Int(8607),
@@ -533,28 +531,28 @@ fn test_example_2() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "X-axis translation".into(),
                 parameter_value: -128.5,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: None,
             }),
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Y-axis translation".into(),
                 parameter_value: -53.0,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: None,
             }),
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Z-axis translation".into(),
                 parameter_value: 153.4,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: None,
             }),
         ]),
@@ -882,19 +880,19 @@ fn test_example_4() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "X-axis translation".into(),
                 parameter_value: 565.2369,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: None,
             }),
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Y-axis translation".into(),
                 parameter_value: 50.0087,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
-                })),
+                }))),
                 identifier: None,
             }),
         ]),
@@ -1057,21 +1055,21 @@ fn test_example_5() {
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Inclination in latitude".into(),
                 parameter_value: -0.010,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
                     unit_name: "arc-second".into(),
                     conversion_factor: 4.84E-06,
                     identifier: None,
-                })),
+                }))),
                 identifier: None,
             }),
             OperationParameterWrapper::OperationParameter(OperationParameter {
                 parameter_name: "Inclination in longitude".into(),
                 parameter_value: 0.002,
-                parameter_unit: Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+                parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
                     unit_name: "arc-second".into(),
                     conversion_factor: 4.84E-06,
                     identifier: None,
-                })),
+                }))),
                 identifier: None,
             }),
         ]),
