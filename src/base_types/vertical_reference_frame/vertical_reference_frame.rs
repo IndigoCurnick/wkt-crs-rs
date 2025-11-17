@@ -30,7 +30,7 @@ impl WktBaseType for VerticalReferenceFrame {
             &node.keyword,
             vec![Keywords::VDatum, Keywords::VRF, Keywords::VerticalDatum],
         )?;
-        match_arity(node.args.len(), 1, 3);
+        match_arity(node.args.len(), 1, 3)?;
 
         let datum_name = node.args[0].parse()?;
 
