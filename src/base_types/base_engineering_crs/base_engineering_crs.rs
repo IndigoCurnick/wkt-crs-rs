@@ -25,7 +25,7 @@ impl WktBaseType for BaseEngineeringCrs {
         };
 
         match_keywords(&node.keyword, vec![Keywords::BaseEngCrs])?;
-        match_arity(node.args.len(), 2, 3);
+        match_arity(node.args.len(), 2, 3)?;
 
         let base_crs_name = node.args[0].parse()?;
         let engineering_datum = node.args[1].parse()?;

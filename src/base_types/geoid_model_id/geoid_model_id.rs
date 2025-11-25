@@ -24,7 +24,7 @@ impl WktBaseType for GeoidModelId {
         };
 
         match_keywords(&node.keyword, vec![Keywords::GeoidModel])?;
-        match_arity(node.args.len(), 1, 2);
+        match_arity(node.args.len(), 1, 2)?;
 
         let geoid_model_name = node.args[0].parse()?;
 
