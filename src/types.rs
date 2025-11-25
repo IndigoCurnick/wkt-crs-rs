@@ -418,9 +418,9 @@ impl WktBaseType for WktCrsTypes {
                 })
             }
             crate::keywords::Keywords::GeodCrs => {
-                let tmp = DerivedGeodeticCrs::from_nodes(iter)?;
+                let tmp = GeodeticCrs::from_nodes(iter)?;
                 Ok(WktBaseTypeResult {
-                    result: Self::DerivedGeodeticCrs(tmp.result),
+                    result: Self::GeodeticCrs(tmp.result),
                     consumed: tmp.consumed,
                 })
             }
