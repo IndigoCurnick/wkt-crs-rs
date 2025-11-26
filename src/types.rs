@@ -1,3 +1,5 @@
+use std::{io::Write, os::linux::raw};
+
 use crate::{
     ast::{WktArg, WktNode},
     base_types::{
@@ -19,6 +21,7 @@ use crate::{
     },
     compound_types::{Step, Unit},
     error::WktParseError,
+    keywords::Keywords,
 };
 
 pub struct WktBaseTypeResult<T: WktBaseType + Sized> {
@@ -49,6 +52,7 @@ where
         I: IntoIterator<Item = &'a WktArg>;
 }
 
+#[derive(Debug, PartialEq)]
 pub enum WktCrsTypes {
     Scope(Scope),
     Extent(Extent),
@@ -134,6 +138,24 @@ pub enum WktCrsTypes {
     Step(Step),
 }
 
+// It is essential this is never inlined - the match is so huge that it can easily
+// overflow the stack!
+#[inline(never)]
+fn process<T, F>(
+    iter: Vec<&WktNode>,
+    wrap: F,
+) -> Result<WktBaseTypeResult<WktCrsTypes>, WktParseError>
+where
+    T: WktBaseType,
+    F: FnOnce(T) -> WktCrsTypes,
+{
+    let tmp = T::from_nodes(iter)?;
+    Ok(WktBaseTypeResult {
+        result: wrap(tmp.result),
+        consumed: tmp.consumed,
+    })
+}
+
 impl WktBaseType for WktCrsTypes {
     fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
     where
@@ -149,235 +171,88 @@ impl WktBaseType for WktCrsTypes {
 
         return match node.keyword {
             crate::keywords::Keywords::AbridgedTransformation => {
-                let tmp = AbridgedCoordinateTransformation::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::AbridgedCoordinateTransformation(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<AbridgedCoordinateTransformation, _>(
+                    iter,
+                    Self::AbridgedCoordinateTransformation,
+                )
             }
-            crate::keywords::Keywords::Anchor => {
-                let tmp = DatumAnchor::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DatumAnchor(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::AngleUnit => {
-                let tmp = AngleUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::AngleUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Anchor => process::<DatumAnchor, _>(iter, Self::DatumAnchor),
+            crate::keywords::Keywords::AngleUnit => process::<AngleUnit, _>(iter, Self::AngleUnit),
             crate::keywords::Keywords::Area => {
-                let tmp = AreaDescription::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::AreaDescription(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<AreaDescription, _>(iter, Self::AreaDescription)
             }
-            crate::keywords::Keywords::Axis => {
-                let tmp = Axis::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Axis(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Axis => process::<Axis, _>(iter, Self::Axis),
             crate::keywords::Keywords::BaseEngCrs => {
-                let tmp = BaseEngineeringCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseEngineeringCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseEngineeringCrs, _>(iter, Self::BaseEngineeringCrs)
             }
             crate::keywords::Keywords::BaseGeodCrs => {
-                let tmp = BaseGeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseGeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseGeodeticCrs, _>(iter, Self::BaseGeodeticCrs)
             }
             crate::keywords::Keywords::BaseGeogCrs => {
-                let tmp = BaseGeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseGeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseGeodeticCrs, _>(iter, Self::BaseGeodeticCrs)
             }
             crate::keywords::Keywords::BaseParamCrs => {
-                let tmp = BaseParametricCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseParametricCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseParametricCrs, _>(iter, Self::BaseParametricCrs)
             }
             crate::keywords::Keywords::BaseProjCrs => {
-                let tmp = BaseProjectedCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseProjectedCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseProjectedCrs, _>(iter, Self::BaseProjectedCrs)
             }
             crate::keywords::Keywords::BaseTimeCrs => {
-                let tmp = BaseTemporalCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseTemporalCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseTemporalCrs, _>(iter, Self::BaseTemporalCrs)
             }
             crate::keywords::Keywords::BaseVertCrs => {
-                let tmp = BaseVerticalCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BaseVerticalCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<BaseVerticalCrs, _>(iter, Self::BaseVerticalCrs)
             }
             crate::keywords::Keywords::BBox => {
-                let tmp = GeographicBoundingBox::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeographicBoundingBox(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeographicBoundingBox, _>(iter, Self::GeographicBoundingBox)
             }
-            crate::keywords::Keywords::Bearing => {
-                let tmp = Bearing::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Bearing(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::BoundCrs => {
-                let tmp = BoundCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::BoundCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Calendar => {
-                let tmp = Calendar::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Calendar(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Citation => {
-                let tmp = Citation::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Citation(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Bearing => process::<Bearing, _>(iter, Self::Bearing),
+            crate::keywords::Keywords::BoundCrs => process::<BoundCrs, _>(iter, Self::BoundCrs),
+            crate::keywords::Keywords::Calendar => process::<Calendar, _>(iter, Self::Calendar),
+            crate::keywords::Keywords::Citation => process::<Citation, _>(iter, Self::Citation),
             crate::keywords::Keywords::CompoundCrs => {
-                let tmp = CompoundCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CompoundCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CompoundCrs, _>(iter, Self::CompoundCrs)
             }
             crate::keywords::Keywords::ConcatenatedOperation => {
-                let tmp = ConcatenatedOperation::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ConcatenatedOperation(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ConcatenatedOperation, _>(iter, Self::ConcatenatedOperation)
             }
             crate::keywords::Keywords::Conversion => {
-                let tmp = MapProjection::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::MapProjection(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<MapProjection, _>(iter, Self::MapProjection)
             }
             crate::keywords::Keywords::CoordEpoch => {
-                let tmp = CoordinateEpoch::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CoordinateEpoch(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CoordinateEpoch, _>(iter, Self::CoordinateEpoch)
             }
             crate::keywords::Keywords::CoordinateMetadata => {
-                let tmp = CoordinateMetadata::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CoordinateMetadata(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CoordinateMetadata, _>(iter, Self::CoordinateMetadata)
             }
             crate::keywords::Keywords::CoordinateOperation => {
-                let tmp = CoordinateOperation::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CoordinateOperation(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CoordinateOperation, _>(iter, Self::CoordinateOperation)
             }
             crate::keywords::Keywords::Cs => {
-                let tmp = CoordinateSystem::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CoordinateSystem(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CoordinateSystem, _>(iter, Self::CoordinateSystem)
             }
             crate::keywords::Keywords::Datum => {
-                let tmp = GeodeticReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeodeticReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeodeticReferenceFrame, _>(iter, Self::GeodeticReferenceFrame)
             }
             crate::keywords::Keywords::DerivedProjCrs => {
-                let tmp = DerivedProjectedCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DerivedProjectedCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DerivedProjectedCrs, _>(iter, Self::DerivedProjectedCrs)
             }
             crate::keywords::Keywords::DerivingConversion => {
-                let tmp = DerivingConversion::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DerivingConversion(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DerivingConversion, _>(iter, Self::DerivingConversion)
             }
-            crate::keywords::Keywords::Dynamic => {
-                let tmp = DynamicCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DynamicCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Dynamic => process::<DynamicCrs, _>(iter, Self::DynamicCrs),
             crate::keywords::Keywords::EDatum => {
-                let tmp = EngineeringDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::EngineeringDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<EngineeringDatum, _>(iter, Self::EngineeringDatum)
             }
-            crate::keywords::Keywords::Ellipsoid => {
-                let tmp = Ellipsoid::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Ellipsoid(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Ellipsoid => process::<Ellipsoid, _>(iter, Self::Ellipsoid),
             crate::keywords::Keywords::EngCrs => {
-                let tmp = EngineeringCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::EngineeringCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<EngineeringCrs, _>(iter, Self::EngineeringCrs)
             }
             crate::keywords::Keywords::EngineeringCrs => {
-                let tmp = EngineeringCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::EngineeringCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<EngineeringCrs, _>(iter, Self::EngineeringCrs)
             }
             crate::keywords::Keywords::EngineeringDatum => {
-                let tmp = EngineeringDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::EngineeringDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<EngineeringDatum, _>(iter, Self::EngineeringDatum)
             }
             crate::keywords::Keywords::Ensemble => {
                 if let Ok(tmp) = GeodeticDatumEnsemble::from_nodes(iter.clone()) {
@@ -397,103 +272,43 @@ impl WktBaseType for WktCrsTypes {
                 return Err(WktParseError::CouldNotDetermineType);
             }
             crate::keywords::Keywords::EnsembleAccuracy => {
-                let tmp = DatumEnsembleAccuracy::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DatumEnsembleAccuracy(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DatumEnsembleAccuracy, _>(iter, Self::DatumEnsembleAccuracy)
             }
             crate::keywords::Keywords::Epoch => {
-                let tmp = CoordinateEpoch::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::CoordinateEpoch(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<CoordinateEpoch, _>(iter, Self::CoordinateEpoch)
             }
             crate::keywords::Keywords::FrameEpoch => {
-                let tmp = FrameEpoch::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::FrameEpoch(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<FrameEpoch, _>(iter, Self::FrameEpoch)
             }
             crate::keywords::Keywords::GeodCrs => {
-                let tmp = GeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeodeticCrs, _>(iter, Self::GeodeticCrs)
             }
             crate::keywords::Keywords::GeodeticCrs => {
-                let tmp = DerivedGeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DerivedGeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeodeticCrs, _>(iter, Self::GeodeticCrs)
             }
             crate::keywords::Keywords::GeodeticDatum => {
-                let tmp = GeodeticReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeodeticReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeodeticReferenceFrame, _>(iter, Self::GeodeticReferenceFrame)
             }
             crate::keywords::Keywords::GeogCrs => {
-                let tmp = DerivedGeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DerivedGeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DerivedGeodeticCrs, _>(iter, Self::DerivedGeodeticCrs)
             }
             crate::keywords::Keywords::GeographicCrs => {
-                let tmp = DerivedGeodeticCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DerivedGeodeticCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DerivedGeodeticCrs, _>(iter, Self::DerivedGeodeticCrs)
             }
             crate::keywords::Keywords::GeoidModel => {
-                let tmp = GeoidModelId::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeoidModel(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeoidModelId, _>(iter, Self::GeoidModel)
             }
-            crate::keywords::Keywords::Id => {
-                let tmp = Id::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Identifier(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Id => process::<Id, _>(iter, Self::Identifier),
             crate::keywords::Keywords::InterpolationCrs => {
-                let tmp = InterpolationCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::InterpolationCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<InterpolationCrs, _>(iter, Self::InterpolationCrs)
             }
             crate::keywords::Keywords::LengthUnit => {
-                let tmp = LengthUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::LengthUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<LengthUnit, _>(iter, Self::LengthUnit)
             }
             crate::keywords::Keywords::Member => {
-                let tmp = DatumEnsembleMember::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DatumEnsembleMember(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DatumEnsembleMember, _>(iter, Self::DatumEnsembleMember)
             }
-            crate::keywords::Keywords::Meridian => {
-                let tmp = Meridian::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Meridian(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Meridian => process::<Meridian, _>(iter, Self::Meridian),
             crate::keywords::Keywords::Method => {
                 if let Ok(tmp) = DerivedCrsConversionMethod::from_nodes(iter.clone()) {
                     return Ok(WktBaseTypeResult {
@@ -519,26 +334,12 @@ impl WktBaseType for WktCrsTypes {
                 return Err(WktParseError::CouldNotDetermineType);
             }
             crate::keywords::Keywords::Model => {
-                let tmp = DeformationModelId::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DeformationModelId(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DeformationModelId, _>(iter, Self::DeformationModelId)
             }
             crate::keywords::Keywords::OperationAccuracy => {
-                let tmp = OperationAccuracy::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::OperationAccuracy(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<OperationAccuracy, _>(iter, Self::OperationAccuracy)
             }
-            crate::keywords::Keywords::Order => {
-                let tmp = Order::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Order(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Order => process::<Order, _>(iter, Self::Order),
             crate::keywords::Keywords::Parameter => {
                 if let Ok(tmp) = MapProjectionParameter::from_nodes(iter.clone()) {
                     return Ok(WktBaseTypeResult {
@@ -557,264 +358,92 @@ impl WktBaseType for WktCrsTypes {
                 return Err(WktParseError::CouldNotDetermineType);
             }
             crate::keywords::Keywords::ParameterFile => {
-                let tmp = OperationParameterFile::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::OperationParameterFile(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<OperationParameterFile, _>(iter, Self::OperationParameterFile)
             }
             crate::keywords::Keywords::ParametricCrs => {
-                let tmp = ParametricCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ParametricCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ParametricCrs, _>(iter, Self::ParametricCrs)
             }
             crate::keywords::Keywords::ParametricDatum => {
-                let tmp = ParametricDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ParametricDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ParametricDatum, _>(iter, Self::ParametricDatum)
             }
             crate::keywords::Keywords::ParametricUnit => {
-                let tmp = ParametricUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ParametricUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ParametricUnit, _>(iter, Self::ParametricUnit)
             }
             crate::keywords::Keywords::PDatum => {
-                let tmp = ParametricDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ParametricDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ParametricDatum, _>(iter, Self::ParametricDatum)
             }
             crate::keywords::Keywords::PointMotionOperation => {
-                let tmp = PointMotionOperation::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::PointMotionOperation(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<PointMotionOperation, _>(iter, Self::PointMotionOperation)
             }
             crate::keywords::Keywords::PrimeM => {
-                let tmp = PrimeMeridian::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::PrimeMeridian(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<PrimeMeridian, _>(iter, Self::PrimeMeridian)
             }
             crate::keywords::Keywords::PrimeMeridian => {
-                let tmp = PrimeMeridian::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::PrimeMeridian(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<PrimeMeridian, _>(iter, Self::PrimeMeridian)
             }
             crate::keywords::Keywords::ProjCrs => {
-                let tmp = ProjectedCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ProjectedCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ProjectedCrs, _>(iter, Self::ProjectedCrs)
             }
             crate::keywords::Keywords::ProjectedCrs => {
-                let tmp = ProjectedCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ProjectedCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<ProjectedCrs, _>(iter, Self::ProjectedCrs)
             }
             crate::keywords::Keywords::Projection => {
-                let tmp = MapProjectionMethod::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::MapProjectionMethod(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<MapProjectionMethod, _>(iter, Self::MapProjectionMethod)
             }
-            crate::keywords::Keywords::Remark => {
-                let tmp = Remark::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Remark(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::ScaleUnit => {
-                let tmp = ScaleUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::ScaleUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Scope => {
-                let tmp = Scope::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Scope(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::SourceCrs => {
-                let tmp = SourceCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::SourceCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Spheroid => {
-                let tmp = Ellipsoid::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Ellipsoid(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Step => {
-                let tmp = Step::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Step(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::TargetCrs => {
-                let tmp = TargetCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TargetCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Remark => process::<Remark, _>(iter, Self::Remark),
+            crate::keywords::Keywords::ScaleUnit => process::<ScaleUnit, _>(iter, Self::ScaleUnit),
+            crate::keywords::Keywords::Scope => process::<Scope, _>(iter, Self::Scope),
+            crate::keywords::Keywords::SourceCrs => process::<SourceCrs, _>(iter, Self::SourceCrs),
+            crate::keywords::Keywords::Spheroid => process::<Ellipsoid, _>(iter, Self::Ellipsoid),
+            crate::keywords::Keywords::Step => process::<Step, _>(iter, Self::Step),
+            crate::keywords::Keywords::TargetCrs => process::<TargetCrs, _>(iter, Self::TargetCrs),
             crate::keywords::Keywords::TDatum => {
-                let tmp = TemporalDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TemporalDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<TemporalDatum, _>(iter, Self::TemporalDatum)
             }
             crate::keywords::Keywords::TRF => {
-                let tmp = GeodeticReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::GeodeticReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<GeodeticReferenceFrame, _>(iter, Self::GeodeticReferenceFrame)
             }
             crate::keywords::Keywords::TemporalQuantity => {
-                let tmp = TimeUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TimeUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<TimeUnit, _>(iter, Self::TimeUnit)
             }
-            crate::keywords::Keywords::TimeCrs => {
-                let tmp = TimeCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TimeCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::TimeCrs => process::<TimeCrs, _>(iter, Self::TimeCrs),
             crate::keywords::Keywords::TimeDatum => {
-                let tmp = TemporalDatum::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TemporalDatum(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<TemporalDatum, _>(iter, Self::TemporalDatum)
             }
             crate::keywords::Keywords::TimeExtent => {
-                let tmp = TemporalExtent::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TemporalExtent(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<TemporalExtent, _>(iter, Self::TemporalExtent)
             }
             crate::keywords::Keywords::TimeOrigin => {
-                let tmp = TimeOrigin::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TimeOrigin(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<TimeOrigin, _>(iter, Self::TimeOrigin)
             }
-            crate::keywords::Keywords::TimeUnit => {
-                let tmp = TimeUnit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::TimeUnit(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::TimeUnit => process::<TimeUnit, _>(iter, Self::TimeUnit),
             crate::keywords::Keywords::Triaxial => todo!(),
-            crate::keywords::Keywords::Unit => {
-                let tmp = Unit::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Unit(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Uri => {
-                let tmp = Uri::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Uri(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
-            crate::keywords::Keywords::Usage => {
-                let tmp = Usage::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::Usage(tmp.result),
-                    consumed: tmp.consumed,
-                })
-            }
+            crate::keywords::Keywords::Unit => process::<Unit, _>(iter, Self::Unit),
+            crate::keywords::Keywords::Uri => process::<Uri, _>(iter, Self::Uri),
+            crate::keywords::Keywords::Usage => process::<Usage, _>(iter, Self::Usage),
             crate::keywords::Keywords::VDatum => {
-                let tmp = VerticalReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalReferenceFrame, _>(iter, Self::VerticalReferenceFrame)
             }
             crate::keywords::Keywords::VelocityGrid => {
-                let tmp = DeformationModelId::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::DeformationModelId(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<DeformationModelId, _>(iter, Self::DeformationModelId)
             }
             crate::keywords::Keywords::Version => {
-                let tmp = OperationVersion::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::OperationVersion(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<OperationVersion, _>(iter, Self::OperationVersion)
             }
             crate::keywords::Keywords::VertCrs => {
-                let tmp = VerticalCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalCrs, _>(iter, Self::VerticalCrs)
             }
             crate::keywords::Keywords::VerticalCrs => {
-                let tmp = VerticalCrs::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalCrs(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalCrs, _>(iter, Self::VerticalCrs)
             }
             crate::keywords::Keywords::VerticalDatum => {
-                let tmp = VerticalReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalReferenceFrame, _>(iter, Self::VerticalReferenceFrame)
             }
             crate::keywords::Keywords::VerticalExtent => {
-                let tmp = VerticalExtent::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalExtent(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalExtent, _>(iter, Self::VerticalExtent)
             }
             crate::keywords::Keywords::VRF => {
-                let tmp = VerticalReferenceFrame::from_nodes(iter)?;
-                Ok(WktBaseTypeResult {
-                    result: Self::VerticalReferenceFrame(tmp.result),
-                    consumed: tmp.consumed,
-                })
+                process::<VerticalReferenceFrame, _>(iter, Self::VerticalReferenceFrame)
             }
         };
     }

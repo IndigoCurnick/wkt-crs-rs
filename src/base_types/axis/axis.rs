@@ -8,6 +8,7 @@ use crate::{
     types::{WktBaseType, WktBaseTypeResult},
 };
 
+#[derive(Debug, PartialEq)]
 pub enum Axis {
     OrdinalDateTimeAxis(OrdinalDateTimeAxis),
     SpatialAxis(SpatialAxis),
