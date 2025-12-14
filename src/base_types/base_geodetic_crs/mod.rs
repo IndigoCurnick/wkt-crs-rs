@@ -3,6 +3,9 @@ mod base_dynamic_geographic_crs;
 mod base_static_geodetic_crs;
 mod base_static_geographic_crs;
 
+#[cfg(test)]
+mod tests;
+
 use crate::{
     ast::{WktArg, WktNode},
     error::WktParseError,

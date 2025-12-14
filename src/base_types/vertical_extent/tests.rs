@@ -7,8 +7,11 @@ const EXAMPLE2: &str = "VERTICALEXTENT[-1000,0]";
 
 #[test]
 fn test_vertical_extent() {
-    // Example 1
+    test_example_1();
+    test_example_2();
+}
 
+fn test_example_1() {
     let correct = VerticalExtent {
         minimum_height: -1000.0,
         maximum_height: 0.0,
@@ -26,9 +29,9 @@ fn test_vertical_extent() {
 
     assert_eq!(vert.result, correct);
     assert_eq!(vert.consumed, 1);
+}
 
-    // Example 1
-
+fn test_example_2() {
     let correct = VerticalExtent {
         minimum_height: -1000.0,
         maximum_height: 0.0,

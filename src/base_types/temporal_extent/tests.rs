@@ -10,8 +10,11 @@ const EXAMPLE2: &str = r#"TIMEEXTENT["Jurassic","Quaternary"]"#;
 
 #[test]
 fn test_time_extent() {
-    // Example 1
+    test_example_1();
+    test_example_2();
+}
 
+fn test_example_1() {
     let correct = TemporalExtent {
         from: DateOrString::Date(Temporal::CalendarDay(
             Date::from_calendar_date(2013, Month::January, 1).unwrap(),
@@ -26,9 +29,9 @@ fn test_time_extent() {
 
     assert_eq!(time.result, correct);
     assert_eq!(time.consumed, 1);
+}
 
-    // Example 2
-
+fn test_example_2() {
     let correct = TemporalExtent {
         from: DateOrString::String("Jurassic".to_string()),
         to: DateOrString::String("Quaternary".to_string()),

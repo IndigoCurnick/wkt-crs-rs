@@ -84,7 +84,9 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
             None => {
                 break;
             }
-            _ => panic!("Unexpected token"),
+            Some(Token::Data(d)) => panic!("Unexpected token: `{}`", d),
+            Some(Token::LDelimiter) => panic!("Unexpected token: `[`"),
+            Some(Token::RDelimiter) => panic!("Unexpected token: `]`"),
         }
     }
 

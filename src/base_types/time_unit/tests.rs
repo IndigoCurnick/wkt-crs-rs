@@ -9,7 +9,13 @@ const EXAMPLE4: &str = r#"TIMEUNIT["day",86400.0]"#;
 
 #[test]
 fn test_time_unit() {
-    // Example 1
+    test_example_1();
+    test_example_2();
+    test_example_3();
+    test_example_4();
+}
+
+fn test_example_1() {
     let correct = TimeUnit {
         unit_name: "millisecond".to_string(),
         conversion_factor: Some(0.001),
@@ -21,8 +27,9 @@ fn test_time_unit() {
     let time = TimeUnit::from_nodes(&ast).unwrap();
 
     assert_eq!(time.result, correct);
+}
 
-    // Example 2
+fn test_example_2() {
     let correct = TimeUnit {
         unit_name: "calendar month".to_string(),
         conversion_factor: None,
@@ -34,8 +41,9 @@ fn test_time_unit() {
     let time = TimeUnit::from_nodes(&ast).unwrap();
 
     assert_eq!(time.result, correct);
+}
 
-    // Example 3
+fn test_example_3() {
     let correct = TimeUnit {
         unit_name: "calendar second".to_string(),
         conversion_factor: None,
@@ -47,8 +55,9 @@ fn test_time_unit() {
     let time = TimeUnit::from_nodes(&ast).unwrap();
 
     assert_eq!(time.result, correct);
+}
 
-    // Example 4
+fn test_example_4() {
     let correct = TimeUnit {
         unit_name: "day".to_string(),
         conversion_factor: Some(86400.0),

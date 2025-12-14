@@ -16,21 +16,18 @@ use crate::{
     types::WktBaseType,
 };
 
-// TODO: Uppercase on `temporalDateTime`
 const EXAMPLE1: &str = r#"TIMECRS["DateTime",
     TDATUM["Gregorian Calendar"],
-    CS[temporalDateTime,1],AXIS["Time (T)",future]
+    CS[TemporalDateTime,1],AXIS["Time (T)",future]
 ]
 "#;
 
-// TODO: Uppercase on `temporalCount`
 const EXAMPLE2: &str = r#"TIMECRS["GPS milliseconds",
     TDATUM["GPS time origin",TIMEORIGIN[1980-01-01T00:00:00.0Z]],
     CS[temporalCount,1],AXIS["(T)",future,TIMEUNIT["millisecond (ms)",0.001]]
 ]
 "#;
 
-// TODO: Uppercase on `temporalCount`
 const EXAMPLE3: &str = r#"TIMECRS["Calendar hours from 1979-12-29",
     TDATUM["29 December 1979",TIMEORIGIN[1979-12-29T00Z]],
     CS[temporalCount,1],AXIS["Time",future,TIMEUNIT["hour"]]

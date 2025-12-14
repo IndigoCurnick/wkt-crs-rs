@@ -1,6 +1,6 @@
-mod abtridged_coordinate_transformation;
+mod abridged_coordinate_transformation;
 
 #[cfg(test)]
 mod tests;
 
-pub use abtridged_coordinate_transformation::AbridgedCoordinateTransformation;
+pub use abridged_coordinate_transformation::AbridgedCoordinateTransformation;
