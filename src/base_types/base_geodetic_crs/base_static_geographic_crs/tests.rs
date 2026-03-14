@@ -30,6 +30,7 @@ fn test_base_static_geographic_crs() {
                 length_unit: Some(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 }),
             },
             anchor: None,

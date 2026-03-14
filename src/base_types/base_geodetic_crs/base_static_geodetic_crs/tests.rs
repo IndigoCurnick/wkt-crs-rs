@@ -37,6 +37,7 @@ fn test_base_static_geodetic_crs() {
                 length_unit: Some(LengthUnit {
                     unit_name: "metre".to_string(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 }),
             },
             anchor: None,

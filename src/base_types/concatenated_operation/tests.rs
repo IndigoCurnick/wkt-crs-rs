@@ -75,6 +75,7 @@ fn test_concatenated_operation() {
                             length_unit: Some(LengthUnit {
                                 unit_name: "metre".into(),
                                 conversion_factor: 1.0,
+                                identifier: None,
                             }),
                         },
                         anchor: None,
@@ -111,6 +112,7 @@ fn test_concatenated_operation() {
                         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                             unit_name: "metre".into(),
                             conversion_factor: 1.0,
+                            identifier: None,
                         }))),
                     }),
                     scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
@@ -134,6 +136,7 @@ fn test_concatenated_operation() {
                             length_unit: Some(LengthUnit {
                                 unit_name: "metre".into(),
                                 conversion_factor: 1.0,
+                                identifier: None,
                             }),
                         },
                         anchor: None,
@@ -170,6 +173,7 @@ fn test_concatenated_operation() {
                         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                             unit_name: "metre".into(),
                             conversion_factor: 1.0,
+                            identifier: None,
                         }))),
                     }),
                     scope_extent_identifier_remark: ScopeExtentIdentifierRemark {

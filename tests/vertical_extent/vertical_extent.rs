@@ -20,6 +20,7 @@ fn test_example_1() {
         length_unit: Some(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }),
     };
 

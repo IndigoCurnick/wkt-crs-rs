@@ -129,6 +129,7 @@ fn test_example_1() {
             cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                 unit_name: "metre".into(),
                 conversion_factor: 1.0,
+                identifier: None,
             }))),
         }),
         scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
@@ -188,6 +189,7 @@ fn test_example_2() {
                     length_unit: Some(LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     }),
                 },
                 anchor: None,
@@ -228,6 +230,7 @@ fn test_example_2() {
                         spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                             unit_name: "metre".into(),
                             conversion_factor: 1.0,
+                            identifier: None,
                         })),
                         identifier: None,
                     },
@@ -261,6 +264,7 @@ fn test_example_3() {
                     length_unit: Some(LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     }),
                 },
                 anchor: None,

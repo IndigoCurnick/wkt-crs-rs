@@ -57,6 +57,7 @@ fn test_derived_projected_crs() {
                         length_unit: Some(LengthUnit {
                             unit_name: "US survey foot".to_string(),
                             conversion_factor: 0.304,
+                            identifier: None,
                         }),
                     },
                     anchor: None,

@@ -214,6 +214,7 @@ fn test_example_2() {
                     LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     },
                 )),
                 identifier: Some(Id {
@@ -231,6 +232,7 @@ fn test_example_2() {
                     LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     },
                 )),
                 identifier: Some(Id {
@@ -303,6 +305,7 @@ fn test_example_3() {
                     LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     },
                 )),
                 identifier: None,
@@ -314,6 +317,7 @@ fn test_example_3() {
                     LengthUnit {
                         unit_name: "metre".into(),
                         conversion_factor: 1.0,
+                        identifier: None,
                     },
                 )),
                 identifier: None,

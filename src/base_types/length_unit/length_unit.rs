@@ -5,6 +5,7 @@ use log::warn;
 use crate::{
     arity::match_arity,
     ast::{Parse, WktNode},
+    base_types::Id,
     error::WktParseError,
     keywords::{Keywords, match_keywords},
     types::{WktBaseType, WktBaseTypeResult},
@@ -15,6 +16,7 @@ use crate::{
 pub struct LengthUnit {
     pub unit_name: String,
     pub conversion_factor: f64,
+    pub identifier: Option<Id>,
 }
 
 impl WktBaseType for LengthUnit {
@@ -37,9 +39,15 @@ impl WktBaseType for LengthUnit {
         let unit_name = node.args[0].parse()?;
         let conversion_factor = node.args[1].parse()?;
 
+        let id = match node.args.get(2) {
+            Some(x) => Some(x.parse()?),
+            None => None,
+        };
+
         let lu = LengthUnit {
             unit_name,
             conversion_factor,
+            identifier: id,
         };
 
         Ok(WktBaseTypeResult {

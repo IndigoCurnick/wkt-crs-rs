@@ -44,6 +44,7 @@ fn test_coordinate_metadata() {
                         length_unit: Some(LengthUnit {
                             unit_name: "metre".into(),
                             conversion_factor: 1.0,
+                            identifier: None,
                         }),
                     },
                     anchor: None,
@@ -84,6 +85,7 @@ fn test_coordinate_metadata() {
                             spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                                 unit_name: "metre".into(),
                                 conversion_factor: 1.0,
+                                identifier: None,
                             })),
                             identifier: None,
                         },

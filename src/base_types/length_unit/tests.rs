@@ -9,6 +9,7 @@ fn test_parse_length_unit() {
     let correct = LengthUnit {
         unit_name: "metre".to_string(),
         conversion_factor: 1.0,
+        identifier: None,
     };
 
     let ast = parse_wkt(EXAMPLE1);
@@ -25,6 +26,7 @@ fn test_parse_length_unit() {
     let correct = LengthUnit {
         unit_name: "German legal metre".to_string(),
         conversion_factor: 1.0000135965,
+        identifier: None,
     };
 
     let ast = parse_wkt(EXAMPLE2);

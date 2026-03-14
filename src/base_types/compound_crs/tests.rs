@@ -99,6 +99,7 @@ fn test_example_1() {
                         length_unit: Some(LengthUnit {
                             conversion_factor: 1.0,
                             unit_name: "metre".into(),
+                            identifier: None,
                         }),
                     },
                     anchor: None,
@@ -166,6 +167,7 @@ fn test_example_1() {
                 cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".into(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 }))),
             }),
             geoid_model_id: None,
@@ -211,6 +213,7 @@ fn test_example_2() {
                         length_unit: Some(LengthUnit {
                             unit_name: "metre".into(),
                             conversion_factor: 1.0,
+                            identifier: None,
                         }),
                     },
                     anchor: None,

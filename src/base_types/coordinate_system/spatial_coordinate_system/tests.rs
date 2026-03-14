@@ -45,6 +45,7 @@ fn test_spatial_coordinate_system() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".into(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
     let ast = parse_wkt(EXAMPLE1);

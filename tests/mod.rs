@@ -8,6 +8,7 @@ mod coordinate_system;
 mod datum_ensemble_accuracy;
 mod datum_ensemble_member;
 mod ellipsoid;
+mod epsg_examples;
 mod extent;
 mod geographic_bounding_box;
 mod identifier;

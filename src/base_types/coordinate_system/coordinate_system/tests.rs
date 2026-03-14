@@ -199,6 +199,7 @@ fn test_example_2() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -241,6 +242,7 @@ fn test_example_3() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -266,6 +268,7 @@ fn test_example_4() {
                 spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "kilometre".to_string(),
                     conversion_factor: 1000.0,
+                    identifier: None,
                 })),
             },
             SpatialAxis {
@@ -338,6 +341,7 @@ fn test_example_5() {
                 spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".to_string(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 })),
             },
         ],
@@ -402,6 +406,7 @@ fn test_example_7() {
                 spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".to_string(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 })),
             },
             SpatialAxis {
@@ -412,6 +417,7 @@ fn test_example_7() {
                 spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".to_string(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 })),
             },
         ],
@@ -450,6 +456,7 @@ fn test_example_8() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -485,6 +492,7 @@ fn test_example_9() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "German legal metre".to_string(),
             conversion_factor: 1.0000135965,
+            identifier: None,
         }))),
     });
 
@@ -534,6 +542,7 @@ fn test_example_10() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -576,6 +585,7 @@ fn test_example_11() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -602,6 +612,7 @@ fn test_example_12() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -626,6 +637,7 @@ fn test_example_13() {
             spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                 unit_name: "metre".to_string(),
                 conversion_factor: 1.0,
+                identifier: None,
             })),
         }],
         cs_unit: None,
@@ -663,6 +675,7 @@ fn test_example_14() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 
@@ -688,6 +701,7 @@ fn test_example_15() {
                 spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
                     unit_name: "metre".to_string(),
                     conversion_factor: 1.0,
+                    identifier: None,
                 })),
             },
             SpatialAxis {
@@ -744,6 +758,7 @@ fn test_example_16() {
         cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
             unit_name: "metre".to_string(),
             conversion_factor: 1.0,
+            identifier: None,
         }))),
     });
 

@@ -38,6 +38,7 @@ fn test_geodetic_ensemble() {
             length_unit: Some(LengthUnit {
                 unit_name: "metre".into(),
                 conversion_factor: 1.0,
+                identifier: None,
             }),
         },
         datum_ensemble_accuracy: DatumEnsembleAccuracy(2.0),

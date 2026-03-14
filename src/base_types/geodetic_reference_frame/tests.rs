@@ -37,6 +37,7 @@ fn test_datum() {
             length_unit: Some(LengthUnit {
                 unit_name: "metre".into(),
                 conversion_factor: 1.0,
+                identifier: None,
             }),
         },
         anchor: None,
@@ -63,6 +64,7 @@ fn test_datum() {
             length_unit: Some(LengthUnit {
                 unit_name: "metre".into(),
                 conversion_factor: 1.0,
+                identifier: None,
             }),
         },
         anchor: None,
@@ -94,6 +96,7 @@ fn test_datum() {
             length_unit: Some(LengthUnit {
                 unit_name: "metre".into(),
                 conversion_factor: 1.0,
+                identifier: None,
             }),
         },
         anchor: Some(DatumAnchor(

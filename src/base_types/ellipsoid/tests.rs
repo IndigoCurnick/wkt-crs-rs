@@ -20,6 +20,7 @@ fn test_ellipsoid() {
         length_unit: Some(LengthUnit {
             conversion_factor: 1.0,
             unit_name: "metre".to_string(),
+            identifier: None,
         }),
     };
 
@@ -52,6 +53,7 @@ fn test_ellipsoid() {
         length_unit: Some(LengthUnit {
             conversion_factor: 0.304800609601219,
             unit_name: "US survey foot".to_string(),
+            identifier: None,
         }),
     };
 
@@ -70,6 +72,7 @@ fn test_ellipsoid() {
         length_unit: Some(LengthUnit {
             conversion_factor: 1.0,
             unit_name: "metre".to_string(),
+            identifier: None,
         }),
     };
 

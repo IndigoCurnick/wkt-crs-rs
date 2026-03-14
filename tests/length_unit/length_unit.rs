@@ -14,6 +14,7 @@ fn test_example_1() {
     let correct = vec![WktCrsTypes::LengthUnit(LengthUnit {
         unit_name: "metre".to_string(),
         conversion_factor: 1.0,
+        identifier: None,
     })];
 
     let ast = parse_wkt_crs(EXAMPLE1).unwrap();
@@ -27,6 +28,7 @@ fn test_example_2() {
     let correct = vec![WktCrsTypes::LengthUnit(LengthUnit {
         unit_name: "German legal metre".to_string(),
         conversion_factor: 1.0000135965,
+        identifier: None,
     })];
 
     let ast = parse_wkt_crs(EXAMPLE2).unwrap();
