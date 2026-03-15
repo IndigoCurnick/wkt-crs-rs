@@ -4,13 +4,11 @@ use crate::{
 		AngleUnit, Axis, BaseGeodeticCrs, BaseProjectedCrs,
 		BaseStaticGeographicCrs, CoordinateSystem, DerivingConversion,
 		Ellipsoid, GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-		MapProjectionMethod, MapProjectionParameter, OperationMethod,
-		OperationParameter, OrdinalDateTimeCoordinateSystem, ScaleUnit,
-		derived_projected_crs::DerivedProjectedCrs,
+		MapProjectionMethod, OperationMethod, OrdinalDateTimeCoordinateSystem,
+		Parameter, ScaleUnit, derived_projected_crs::DerivedProjectedCrs,
 	},
 	compound_types::{
-		GeodeticData, MapProjectionParameterUnit, ScopeExtentIdentifierRemark,
-		SpatialUnit, Unit,
+		GeodeticData, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
 	},
 	data_types::NumText,
 	enumerations::{
@@ -89,16 +87,16 @@ fn test_derived_projected_crs() {
 						id_uri: None,
 					}),
 				},
-				map_projection_parameters: Some(vec![MapProjectionParameter {
+				map_projection_parameters: Some(vec![Parameter {
 					parameter_name: "Latitude of false origin".to_string(),
 					parameter_value: 27.83,
-					map_projection_parameter_unit: Some(
-						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+					parameter_unit: Some(Unit::SpatialUnit(
+						SpatialUnit::AngleUnit(AngleUnit {
 							unit_name: "degree".to_string(),
 							conversion_factor: 0.017,
 							identifier: None,
 						}),
-					),
+					)),
 					identifier: Some(Id {
 						authority_name: "EPSG".to_string(),
 						authority_unique_identifier: NumText::Int(8821),
@@ -124,26 +122,24 @@ fn test_derived_projected_crs() {
 				}),
 			},
 			operation_parameter: Some(vec![
-				OperationParameterWrapper::OperationParameter(
-					OperationParameter {
-						parameter_name: "Bin grid origin".to_string(),
-						parameter_value: 5000.0,
-						parameter_unit: Some(Unit::SpatialUnit(
-							SpatialUnit::ScaleUnit(ScaleUnit {
-								unit_name: "Bin".to_string(),
-								conversion_factor: 1.0,
-								identifier: None,
-							}),
-						)),
-						identifier: Some(Id {
-							authority_name: "EPSG".to_string(),
-							authority_unique_identifier: NumText::Int(8733),
-							version: None,
-							authority_citation: None,
-							id_uri: None,
+				OperationParameterWrapper::OperationParameter(Parameter {
+					parameter_name: "Bin grid origin".to_string(),
+					parameter_value: 5000.0,
+					parameter_unit: Some(Unit::SpatialUnit(
+						SpatialUnit::ScaleUnit(ScaleUnit {
+							unit_name: "Bin".to_string(),
+							conversion_factor: 1.0,
+							identifier: None,
 						}),
-					},
-				),
+					)),
+					identifier: Some(Id {
+						authority_name: "EPSG".to_string(),
+						authority_unique_identifier: NumText::Int(8733),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				}),
 			]),
 			identifier: None,
 		},

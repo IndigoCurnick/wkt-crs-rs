@@ -1,10 +1,9 @@
 use crate::{
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, Id, LengthUnit, MapProjectionMethod, MapProjectionParameter,
-		ScaleUnit,
+		AngleUnit, Id, LengthUnit, MapProjectionMethod, Parameter, ScaleUnit,
 	},
-	compound_types::MapProjectionParameterUnit,
+	compound_types::{SpatialUnit, Unit},
 	data_types::NumText,
 	types::WktBaseType,
 };
@@ -75,11 +74,11 @@ fn test_example_1() {
 			}),
 		},
 		map_projection_parameters: Some(vec![
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Latitude of natural origin".to_string(),
 				parameter_value: 0.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.0174532925199433,
 						identifier: Some(Id {
@@ -90,7 +89,7 @@ fn test_example_1() {
 							id_uri: None,
 						}),
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8801),
@@ -99,11 +98,11 @@ fn test_example_1() {
 					id_uri: None,
 				}),
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Longitude of natural origin".to_string(),
 				parameter_value: 74.516666666667,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.0174532925199433,
 						identifier: Some(Id {
@@ -114,7 +113,7 @@ fn test_example_1() {
 							id_uri: None,
 						}),
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8802),
@@ -154,16 +153,16 @@ fn test_example_2() {
 			}),
 		},
 		map_projection_parameters: Some(vec![
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Latitude of natural origin".to_string(),
 				parameter_value: 0.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.017,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8801),
@@ -172,16 +171,16 @@ fn test_example_2() {
 					id_uri: None,
 				}),
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Longitude of natural origin".to_string(),
 				parameter_value: -123.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.017,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8802),
@@ -190,16 +189,16 @@ fn test_example_2() {
 					id_uri: None,
 				}),
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Scale factor at natural origin".to_string(),
 				parameter_value: 0.9996,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::ScaleUnit(ScaleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::ScaleUnit(ScaleUnit {
 						unit_name: "unity".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8805),
@@ -208,16 +207,16 @@ fn test_example_2() {
 					id_uri: None,
 				}),
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "False easting".to_string(),
 				parameter_value: 500000.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::LengthUnit(LengthUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::LengthUnit(LengthUnit {
 						unit_name: "metre".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8806),
@@ -226,16 +225,16 @@ fn test_example_2() {
 					id_uri: None,
 				}),
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "False northing".to_string(),
 				parameter_value: 0.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::LengthUnit(LengthUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::LengthUnit(LengthUnit {
 						unit_name: "metre".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(8807),
@@ -263,64 +262,64 @@ fn test_example_3() {
 			identifier: None,
 		},
 		map_projection_parameters: Some(vec![
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Latitude of natural origin".to_string(),
 				parameter_value: 0.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.017,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: None,
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Longitude of natural origin".to_string(),
 				parameter_value: -123.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::AngleUnit(AngleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::AngleUnit(AngleUnit {
 						unit_name: "degree".to_string(),
 						conversion_factor: 0.017,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: None,
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "Scale factor at natural origin".to_string(),
 				parameter_value: 0.9996,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::ScaleUnit(ScaleUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::ScaleUnit(ScaleUnit {
 						unit_name: "unity".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: None,
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "False easting".to_string(),
 				parameter_value: 500000.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::LengthUnit(LengthUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::LengthUnit(LengthUnit {
 						unit_name: "metre".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: None,
 			},
-			MapProjectionParameter {
+			Parameter {
 				parameter_name: "False northing".to_string(),
 				parameter_value: 0.0,
-				map_projection_parameter_unit: Some(
-					MapProjectionParameterUnit::LengthUnit(LengthUnit {
+				parameter_unit: Some(Unit::SpatialUnit(
+					SpatialUnit::LengthUnit(LengthUnit {
 						unit_name: "metre".into(),
 						conversion_factor: 1.0,
 						identifier: None,
 					}),
-				),
+				)),
 				identifier: None,
 			},
 		]),

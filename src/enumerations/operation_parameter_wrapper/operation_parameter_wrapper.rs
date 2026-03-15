@@ -1,5 +1,5 @@
 use crate::{
-	base_types::{OperationParameter, OperationParameterFile},
+	base_types::{Parameter, OperationParameterFile},
 	error::WktParseError,
 	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult},
@@ -7,7 +7,7 @@ use crate::{
 
 #[derive(Debug, PartialEq)]
 pub enum OperationParameterWrapper {
-	OperationParameter(OperationParameter),
+	OperationParameter(Parameter),
 	OperationParameterFile(OperationParameterFile),
 }
 
@@ -29,7 +29,7 @@ impl WktBaseType for OperationParameterWrapper {
 		return match node.keyword {
 			Keywords::Parameter => Ok(WktBaseTypeResult {
 				result: Self::OperationParameter(
-					OperationParameter::from_nodes(vec![node])?.result,
+					Parameter::from_nodes(vec![node])?.result,
 				),
 				consumed: 1,
 			}),

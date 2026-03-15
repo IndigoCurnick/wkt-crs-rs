@@ -2,7 +2,7 @@ use wkt_crs_rs::{
 	WktCrsTypes,
 	base_types::{
 		AbridgedCoordinateTransformation, Id, OperationMethod,
-		OperationParameter,
+		Parameter,
 	},
 	compound_types::ScopeExtentIdentifierRemark,
 	data_types::NumText,
@@ -34,19 +34,19 @@ fn test_abridged_transformation() {
 			}),
 		},
 		operation_parameter_wrapper: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "X-axis translation".to_string(),
 				parameter_value: -146.414,
 				parameter_unit: None,
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Y-axis translation".to_string(),
 				parameter_value: 507.337,
 				parameter_unit: None,
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Z-axis translation".to_string(),
 				parameter_value: 680.507,
 				parameter_unit: None,

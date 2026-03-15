@@ -4,7 +4,7 @@ use crate::{
 		AngleUnit, AreaDescription, Axis, Citation, CoordinateSystem,
 		Ellipsoid, Extent, GeodeticCrs, GeodeticReferenceFrame,
 		GeographicBoundingBox, Id, InterpolationCrs, LengthUnit,
-		OperationAccuracy, OperationMethod, OperationParameter,
+		OperationAccuracy, OperationMethod, Parameter,
 		OperationParameterFile, OperationVersion, Order, Remark, Scope,
 		SourceCrs, SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs, Uri,
 		Usage, coordinate_operation::coordinate_operation::CoordinateOperation,
@@ -364,7 +364,7 @@ fn test_example_1() {
 			}),
 		},
 		operation_parameter_wrapper: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "X-axis translation".into(),
 				parameter_value: -146.414,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -382,7 +382,7 @@ fn test_example_1() {
 					id_uri: None,
 				}),
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Y-axis translation".into(),
 				parameter_value: 507.337,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -400,7 +400,7 @@ fn test_example_1() {
 					id_uri: None,
 				}),
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Z-axis translation".into(),
 				parameter_value: 680.507,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -598,7 +598,7 @@ fn test_example_2() {
 			}),
 		},
 		operation_parameter_wrapper: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "X-axis translation".into(),
 				parameter_value: -128.5,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -610,7 +610,7 @@ fn test_example_2() {
 				)),
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Y-axis translation".into(),
 				parameter_value: -53.0,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -622,7 +622,7 @@ fn test_example_2() {
 				)),
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Z-axis translation".into(),
 				parameter_value: 153.4,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -1022,7 +1022,7 @@ fn test_example_4() {
 			identifier: None,
 		},
 		operation_parameter_wrapper: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "X-axis translation".into(),
 				parameter_value: 565.2369,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -1034,7 +1034,7 @@ fn test_example_4() {
 				)),
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Y-axis translation".into(),
 				parameter_value: 50.0087,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -1232,7 +1232,7 @@ fn test_example_5() {
 			}),
 		},
 		operation_parameter_wrapper: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Inclination in latitude".into(),
 				parameter_value: -0.010,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -1244,7 +1244,7 @@ fn test_example_5() {
 				)),
 				identifier: None,
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "Inclination in longitude".into(),
 				parameter_value: 0.002,
 				parameter_unit: Some(Unit::SpatialUnit(

@@ -4,13 +4,13 @@ use crate::{
 		AngleUnit, AreaDescription, Axis, ConcatenatedOperation,
 		CoordinateSystem, Ellipsoid, Extent, GeodeticCrs,
 		GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-		MapProjectionMethod, MapProjectionParameter, OperationAccuracy, Order,
-		Scope, SourceCrs, SpatialCoordinateSystem, StaticGeodeticCrs,
-		TargetCrs, Usage,
+		MapProjectionMethod, OperationAccuracy, Order, Parameter, Scope,
+		SourceCrs, SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs,
+		Usage,
 	},
 	compound_types::{
-		CoordinateReferenceSystem, GeodeticData, MapProjectionParameterUnit,
-		ScopeExtentIdentifierRemark, SingleCrs, SpatialUnit, Step, Unit,
+		CoordinateReferenceSystem, GeodeticData, ScopeExtentIdentifierRemark,
+		SingleCrs, SpatialUnit, Step, Unit,
 	},
 	data_types::NumText,
 	enumerations::{AxisDirection, Dimension, SpatialCsType},
@@ -224,11 +224,11 @@ fn test_concatenated_operation() {
 				}),
 			},
 			map_projection_parameters: Some(vec![
-				MapProjectionParameter {
+				Parameter {
 					parameter_name: "Latitude of natural origin".to_string(),
 					parameter_value: 0.0,
-					map_projection_parameter_unit: Some(
-						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+					parameter_unit: Some(Unit::SpatialUnit(
+						SpatialUnit::AngleUnit(AngleUnit {
 							unit_name: "degree".to_string(),
 							conversion_factor: 0.0174532925199433,
 							identifier: Some(Id {
@@ -239,7 +239,7 @@ fn test_concatenated_operation() {
 								id_uri: None,
 							}),
 						}),
-					),
+					)),
 					identifier: Some(Id {
 						authority_name: "EPSG".to_string(),
 						authority_unique_identifier: NumText::Int(8801),
@@ -248,11 +248,11 @@ fn test_concatenated_operation() {
 						id_uri: None,
 					}),
 				},
-				MapProjectionParameter {
+				Parameter {
 					parameter_name: "Longitude of natural origin".to_string(),
 					parameter_value: 74.516666666667,
-					map_projection_parameter_unit: Some(
-						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+					parameter_unit: Some(Unit::SpatialUnit(
+						SpatialUnit::AngleUnit(AngleUnit {
 							unit_name: "degree".to_string(),
 							conversion_factor: 0.0174532925199433,
 							identifier: Some(Id {
@@ -263,7 +263,7 @@ fn test_concatenated_operation() {
 								id_uri: None,
 							}),
 						}),
-					),
+					)),
 					identifier: Some(Id {
 						authority_name: "EPSG".to_string(),
 						authority_unique_identifier: NumText::Int(8802),

@@ -9,14 +9,14 @@ use crate::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct OperationParameter {
+pub struct Parameter {
 	pub parameter_name: String,
 	pub parameter_value: f64,
 	pub parameter_unit: Option<Unit>,
 	pub identifier: Option<Id>, // TODO: technically allowed multiple of these
 }
 
-impl WktBaseType for OperationParameter {
+impl WktBaseType for Parameter {
 	fn from_nodes<'a, I>(
 		wkt_nodes: I,
 	) -> Result<WktBaseTypeResult<Self>, WktParseError>
@@ -51,7 +51,7 @@ impl WktBaseType for OperationParameter {
 			None => None,
 		};
 
-		let datum = OperationParameter {
+		let datum = Parameter {
 			parameter_name,
 			parameter_value,
 			parameter_unit,

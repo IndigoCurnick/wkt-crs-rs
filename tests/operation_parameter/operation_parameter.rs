@@ -1,6 +1,6 @@
 use wkt_crs_rs::{
 	WktCrsTypes,
-	base_types::{AngleUnit, OperationParameter},
+	base_types::{AngleUnit, Parameter},
 	compound_types::{SpatialUnit, Unit},
 	parse_wkt_crs,
 };
@@ -10,7 +10,7 @@ const EXAMPLE: &str = r#"PARAMETER["Latitude of rotated pole",52.0,
 
 #[test]
 fn test_operation_parameter() {
-	let correct = OperationParameter {
+	let correct = Parameter {
 		parameter_name: "Latitude of rotated pole".into(),
 		parameter_value: 52.0,
 		parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(

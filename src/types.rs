@@ -14,14 +14,13 @@ use crate::{
 		EngineeringDatum, Extent, FrameEpoch, GeodeticCrs,
 		GeodeticDatumEnsemble, GeodeticReferenceFrame, GeographicBoundingBox,
 		GeographicCrs, GeoidModelId, Id, InterpolationCrs, LengthUnit,
-		MapProjection, MapProjectionMethod, MapProjectionParameter, Meridian,
-		OperationAccuracy, OperationMethod, OperationParameter,
-		OperationParameterFile, OperationVersion, Order, ParametricCrs,
-		ParametricDatum, ParametricUnit, PointMotionOperation, PrimeMeridian,
-		ProjectedCrs, Remark, ScaleUnit, Scope, SourceCrs, TargetCrs,
-		TemporalDatum, TemporalExtent, TimeCrs, TimeOrigin, TimeUnit, Uri,
-		Usage, VerticalCrs, VerticalDatumEnsemble, VerticalExtent,
-		VerticalReferenceFrame,
+		MapProjection, MapProjectionMethod, Meridian, OperationAccuracy,
+		OperationMethod, OperationParameterFile, OperationVersion, Order,
+		Parameter, ParametricCrs, ParametricDatum, ParametricUnit,
+		PointMotionOperation, PrimeMeridian, ProjectedCrs, Remark, ScaleUnit,
+		Scope, SourceCrs, TargetCrs, TemporalDatum, TemporalExtent, TimeCrs,
+		TimeOrigin, TimeUnit, Uri, Usage, VerticalCrs, VerticalDatumEnsemble,
+		VerticalExtent, VerticalReferenceFrame,
 	},
 	compound_types::{Step, Unit},
 	error::WktParseError,
@@ -97,7 +96,6 @@ pub enum WktCrsTypes {
 	BaseGeodeticCrs(BaseGeodeticCrs),
 	MapProjection(MapProjection),
 	MapProjectionMethod(MapProjectionMethod),
-	MapProjectionParameter(MapProjectionParameter),
 	VerticalCrs(VerticalCrs),
 	GeoidModel(GeoidModelId),
 	VerticalReferenceFrame(VerticalReferenceFrame),
@@ -112,7 +110,7 @@ pub enum WktCrsTypes {
 	Calendar(Calendar),
 	DerivingConversion(DerivingConversion),
 	DerivedCrsConversionMethod(DerivedCrsConversionMethod),
-	DerivedCrsConversionParameter(OperationParameter),
+	DerivedCrsConversionParameter(Parameter),
 	DerivedGeodeticCrs(DerivedGeodeticCrs),
 	DerivedProjectedCrs(DerivedProjectedCrs),
 	BaseProjectedCrs(BaseProjectedCrs),
@@ -132,7 +130,7 @@ pub enum WktCrsTypes {
 	SourceCrs(SourceCrs),
 	TargetCrs(TargetCrs),
 	OperationMethod(OperationMethod),
-	OperationParameter(OperationParameter),
+	OperationParameter(Parameter),
 	OperationParameterFile(OperationParameterFile),
 	InterpolationCrs(InterpolationCrs),
 	OperationAccuracy(OperationAccuracy),
@@ -401,23 +399,7 @@ impl WktBaseType for WktCrsTypes {
 				process::<Order, _>(iter, Self::Order)
 			}
 			crate::keywords::Keywords::Parameter => {
-				if let Ok(tmp) =
-					MapProjectionParameter::from_nodes(iter.clone())
-				{
-					return Ok(WktBaseTypeResult {
-						result: Self::MapProjectionParameter(tmp.result),
-						consumed: tmp.consumed,
-					});
-				}
-
-				if let Ok(tmp) = OperationParameter::from_nodes(iter.clone()) {
-					return Ok(WktBaseTypeResult {
-						result: Self::OperationParameter(tmp.result),
-						consumed: tmp.consumed,
-					});
-				}
-
-				return Err(WktParseError::CouldNotDetermineType);
+				process::<Parameter, _>(iter, Self::OperationParameter)
 			}
 			crate::keywords::Keywords::ParameterFile => {
 				process::<OperationParameterFile, _>(

@@ -1,7 +1,7 @@
 use crate::{
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, Id, OperationMethod, OperationParameter,
+		AngleUnit, Id, OperationMethod, Parameter,
 		deriving_conversion::DerivingConversion,
 	},
 	compound_types::{SpatialUnit, Unit},
@@ -38,7 +38,7 @@ fn test_derived_conversion() {
 			}),
 		},
 		operation_parameter: Some(vec![
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "parameter 1 name".to_string(),
 				parameter_value: 0.0,
 				parameter_unit: Some(Unit::SpatialUnit(
@@ -56,7 +56,7 @@ fn test_derived_conversion() {
 					id_uri: None,
 				}),
 			}),
-			OperationParameterWrapper::OperationParameter(OperationParameter {
+			OperationParameterWrapper::OperationParameter(Parameter {
 				parameter_name: "parameter 2 name".to_string(),
 				parameter_value: -123.0,
 				parameter_unit: Some(Unit::SpatialUnit(

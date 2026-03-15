@@ -1,7 +1,7 @@
 use crate::{
 	WktBaseType,
 	ast::parse_wkt,
-	base_types::{AngleUnit, OperationParameter},
+	base_types::{AngleUnit, Parameter},
 	compound_types::{SpatialUnit, Unit},
 };
 
@@ -10,7 +10,7 @@ const EXAMPLE: &str = r#"PARAMETER["Latitude of rotated pole",52.0,
 
 #[test]
 fn test_operation_parameter() {
-	let correct = OperationParameter {
+	let correct = Parameter {
 		parameter_name: "Latitude of rotated pole".into(),
 		parameter_value: 52.0,
 		parameter_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
@@ -25,7 +25,7 @@ fn test_operation_parameter() {
 
 	let ast = parse_wkt(EXAMPLE);
 
-	let res = OperationParameter::from_nodes(&ast).unwrap();
+	let res = Parameter::from_nodes(&ast).unwrap();
 
 	assert_eq!(correct, res.result);
 }

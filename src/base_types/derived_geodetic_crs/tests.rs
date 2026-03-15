@@ -5,7 +5,7 @@ use crate::{
 		CoordinateSystem, DerivedDynamicGeogCrs, DerivedGeodeticCrs,
 		DerivedGeographicCrs, DerivingConversion, DynamicCrs, Ellipsoid,
 		FrameEpoch, GeodeticReferenceFrame, Id, LengthUnit, OperationMethod,
-		OperationParameter, Order, SpatialCoordinateSystem,
+		Parameter, Order, SpatialCoordinateSystem,
 	},
 	compound_types::{ScopeExtentIdentifierRemark, SpatialUnit, Unit},
 	data_types::NumText,
@@ -79,7 +79,7 @@ fn test_derived_geodetic_crs() {
 				},
 				operation_parameter: Some(vec![
 					OperationParameterWrapper::OperationParameter(
-						OperationParameter {
+						Parameter {
 							parameter_name: "Latitude of rotated pole".into(),
 							parameter_value: 52.0,
 							parameter_unit: Some(Unit::SpatialUnit(
