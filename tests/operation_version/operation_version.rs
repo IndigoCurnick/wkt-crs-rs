@@ -4,11 +4,11 @@ const EXAMPLE: &str = r#"VERSION["GSI"]"#;
 
 #[test]
 fn test_operation_version() {
-    let correct = OperationVersion("GSI".into());
+	let correct = OperationVersion("GSI".into());
 
-    let correct = vec![WktCrsTypes::OperationVersion(correct)];
+	let correct = vec![WktCrsTypes::OperationVersion(correct)];
 
-    let ast = parse_wkt_crs(EXAMPLE).unwrap();
+	let ast = parse_wkt_crs(EXAMPLE).unwrap();
 
-    assert_eq!(correct, ast);
+	assert_eq!(correct, ast);
 }

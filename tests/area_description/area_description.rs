@@ -4,11 +4,11 @@ const EXAMPLE1: &str = r#"AREA["Netherlands offshore."]"#;
 
 #[test]
 fn test_area() {
-    let correct = vec![WktCrsTypes::AreaDescription(AreaDescription(
-        "Netherlands offshore.".to_string(),
-    ))];
+	let correct = vec![WktCrsTypes::AreaDescription(AreaDescription(
+		"Netherlands offshore.".to_string(),
+	))];
 
-    let ast = parse_wkt_crs(EXAMPLE1).unwrap();
+	let ast = parse_wkt_crs(EXAMPLE1).unwrap();
 
-    assert_eq!(correct, ast);
+	assert_eq!(correct, ast);
 }

@@ -13,27 +13,27 @@ mod keywords;
 mod types;
 
 pub fn parse_wkt_crs(text: &str) -> Result<Vec<WktCrsTypes>, WktParseError> {
-    let ast = parse_wkt(text);
+	let ast = parse_wkt(text);
 
-    let mut out = vec![];
+	let mut out = vec![];
 
-    let mut i = 0;
+	let mut i = 0;
 
-    let len = ast.len();
+	let len = ast.len();
 
-    while i < len {
-        let arr = &ast[i..len];
+	while i < len {
+		let arr = &ast[i..len];
 
-        let tmp = <WktCrsTypes as WktBaseType>::from_nodes(arr.iter())?;
+		let tmp = <WktCrsTypes as WktBaseType>::from_nodes(arr.iter())?;
 
-        if tmp.consumed == 0 {
-            panic!("Bug: consumed 0");
-        }
+		if tmp.consumed == 0 {
+			panic!("Bug: consumed 0");
+		}
 
-        out.push(tmp.result);
+		out.push(tmp.result);
 
-        i += tmp.consumed;
-    }
+		i += tmp.consumed;
+	}
 
-    return Ok(out);
+	return Ok(out);
 }

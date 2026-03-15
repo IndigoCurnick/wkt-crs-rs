@@ -7,9 +7,9 @@ mod base_static_geographic_crs;
 mod tests;
 
 use crate::{
-    ast::{WktArg, WktNode},
-    error::WktParseError,
-    types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
+	ast::{WktArg, WktNode},
+	error::WktParseError,
+	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
 pub use base_dynamic_geodetic_crs::BaseDynamicGeodeticCrs;
@@ -19,155 +19,172 @@ pub use base_static_geographic_crs::BaseStaticGeographicCrs;
 
 #[derive(Debug, PartialEq)]
 pub enum BaseStaticCrs {
-    BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
-    BaseStaticGeographicCrs(BaseStaticGeographicCrs),
+	BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
+	BaseStaticGeographicCrs(BaseStaticGeographicCrs),
 }
 
 impl WktBaseType for BaseStaticCrs {
-    fn from_nodes<'a, I>(
-        wkt_nodes: I,
-    ) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
-        if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseStaticGeodeticCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseStaticGeodeticCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        if let Ok(base_static) = BaseStaticGeographicCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseStaticGeographicCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) =
+			BaseStaticGeographicCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseStaticGeographicCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        return Err(WktParseError::CouldNotDetermineType);
-    }
+		return Err(WktParseError::CouldNotDetermineType);
+	}
 }
 
 // * yes yes it is called `geodetic` but contains geographic....
 #[derive(Debug, PartialEq)]
 pub enum BaseGeodeticCrs {
-    BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
-    BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
-    BaseStaticGeographicCrs(BaseStaticGeographicCrs),
-    BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
+	BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
+	BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
+	BaseStaticGeographicCrs(BaseStaticGeographicCrs),
+	BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
 }
 
 impl WktInlineType for BaseGeodeticCrs {
-    fn from_args<'a, I>(wkt_args: I) -> Result<crate::types::WktInlineResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a crate::ast::WktArg>,
-    {
-        let iter: Vec<&'a WktArg> = wkt_args.into_iter().collect();
+	fn from_args<'a, I>(
+		wkt_args: I,
+	) -> Result<crate::types::WktInlineResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a crate::ast::WktArg>,
+	{
+		let iter: Vec<&'a WktArg> = wkt_args.into_iter().collect();
 
-        if let Ok(base_static) = BaseStaticGeodeticCrs::from_args(iter.clone()) {
-            return Ok(WktInlineResult {
-                result: Self::BaseStaticGeodeticCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) = BaseStaticGeodeticCrs::from_args(iter.clone())
+		{
+			return Ok(WktInlineResult {
+				result: Self::BaseStaticGeodeticCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        if let Ok(base_dynamic) = BaseDynamicGeodeticCrs::from_args(iter.clone()) {
-            return Ok(WktInlineResult {
-                result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) =
+			BaseDynamicGeodeticCrs::from_args(iter.clone())
+		{
+			return Ok(WktInlineResult {
+				result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        if let Ok(base_static) = BaseStaticGeographicCrs::from_args(iter.clone()) {
-            return Ok(WktInlineResult {
-                result: Self::BaseStaticGeographicCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) =
+			BaseStaticGeographicCrs::from_args(iter.clone())
+		{
+			return Ok(WktInlineResult {
+				result: Self::BaseStaticGeographicCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_args(iter) {
-            return Ok(WktInlineResult {
-                result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_args(iter) {
+			return Ok(WktInlineResult {
+				result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        return Err(WktParseError::CouldNotDetermineType);
-    }
+		return Err(WktParseError::CouldNotDetermineType);
+	}
 }
 
 impl WktBaseType for BaseGeodeticCrs {
-    fn from_nodes<'a, I>(
-        wkt_nodes: I,
-    ) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
-        if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseStaticGeodeticCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseStaticGeodeticCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        if let Ok(base_dynamic) = BaseDynamicGeodeticCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) =
+			BaseDynamicGeodeticCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        if let Ok(base_static) = BaseStaticGeographicCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseStaticGeographicCrs(base_static.result),
-                consumed: base_static.consumed,
-            });
-        }
+		if let Ok(base_static) =
+			BaseStaticGeographicCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseStaticGeographicCrs(base_static.result),
+				consumed: base_static.consumed,
+			});
+		}
 
-        if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_nodes(iter) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_nodes(iter) {
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        return Err(WktParseError::CouldNotDetermineType);
-    }
+		return Err(WktParseError::CouldNotDetermineType);
+	}
 }
 
 #[derive(Debug, PartialEq)]
 pub enum BaseDynamicCrs {
-    BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
-    BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
+	BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
+	BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),
 }
 
 impl WktBaseType for BaseDynamicCrs {
-    fn from_nodes<'a, I>(
-        wkt_nodes: I,
-    ) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
-        if let Ok(base_dynamic) = BaseDynamicGeodeticCrs::from_nodes(iter.clone()) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) =
+			BaseDynamicGeodeticCrs::from_nodes(iter.clone())
+		{
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseDynamicGeodeticCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_nodes(iter) {
-            return Ok(WktBaseTypeResult {
-                result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
-                consumed: base_dynamic.consumed,
-            });
-        }
+		if let Ok(base_dynamic) = BaseDynamicGeographicCrs::from_nodes(iter) {
+			return Ok(WktBaseTypeResult {
+				result: Self::BaseDynamicGeographicCrs(base_dynamic.result),
+				consumed: base_dynamic.consumed,
+			});
+		}
 
-        return Err(WktParseError::CouldNotDetermineType);
-    }
+		return Err(WktParseError::CouldNotDetermineType);
+	}
 }

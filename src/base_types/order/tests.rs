@@ -5,30 +5,30 @@ const EXAMPLE2: &str = "ORDER[1]";
 
 #[test]
 fn test_order() {
-    test_example_1();
-    test_example_2();
+	test_example_1();
+	test_example_2();
 }
 
 fn test_example_1() {
-    let correct = Order(0);
+	let correct = Order(0);
 
-    let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1);
 
-    assert_eq!(ast.len(), 1);
+	assert_eq!(ast.len(), 1);
 
-    let order = Order::from_nodes(&ast).unwrap();
+	let order = Order::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, order.result);
+	assert_eq!(correct, order.result);
 }
 
 fn test_example_2() {
-    let correct = Order(1);
+	let correct = Order(1);
 
-    let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2);
 
-    assert_eq!(ast.len(), 1);
+	assert_eq!(ast.len(), 1);
 
-    let order = Order::from_nodes(&ast).unwrap();
+	let order = Order::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, order.result);
+	assert_eq!(correct, order.result);
 }

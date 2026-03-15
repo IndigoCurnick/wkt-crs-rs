@@ -4,11 +4,11 @@ const EXAMPLE1: &str = r#"URI["urn:ogc:def:crs:EPSG:4326"]"#;
 
 #[test]
 fn test_uri() {
-    let correct = Uri("urn:ogc:def:crs:EPSG:4326".to_string());
+	let correct = Uri("urn:ogc:def:crs:EPSG:4326".to_string());
 
-    let correct = vec![WktCrsTypes::Uri(correct)];
+	let correct = vec![WktCrsTypes::Uri(correct)];
 
-    let ast = parse_wkt_crs(EXAMPLE1).unwrap();
+	let ast = parse_wkt_crs(EXAMPLE1).unwrap();
 
-    assert_eq!(ast, correct);
+	assert_eq!(ast, correct);
 }

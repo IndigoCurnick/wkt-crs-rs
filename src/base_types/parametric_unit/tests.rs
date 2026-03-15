@@ -6,17 +6,17 @@ const EXAMPLE1: &str = r#"PARAMETRICUNIT["hectopascal",100]"#;
 
 #[test]
 fn test_parametric_unit() {
-    let correct = ParametricUnit {
-        unit_name: "hectopascal".to_string(),
-        conversion_factor: 100.0,
-        identifier: None,
-    };
+	let correct = ParametricUnit {
+		unit_name: "hectopascal".to_string(),
+		conversion_factor: 100.0,
+		identifier: None,
+	};
 
-    let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1);
 
-    assert_eq!(ast.len(), 1);
+	assert_eq!(ast.len(), 1);
 
-    let parametric = ParametricUnit::from_nodes(&ast).unwrap();
+	let parametric = ParametricUnit::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, parametric.result);
+	assert_eq!(correct, parametric.result);
 }

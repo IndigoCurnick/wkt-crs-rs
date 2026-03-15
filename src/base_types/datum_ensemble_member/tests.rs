@@ -6,16 +6,16 @@ const EXAMPLE1: &str = r#"MEMBER["WGS 84 ensemble"]"#;
 
 #[test]
 fn test_ensemble_member() {
-    let correct = DatumEnsembleMember {
-        ensemble_member_name: "WGS 84 ensemble".into(),
-        identifier: None,
-    };
+	let correct = DatumEnsembleMember {
+		ensemble_member_name: "WGS 84 ensemble".into(),
+		identifier: None,
+	};
 
-    let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1);
 
-    assert_eq!(ast.len(), 1);
+	assert_eq!(ast.len(), 1);
 
-    let member = DatumEnsembleMember::from_nodes(&ast).unwrap();
+	let member = DatumEnsembleMember::from_nodes(&ast).unwrap();
 
-    assert_eq!(member.result, correct);
+	assert_eq!(member.result, correct);
 }

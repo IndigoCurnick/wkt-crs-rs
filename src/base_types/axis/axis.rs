@@ -1,53 +1,93 @@
 use crate::{
-    ast::{Parse, WktNode},
-    base_types::axis::{
-        ordinal_date_time_axis::OrdinalDateTimeAxis, spatial_axis::SpatialAxis,
-        temporal_count_measure_axis::TemporalCountMeasureAxis,
-    },
-    error::WktParseError,
-    types::{WktBaseType, WktBaseTypeResult},
+	arity::match_arity,
+	ast::{Parse, WktNode},
+	base_types::{Id, Order},
+	compound_types::Unit,
+	enumerations::AxisDirection,
+	error::WktParseError,
+	keywords::{Keywords, match_keywords},
+	types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
-pub enum Axis {
-    OrdinalDateTimeAxis(OrdinalDateTimeAxis),
-    SpatialAxis(SpatialAxis),
-    TemporalCountMeasureAxis(TemporalCountMeasureAxis),
+pub struct Axis {
+	pub axis_name_abbreviation: String,
+	pub axis_direction: AxisDirection,
+	pub axis_order: Option<Order>,
+	pub unit: Option<Unit>,
+	pub identifier: Option<Id>, // TODO: Technically the spec allows for multiple of these
 }
 
 impl WktBaseType for Axis {
-    fn from_nodes<'a, I>(
-        wkt_nodes: I,
-    ) -> Result<crate::types::WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let node = match wkt_nodes.into_iter().next() {
-            Some(x) => x,
-            None => return Err(WktParseError::NotEnoughNodes),
-        };
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let node = match wkt_nodes.into_iter().next() {
+			Some(x) => x,
+			None => return Err(WktParseError::NotEnoughNodes),
+		};
 
-        if let Ok(ordinal) = node.parse() {
-            return Ok(WktBaseTypeResult {
-                result: Self::OrdinalDateTimeAxis(ordinal),
-                consumed: 1,
-            });
-        }
+		match_keywords(&node.keyword, vec![Keywords::Axis])?;
+		match_arity(node.args.len(), 1, 6)?; // TODO: Double check this
 
-        if let Ok(temporal) = node.parse() {
-            return Ok(WktBaseTypeResult {
-                result: Self::OrdinalDateTimeAxis(temporal),
-                consumed: 1,
-            });
-        }
+		let axis_name_abbreviation = node.args[0].parse()?;
 
-        if let Ok(spatial) = node.parse() {
-            return Ok(WktBaseTypeResult {
-                result: Self::OrdinalDateTimeAxis(spatial),
-                consumed: 1,
-            });
-        }
+		let maybe = node.args.get(2);
 
-        return Err(WktParseError::CouldNotDetermineType);
-    }
+		let axis_direction = AxisDirection::try_from((&node.args[1], maybe))?;
+
+		let mut i = 2;
+
+		if axis_direction.used_second() {
+			i += 1;
+		}
+
+		let axis_order = match node.args.get(i) {
+			Some(x) => match x.parse() {
+				Ok(y) => {
+					i += 1;
+					Some(y)
+				}
+				Err(_) => None,
+			},
+			None => None,
+		};
+
+		let unit = match node.args.get(i) {
+			Some(x) => match x.parse() {
+				Ok(y) => {
+					i += 1;
+					Some(y)
+				}
+				Err(_) => None,
+			},
+			None => None,
+		};
+
+		let identifier = match node.args.get(i) {
+			Some(x) => match x.parse() {
+				Ok(y) => Some(y),
+				Err(_) => None,
+			},
+			None => None,
+		};
+
+		let axis = Axis {
+			axis_direction,
+			axis_name_abbreviation,
+			axis_order,
+			unit,
+			identifier,
+		};
+
+		let res = WktBaseTypeResult {
+			consumed: 1,
+			result: axis,
+		};
+
+		Ok(res)
+	}
 }

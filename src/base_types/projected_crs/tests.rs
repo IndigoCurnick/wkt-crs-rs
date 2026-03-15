@@ -1,18 +1,20 @@
 use crate::{
-    ast::parse_wkt,
-    base_types::{
-        AngleUnit, AreaDescription, BaseGeodeticCrs, BaseStaticGeographicCrs, CoordinateSystem,
-        Ellipsoid, Extent, GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-        MapProjectionMethod, MapProjectionParameter, Order, PrimeMeridian, Remark, ScaleUnit,
-        Scope, SpatialAxis, SpatialCoordinateSystem, Usage,
-        projected_crs::projected_crs::ProjectedCrs,
-    },
-    compound_types::{
-        GeodeticData, MapProjectionParameterUnit, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
-    },
-    data_types::NumText,
-    enumerations::{AxisDirection, Dimension, SpatialCsType},
-    types::WktBaseType,
+	ast::parse_wkt,
+	base_types::{
+		AngleUnit, AreaDescription, Axis, BaseGeodeticCrs,
+		BaseStaticGeographicCrs, CoordinateSystem, Ellipsoid, Extent,
+		GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
+		MapProjectionMethod, MapProjectionParameter, Order, PrimeMeridian,
+		Remark, ScaleUnit, Scope, SpatialCoordinateSystem, Usage,
+		projected_crs::projected_crs::ProjectedCrs,
+	},
+	compound_types::{
+		GeodeticData, MapProjectionParameterUnit, ScopeExtentIdentifierRemark,
+		SpatialUnit, Unit,
+	},
+	data_types::NumText,
+	enumerations::{AxisDirection, Dimension, SpatialCsType},
+	types::WktBaseType,
 };
 
 const EXAMPLE1: &str = r#"PROJCRS["ETRS89 Lambert Azimuthal Equal Area CRS",
@@ -117,596 +119,635 @@ const EXAMPLE4: &str = r#"PROJCRS["WGS 84 (G1762) / UTM zone 31N 3D",
 
 #[test]
 fn test_proj_crs() {
-    test_example_1();
-    test_example_2();
-    test_example_3();
-    test_example_4();
+	test_example_1();
+	test_example_2();
+	test_example_3();
+	test_example_4();
 }
 
 fn test_example_1() {
-    let correct = ProjectedCrs {
-        crs_name: "ETRS89 Lambert Azimuthal Equal Area CRS".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "ETRS89".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrame {
-                datum_name: "ETRS89".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "GRS 80".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.25,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "metre".into(),
-                        conversion_factor: 1.0,
-                        identifier: None,
-                    }),
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: Some(Id {
-                authority_name: "EuroGeographics".into(),
-                authority_unique_identifier: NumText::Text("ETRS89-LatLon".into()),
-                version: None,
-                authority_citation: None,
-                id_uri: None,
-            }),
-        }),
-        map_projection: MapProjection {
-            map_projection_name: "LAEA".into(),
-            map_projection_method: MapProjectionMethod {
-                map_projection_method_name: "Lambert Azimuthal Equal Area".into(),
-                identifier: Some(Id {
-                    authority_name: "EPSG".into(),
-                    authority_unique_identifier: NumText::Int(9820),
-                    version: None,
-                    authority_citation: None,
-                    id_uri: None,
-                }),
-            },
-            map_projection_parameters: Some(vec![
-                MapProjectionParameter {
-                    parameter_name: "Latitude of origin".into(),
-                    parameter_value: 52.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "Longitude of origin".into(),
-                    parameter_value: 10.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False easting".into(),
-                    parameter_value: 4321000.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "metre".into(),
-                            conversion_factor: 1.0,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False northing".into(),
-                    parameter_value: 3210000.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "metre".into(),
-                            conversion_factor: 1.0,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-            ]),
-            identifier: None,
-        },
-        coordinate_system: CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-            spatial_cs_type: SpatialCsType::Cartesian,
-            dimension: Dimension::Two,
-            identifier: None,
-            spatial_axis: vec![
-                SpatialAxis {
-                    axis_name_abbreviation: "(Y)".into(),
-                    axis_direction: AxisDirection::North(None),
-                    axis_order: Some(Order(1)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-                SpatialAxis {
-                    axis_name_abbreviation: "(X)".into(),
-                    axis_direction: AxisDirection::East,
-                    axis_order: Some(Order(2)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-            ],
-            cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-                unit_name: "metre".into(),
-                conversion_factor: 1.0,
-                identifier: None,
-            }))),
-        }),
-        scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
-            usage: Some(vec![Usage {
-                scope: Scope("Description of purpose".into()),
-                extent: Extent {
-                    area_description: Some(AreaDescription("An area description".into())),
-                    geographic_bounding_box: None,
-                    vertical_extent: None,
-                    temporal_extent: None,
-                },
-            }]),
-            identifier: Some(vec![Id {
-                authority_name: "EuroGeographics".into(),
-                authority_unique_identifier: NumText::Text("ETRS-LAEA".into()),
-                version: None,
-                authority_citation: None,
-                id_uri: None,
-            }]),
-            remark: None,
-        },
-    };
+	let correct = ProjectedCrs {
+		crs_name: "ETRS89 Lambert Azimuthal Equal Area CRS".into(),
+		base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(
+			BaseStaticGeographicCrs {
+				base_crs_name: "ETRS89".into(),
+				geodetic_data: GeodeticData::GeodeticReferenceFrame(
+					GeodeticReferenceFrame {
+						datum_name: "ETRS89".into(),
+						ellipsoid: Ellipsoid {
+							ellipsoid_name: "GRS 80".into(),
+							semi_major_axis: 6378137.0,
+							inverse_flattening: 298.25,
+							length_unit: Some(LengthUnit {
+								unit_name: "metre".into(),
+								conversion_factor: 1.0,
+								identifier: None,
+							}),
+						},
+						anchor: None,
+						identifier: None,
+						prime_meridian: None,
+					},
+				),
+				ellipsoidal_cs_unit: None,
+				identifier: Some(Id {
+					authority_name: "EuroGeographics".into(),
+					authority_unique_identifier: NumText::Text(
+						"ETRS89-LatLon".into(),
+					),
+					version: None,
+					authority_citation: None,
+					id_uri: None,
+				}),
+			},
+		),
+		map_projection: MapProjection {
+			map_projection_name: "LAEA".into(),
+			map_projection_method: MapProjectionMethod {
+				map_projection_method_name: "Lambert Azimuthal Equal Area"
+					.into(),
+				identifier: Some(Id {
+					authority_name: "EPSG".into(),
+					authority_unique_identifier: NumText::Int(9820),
+					version: None,
+					authority_citation: None,
+					id_uri: None,
+				}),
+			},
+			map_projection_parameters: Some(vec![
+				MapProjectionParameter {
+					parameter_name: "Latitude of origin".into(),
+					parameter_value: 52.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "Longitude of origin".into(),
+					parameter_value: 10.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False easting".into(),
+					parameter_value: 4321000.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "metre".into(),
+							conversion_factor: 1.0,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False northing".into(),
+					parameter_value: 3210000.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "metre".into(),
+							conversion_factor: 1.0,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+			]),
+			identifier: None,
+		},
+		coordinate_system: CoordinateSystem::SpatialCS(
+			SpatialCoordinateSystem {
+				spatial_cs_type: SpatialCsType::Cartesian,
+				dimension: Dimension::Two,
+				identifier: None,
+				spatial_axis: vec![
+					Axis {
+						axis_name_abbreviation: "(Y)".into(),
+						axis_direction: AxisDirection::North(None),
+						axis_order: Some(Order(1)),
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "(X)".into(),
+						axis_direction: AxisDirection::East,
+						axis_order: Some(Order(2)),
+						unit: None,
+						identifier: None,
+					},
+				],
+				cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".into(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+		),
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: Some(vec![Usage {
+				scope: Scope("Description of purpose".into()),
+				extent: Extent {
+					area_description: Some(AreaDescription(
+						"An area description".into(),
+					)),
+					geographic_bounding_box: None,
+					vertical_extent: None,
+					temporal_extent: None,
+				},
+			}]),
+			identifier: Some(vec![Id {
+				authority_name: "EuroGeographics".into(),
+				authority_unique_identifier: NumText::Text("ETRS-LAEA".into()),
+				version: None,
+				authority_citation: None,
+				id_uri: None,
+			}]),
+			remark: None,
+		},
+	};
 
-    let ast = parse_wkt(EXAMPLE1);
-    assert_eq!(ast.len(), 1);
-    let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
+	let ast = parse_wkt(EXAMPLE1);
+	assert_eq!(ast.len(), 1);
+	let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, map_proj.result);
+	assert_eq!(correct, map_proj.result);
 }
 
 fn test_example_2() {
-    let correct = ProjectedCrs {
-        crs_name: "NAD27 / Texas South Central".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "NAD27".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrame {
-                datum_name: "North American Datum 1927".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "Clarke 1866".into(),
-                    semi_major_axis: 20925832.164,
-                    inverse_flattening: 294.97,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "US survey foot".into(),
-                        conversion_factor: 0.304,
-                        identifier: None,
-                    }),
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
-        map_projection: MapProjection {
-            map_projection_name: "Texas South Central SPCS27".into(),
-            map_projection_method: MapProjectionMethod {
-                map_projection_method_name: "Lambert Conic Conformal (2SP)".into(),
-                identifier: Some(Id {
-                    authority_name: "EPSG".into(),
-                    authority_unique_identifier: NumText::Int(9802),
-                    version: None,
-                    authority_citation: None,
-                    id_uri: None,
-                }),
-            },
-            map_projection_parameters: Some(vec![
-                MapProjectionParameter {
-                    parameter_name: "Latitude of false origin".into(),
-                    parameter_value: 27.83,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8821),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-                MapProjectionParameter {
-                    parameter_name: "Longitude of false origin".into(),
-                    parameter_value: -99.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8822),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-                MapProjectionParameter {
-                    parameter_name: "Latitude of 1st standard parallel".into(),
-                    parameter_value: 28.38,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8823),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-                MapProjectionParameter {
-                    parameter_name: "Latitude of 2nd standard parallel".into(),
-                    parameter_value: 30.28,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8824),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-                MapProjectionParameter {
-                    parameter_name: "Easting at false origin".into(),
-                    parameter_value: 2000000.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "US survey foot".into(),
-                            conversion_factor: 0.304,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8826),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-                MapProjectionParameter {
-                    parameter_name: "Northing at false origin".into(),
-                    parameter_value: 0.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "US survey foot".into(),
-                            conversion_factor: 0.304,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: Some(Id {
-                        authority_name: "EPSG".into(),
-                        authority_unique_identifier: NumText::Int(8827),
-                        version: None,
-                        authority_citation: None,
-                        id_uri: None,
-                    }),
-                },
-            ]),
-            identifier: None,
-        },
-        coordinate_system: CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-            spatial_cs_type: SpatialCsType::Cartesian,
-            dimension: Dimension::Two,
-            identifier: None,
-            spatial_axis: vec![
-                SpatialAxis {
-                    axis_name_abbreviation: "(X)".into(),
-                    axis_direction: AxisDirection::East,
-                    axis_order: None,
-                    spatial_unit: None,
-                    identifier: None,
-                },
-                SpatialAxis {
-                    axis_name_abbreviation: "(Y)".into(),
-                    axis_direction: AxisDirection::North(None),
-                    axis_order: None,
-                    spatial_unit: None,
-                    identifier: None,
-                },
-            ],
-            cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-                unit_name: "US survey foot".into(),
-                conversion_factor: 0.304,
-                identifier: None,
-            }))),
-        }),
-        scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
-            usage: None,
-            identifier: None,
-            remark: Some(Remark("Fundamental point: Meade's ranch".into())),
-        },
-    };
+	let correct = ProjectedCrs {
+		crs_name: "NAD27 / Texas South Central".into(),
+		base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(
+			BaseStaticGeographicCrs {
+				base_crs_name: "NAD27".into(),
+				geodetic_data: GeodeticData::GeodeticReferenceFrame(
+					GeodeticReferenceFrame {
+						datum_name: "North American Datum 1927".into(),
+						ellipsoid: Ellipsoid {
+							ellipsoid_name: "Clarke 1866".into(),
+							semi_major_axis: 20925832.164,
+							inverse_flattening: 294.97,
+							length_unit: Some(LengthUnit {
+								unit_name: "US survey foot".into(),
+								conversion_factor: 0.304,
+								identifier: None,
+							}),
+						},
+						anchor: None,
+						identifier: None,
+						prime_meridian: None,
+					},
+				),
+				ellipsoidal_cs_unit: None,
+				identifier: None,
+			},
+		),
+		map_projection: MapProjection {
+			map_projection_name: "Texas South Central SPCS27".into(),
+			map_projection_method: MapProjectionMethod {
+				map_projection_method_name: "Lambert Conic Conformal (2SP)"
+					.into(),
+				identifier: Some(Id {
+					authority_name: "EPSG".into(),
+					authority_unique_identifier: NumText::Int(9802),
+					version: None,
+					authority_citation: None,
+					id_uri: None,
+				}),
+			},
+			map_projection_parameters: Some(vec![
+				MapProjectionParameter {
+					parameter_name: "Latitude of false origin".into(),
+					parameter_value: 27.83,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8821),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+				MapProjectionParameter {
+					parameter_name: "Longitude of false origin".into(),
+					parameter_value: -99.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8822),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+				MapProjectionParameter {
+					parameter_name: "Latitude of 1st standard parallel".into(),
+					parameter_value: 28.38,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8823),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+				MapProjectionParameter {
+					parameter_name: "Latitude of 2nd standard parallel".into(),
+					parameter_value: 30.28,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8824),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+				MapProjectionParameter {
+					parameter_name: "Easting at false origin".into(),
+					parameter_value: 2000000.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "US survey foot".into(),
+							conversion_factor: 0.304,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8826),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+				MapProjectionParameter {
+					parameter_name: "Northing at false origin".into(),
+					parameter_value: 0.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "US survey foot".into(),
+							conversion_factor: 0.304,
+							identifier: None,
+						}),
+					),
+					identifier: Some(Id {
+						authority_name: "EPSG".into(),
+						authority_unique_identifier: NumText::Int(8827),
+						version: None,
+						authority_citation: None,
+						id_uri: None,
+					}),
+				},
+			]),
+			identifier: None,
+		},
+		coordinate_system: CoordinateSystem::SpatialCS(
+			SpatialCoordinateSystem {
+				spatial_cs_type: SpatialCsType::Cartesian,
+				dimension: Dimension::Two,
+				identifier: None,
+				spatial_axis: vec![
+					Axis {
+						axis_name_abbreviation: "(X)".into(),
+						axis_direction: AxisDirection::East,
+						axis_order: None,
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "(Y)".into(),
+						axis_direction: AxisDirection::North(None),
+						axis_order: None,
+						unit: None,
+						identifier: None,
+					},
+				],
+				cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "US survey foot".into(),
+						conversion_factor: 0.304,
+						identifier: None,
+					},
+				))),
+			},
+		),
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: None,
+			identifier: None,
+			remark: Some(Remark("Fundamental point: Meade's ranch".into())),
+		},
+	};
 
-    let ast = parse_wkt(EXAMPLE2);
-    assert_eq!(ast.len(), 1);
-    let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
+	let ast = parse_wkt(EXAMPLE2);
+	assert_eq!(ast.len(), 1);
+	let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, map_proj.result);
+	assert_eq!(correct, map_proj.result);
 }
 
 fn test_example_3() {
-    let correct = ProjectedCrs {
-        crs_name: "NAD83 UTM 10".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "NAD83(86)".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrame {
-                datum_name: "North American Datum 1983".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "GRS 1980".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.257,
-                    length_unit: None,
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: Some(PrimeMeridian {
-                    prime_meridian_name: "Greenwich".into(),
-                    irm_longitude: 0.0,
-                    angle_unit: None,
-                    identifier: None,
-                }),
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
-        map_projection: MapProjection {
-            map_projection_name: "UTM zone 10N".into(),
-            map_projection_method: MapProjectionMethod {
-                map_projection_method_name: "Transverse Mercator".into(),
-                identifier: None,
-            },
-            map_projection_parameters: Some(vec![
-                MapProjectionParameter {
-                    parameter_name: "Latitude of natural origin".into(),
-                    parameter_value: 0.0,
-                    map_projection_parameter_unit: None,
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "Longitude of natural origin".into(),
-                    parameter_value: -123.0,
-                    map_projection_parameter_unit: None,
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "Scale factor".into(),
-                    parameter_value: 0.9996,
-                    map_projection_parameter_unit: None,
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False easting".into(),
-                    parameter_value: 500000.0,
-                    map_projection_parameter_unit: None,
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False northing".into(),
-                    parameter_value: 0.0,
-                    map_projection_parameter_unit: None,
-                    identifier: None,
-                },
-            ]),
-            identifier: Some(Id {
-                authority_name: "EPSG".into(),
-                authority_unique_identifier: NumText::Int(16010),
-                version: None,
-                authority_citation: None,
-                id_uri: None,
-            }),
-        },
-        coordinate_system: CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-            spatial_cs_type: SpatialCsType::Cartesian,
-            dimension: Dimension::Two,
-            identifier: None,
-            spatial_axis: vec![
-                SpatialAxis {
-                    axis_name_abbreviation: "(E)".into(),
-                    axis_direction: AxisDirection::East,
-                    axis_order: Some(Order(1)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-                SpatialAxis {
-                    axis_name_abbreviation: "(N)".into(),
-                    axis_direction: AxisDirection::North(None),
-                    axis_order: Some(Order(2)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-            ],
-            cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-                unit_name: "metre".into(),
-                conversion_factor: 1.0,
-                identifier: None,
-            }))),
-        }),
-        scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
-            usage: None,
-            identifier: None,
-            remark: Some(Remark("Some remark".into())),
-        },
-    };
+	let correct = ProjectedCrs {
+		crs_name: "NAD83 UTM 10".into(),
+		base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(
+			BaseStaticGeographicCrs {
+				base_crs_name: "NAD83(86)".into(),
+				geodetic_data: GeodeticData::GeodeticReferenceFrame(
+					GeodeticReferenceFrame {
+						datum_name: "North American Datum 1983".into(),
+						ellipsoid: Ellipsoid {
+							ellipsoid_name: "GRS 1980".into(),
+							semi_major_axis: 6378137.0,
+							inverse_flattening: 298.257,
+							length_unit: None,
+						},
+						anchor: None,
+						identifier: None,
+						prime_meridian: Some(PrimeMeridian {
+							prime_meridian_name: "Greenwich".into(),
+							irm_longitude: 0.0,
+							angle_unit: None,
+							identifier: None,
+						}),
+					},
+				),
+				ellipsoidal_cs_unit: None,
+				identifier: None,
+			},
+		),
+		map_projection: MapProjection {
+			map_projection_name: "UTM zone 10N".into(),
+			map_projection_method: MapProjectionMethod {
+				map_projection_method_name: "Transverse Mercator".into(),
+				identifier: None,
+			},
+			map_projection_parameters: Some(vec![
+				MapProjectionParameter {
+					parameter_name: "Latitude of natural origin".into(),
+					parameter_value: 0.0,
+					map_projection_parameter_unit: None,
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "Longitude of natural origin".into(),
+					parameter_value: -123.0,
+					map_projection_parameter_unit: None,
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "Scale factor".into(),
+					parameter_value: 0.9996,
+					map_projection_parameter_unit: None,
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False easting".into(),
+					parameter_value: 500000.0,
+					map_projection_parameter_unit: None,
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False northing".into(),
+					parameter_value: 0.0,
+					map_projection_parameter_unit: None,
+					identifier: None,
+				},
+			]),
+			identifier: Some(Id {
+				authority_name: "EPSG".into(),
+				authority_unique_identifier: NumText::Int(16010),
+				version: None,
+				authority_citation: None,
+				id_uri: None,
+			}),
+		},
+		coordinate_system: CoordinateSystem::SpatialCS(
+			SpatialCoordinateSystem {
+				spatial_cs_type: SpatialCsType::Cartesian,
+				dimension: Dimension::Two,
+				identifier: None,
+				spatial_axis: vec![
+					Axis {
+						axis_name_abbreviation: "(E)".into(),
+						axis_direction: AxisDirection::East,
+						axis_order: Some(Order(1)),
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "(N)".into(),
+						axis_direction: AxisDirection::North(None),
+						axis_order: Some(Order(2)),
+						unit: None,
+						identifier: None,
+					},
+				],
+				cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".into(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+		),
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: None,
+			identifier: None,
+			remark: Some(Remark("Some remark".into())),
+		},
+	};
 
-    let ast = parse_wkt(EXAMPLE3);
-    assert_eq!(ast.len(), 1);
-    let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
+	let ast = parse_wkt(EXAMPLE3);
+	assert_eq!(ast.len(), 1);
+	let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, map_proj.result);
+	assert_eq!(correct, map_proj.result);
 }
 
 fn test_example_4() {
-    let correct = ProjectedCrs {
-        crs_name: "WGS 84 (G1762) / UTM zone 31N 3D".into(),
-        base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(BaseStaticGeographicCrs {
-            base_crs_name: "WGS 84".into(),
-            geodetic_data: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrame {
-                datum_name: "World Geodetic System of 1984 (G1762)".into(),
-                ellipsoid: Ellipsoid {
-                    ellipsoid_name: "WGS 84".into(),
-                    semi_major_axis: 6378137.0,
-                    inverse_flattening: 298.257,
-                    length_unit: Some(LengthUnit {
-                        unit_name: "metre".into(),
-                        conversion_factor: 1.0,
-                        identifier: None,
-                    }),
-                },
-                anchor: None,
-                identifier: None,
-                prime_meridian: None,
-            }),
-            ellipsoidal_cs_unit: None,
-            identifier: None,
-        }),
-        map_projection: MapProjection {
-            map_projection_name: "UTM zone 31N 3D".into(),
-            map_projection_method: MapProjectionMethod {
-                map_projection_method_name: "Transverse Mercator (3D)".into(),
-                identifier: None,
-            },
-            map_projection_parameters: Some(vec![
-                MapProjectionParameter {
-                    parameter_name: "Latitude of origin".into(),
-                    parameter_value: 0.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "Longitude of origin".into(),
-                    parameter_value: 3.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::AngleUnit(
-                        AngleUnit {
-                            unit_name: "degree".into(),
-                            conversion_factor: 0.017,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "Scale factor".into(),
-                    parameter_value: 0.9996,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::ScaleUnit(
-                        ScaleUnit {
-                            unit_name: "unity".into(),
-                            conversion_factor: 1.0,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False easting".into(),
-                    parameter_value: 500000.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "metre".into(),
-                            conversion_factor: 1.0,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-                MapProjectionParameter {
-                    parameter_name: "False northing".into(),
-                    parameter_value: 0.0,
-                    map_projection_parameter_unit: Some(MapProjectionParameterUnit::LengthUnit(
-                        LengthUnit {
-                            unit_name: "metre".into(),
-                            conversion_factor: 1.0,
-                            identifier: None,
-                        },
-                    )),
-                    identifier: None,
-                },
-            ]),
-            identifier: None,
-        },
-        coordinate_system: CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-            spatial_cs_type: SpatialCsType::Cartesian,
-            dimension: Dimension::Three,
-            identifier: None,
-            spatial_axis: vec![
-                SpatialAxis {
-                    axis_name_abbreviation: "(E)".into(),
-                    axis_direction: AxisDirection::East,
-                    axis_order: Some(Order(1)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-                SpatialAxis {
-                    axis_name_abbreviation: "(N)".into(),
-                    axis_direction: AxisDirection::North(None),
-                    axis_order: Some(Order(2)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-                SpatialAxis {
-                    axis_name_abbreviation: "ellipsoidal height (h)".into(),
-                    axis_direction: AxisDirection::Up,
-                    axis_order: Some(Order(3)),
-                    spatial_unit: None,
-                    identifier: None,
-                },
-            ],
-            cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-                unit_name: "metre".into(),
-                conversion_factor: 1.0,
-                identifier: None,
-            }))),
-        }),
-        scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
-            usage: None,
-            identifier: None,
-            remark: None,
-        },
-    };
+	let correct = ProjectedCrs {
+		crs_name: "WGS 84 (G1762) / UTM zone 31N 3D".into(),
+		base_geodetic_crs: BaseGeodeticCrs::BaseStaticGeographicCrs(
+			BaseStaticGeographicCrs {
+				base_crs_name: "WGS 84".into(),
+				geodetic_data: GeodeticData::GeodeticReferenceFrame(
+					GeodeticReferenceFrame {
+						datum_name: "World Geodetic System of 1984 (G1762)"
+							.into(),
+						ellipsoid: Ellipsoid {
+							ellipsoid_name: "WGS 84".into(),
+							semi_major_axis: 6378137.0,
+							inverse_flattening: 298.257,
+							length_unit: Some(LengthUnit {
+								unit_name: "metre".into(),
+								conversion_factor: 1.0,
+								identifier: None,
+							}),
+						},
+						anchor: None,
+						identifier: None,
+						prime_meridian: None,
+					},
+				),
+				ellipsoidal_cs_unit: None,
+				identifier: None,
+			},
+		),
+		map_projection: MapProjection {
+			map_projection_name: "UTM zone 31N 3D".into(),
+			map_projection_method: MapProjectionMethod {
+				map_projection_method_name: "Transverse Mercator (3D)".into(),
+				identifier: None,
+			},
+			map_projection_parameters: Some(vec![
+				MapProjectionParameter {
+					parameter_name: "Latitude of origin".into(),
+					parameter_value: 0.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "Longitude of origin".into(),
+					parameter_value: 3.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::AngleUnit(AngleUnit {
+							unit_name: "degree".into(),
+							conversion_factor: 0.017,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "Scale factor".into(),
+					parameter_value: 0.9996,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::ScaleUnit(ScaleUnit {
+							unit_name: "unity".into(),
+							conversion_factor: 1.0,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False easting".into(),
+					parameter_value: 500000.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "metre".into(),
+							conversion_factor: 1.0,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+				MapProjectionParameter {
+					parameter_name: "False northing".into(),
+					parameter_value: 0.0,
+					map_projection_parameter_unit: Some(
+						MapProjectionParameterUnit::LengthUnit(LengthUnit {
+							unit_name: "metre".into(),
+							conversion_factor: 1.0,
+							identifier: None,
+						}),
+					),
+					identifier: None,
+				},
+			]),
+			identifier: None,
+		},
+		coordinate_system: CoordinateSystem::SpatialCS(
+			SpatialCoordinateSystem {
+				spatial_cs_type: SpatialCsType::Cartesian,
+				dimension: Dimension::Three,
+				identifier: None,
+				spatial_axis: vec![
+					Axis {
+						axis_name_abbreviation: "(E)".into(),
+						axis_direction: AxisDirection::East,
+						axis_order: Some(Order(1)),
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "(N)".into(),
+						axis_direction: AxisDirection::North(None),
+						axis_order: Some(Order(2)),
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "ellipsoidal height (h)".into(),
+						axis_direction: AxisDirection::Up,
+						axis_order: Some(Order(3)),
+						unit: None,
+						identifier: None,
+					},
+				],
+				cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".into(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+		),
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: None,
+			identifier: None,
+			remark: None,
+		},
+	};
 
-    let ast = parse_wkt(EXAMPLE4);
-    assert_eq!(ast.len(), 1);
-    let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
+	let ast = parse_wkt(EXAMPLE4);
+	assert_eq!(ast.len(), 1);
+	let map_proj = ProjectedCrs::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, map_proj.result);
+	assert_eq!(correct, map_proj.result);
 }

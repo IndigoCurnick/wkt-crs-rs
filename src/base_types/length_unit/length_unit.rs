@@ -3,56 +3,63 @@
 use log::warn;
 
 use crate::{
-    arity::match_arity,
-    ast::{Parse, WktNode},
-    base_types::Id,
-    error::WktParseError,
-    keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktBaseTypeResult},
+	arity::match_arity,
+	ast::{Parse, WktNode},
+	base_types::Id,
+	error::WktParseError,
+	keywords::{Keywords, match_keywords},
+	types::{WktBaseType, WktBaseTypeResult},
 };
 
 // TODO: Can take an ID too optionally
 #[derive(Debug, PartialEq)]
 pub struct LengthUnit {
-    pub unit_name: String,
-    pub conversion_factor: f64,
-    pub identifier: Option<Id>,
+	pub unit_name: String,
+	pub conversion_factor: f64,
+	pub identifier: Option<Id>,
 }
 
 impl WktBaseType for LengthUnit {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let node = match wkt_nodes.into_iter().next() {
-            Some(x) => x,
-            None => return Err(WktParseError::NotEnoughNodes),
-        };
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let node = match wkt_nodes.into_iter().next() {
+			Some(x) => x,
+			None => return Err(WktParseError::NotEnoughNodes),
+		};
 
-        match_keywords(&node.keyword, vec![Keywords::LengthUnit, Keywords::Unit])?;
-        match_arity(node.args.len(), 2, 3)?;
+		match_keywords(
+			&node.keyword,
+			vec![Keywords::LengthUnit, Keywords::Unit],
+		)?;
+		match_arity(node.args.len(), 2, 3)?;
 
-        if node.keyword == Keywords::Unit {
-            warn!("Keyword UNIT depreciated. Consider using LENGTHUNIT instead");
-        }
+		if node.keyword == Keywords::Unit {
+			warn!(
+				"Keyword UNIT depreciated. Consider using LENGTHUNIT instead"
+			);
+		}
 
-        let unit_name = node.args[0].parse()?;
-        let conversion_factor = node.args[1].parse()?;
+		let unit_name = node.args[0].parse()?;
+		let conversion_factor = node.args[1].parse()?;
 
-        let id = match node.args.get(2) {
-            Some(x) => Some(x.parse()?),
-            None => None,
-        };
+		let id = match node.args.get(2) {
+			Some(x) => Some(x.parse()?),
+			None => None,
+		};
 
-        let lu = LengthUnit {
-            unit_name,
-            conversion_factor,
-            identifier: id,
-        };
+		let lu = LengthUnit {
+			unit_name,
+			conversion_factor,
+			identifier: id,
+		};
 
-        Ok(WktBaseTypeResult {
-            result: lu,
-            consumed: 1,
-        })
-    }
+		Ok(WktBaseTypeResult {
+			result: lu,
+			consumed: 1,
+		})
+	}
 }

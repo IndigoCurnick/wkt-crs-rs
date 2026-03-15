@@ -81,16 +81,19 @@ mod vertical_reference_frame;
 pub use abridged_coordinate_transformation::AbridgedCoordinateTransformation;
 pub use angle_unit::AngleUnit;
 pub use area_description::AreaDescription;
-pub use axis::{Axis, OrdinalDateTimeAxis, SpatialAxis, TemporalCountMeasureAxis};
+pub use axis::Axis;
 pub use base_engineering_crs::BaseEngineeringCrs;
 pub use base_geodetic_crs::{
-    BaseDynamicCrs, BaseDynamicGeodeticCrs, BaseDynamicGeographicCrs, BaseGeodeticCrs,
-    BaseStaticCrs, BaseStaticGeodeticCrs, BaseStaticGeographicCrs,
+	BaseDynamicCrs, BaseDynamicGeodeticCrs, BaseDynamicGeographicCrs,
+	BaseGeodeticCrs, BaseStaticCrs, BaseStaticGeodeticCrs,
+	BaseStaticGeographicCrs,
 };
 pub use base_parametric_crs::BaseParametricCrs;
 pub use base_projected_crs::BaseProjectedCrs;
 pub use base_temporal_crs::BaseTemporalCrs;
-pub use base_vertical_crs::{BaseDynamicVerticalCrs, BaseStaticVerticalCrs, BaseVerticalCrs};
+pub use base_vertical_crs::{
+	BaseDynamicVerticalCrs, BaseStaticVerticalCrs, BaseVerticalCrs,
+};
 pub use bearing::Bearing;
 pub use bound_crs::BoundCrs;
 pub use calendar::Calendar;
@@ -99,12 +102,12 @@ pub use compound_crs::CompoundCrs;
 pub use concatenated_operation::ConcatenatedOperation;
 pub use coordinate_epoch::CoordinateEpoch;
 pub use coordinate_metadata::{
-    CoordinateMetadata, DynamicCoordinateMetadata, StaticCoordinateMetadata,
+	CoordinateMetadata, DynamicCoordinateMetadata, StaticCoordinateMetadata,
 };
 pub use coordinate_operation::CoordinateOperation;
 pub use coordinate_system::{
-    CoordinateSystem, OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
-    TemporalCountMeasureCoordinateSystem,
+	CoordinateSystem, OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
+	TemporalCountMeasureCoordinateSystem,
 };
 pub use datum_anchor::DatumAnchor;
 pub use datum_ensemble_accuracy::DatumEnsembleAccuracy;
@@ -113,8 +116,8 @@ pub use deformation_model_id::DeformationModelId;
 pub use derived_crs_conversion_method::DerivedCrsConversionMethod;
 pub use derived_engineering_crs::DerivedEngineeringCrs;
 pub use derived_geodetic_crs::{
-    DerivedDynamicGeodCrs, DerivedDynamicGeogCrs, DerivedGeodeticCrs, DerivedGeographicCrs,
-    DerivedStaticGeodCrs, DerivedStaticGeogCrs,
+	DerivedDynamicGeodCrs, DerivedDynamicGeogCrs, DerivedGeodeticCrs,
+	DerivedGeographicCrs, DerivedStaticGeodCrs, DerivedStaticGeogCrs,
 };
 pub use derived_parametric_crs::DerivedParametricCrs;
 pub use derived_projected_crs::DerivedProjectedCrs;
@@ -131,7 +134,9 @@ pub use geodetic_crs::{DynamicGeodeticCrs, GeodeticCrs, StaticGeodeticCrs};
 pub use geodetic_ensemble::GeodeticDatumEnsemble;
 pub use geodetic_reference_frame::GeodeticReferenceFrame;
 pub use geographic_bounding_box::GeographicBoundingBox;
-pub use geographic_crs::{DynamicGeographicCrs, GeographicCrs, StaticGeographicCrs};
+pub use geographic_crs::{
+	DynamicGeographicCrs, GeographicCrs, StaticGeographicCrs,
+};
 pub use geoid_model_id::GeoidModelId;
 pub use id::Id;
 pub use interpolation_crs::InterpolationCrs;

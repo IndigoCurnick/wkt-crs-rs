@@ -4,9 +4,9 @@ const EXAMPLE: &str = "OPERATIONACCURACY[5]";
 
 #[test]
 fn test_operation_accuracy() {
-    let correct = vec![WktCrsTypes::OperationAccuracy(OperationAccuracy(5.0))];
+	let correct = vec![WktCrsTypes::OperationAccuracy(OperationAccuracy(5.0))];
 
-    let ast = parse_wkt_crs(EXAMPLE).unwrap();
+	let ast = parse_wkt_crs(EXAMPLE).unwrap();
 
-    assert_eq!(correct, ast);
+	assert_eq!(correct, ast);
 }

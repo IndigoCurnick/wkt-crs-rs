@@ -1,101 +1,106 @@
 use crate::{
-    arity::match_arity,
-    ast::{Parse, WktArg, WktNode},
-    base_types::{Id, OrdinalDateTimeAxis},
-    enumerations::{Dimension, OrdinalDateTimeCsType},
-    error::WktParseError,
-    keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
+	arity::match_arity,
+	ast::{Parse, WktArg, WktNode},
+	base_types::{Axis, Id},
+	enumerations::{Dimension, OrdinalDateTimeCsType},
+	error::WktParseError,
+	keywords::{Keywords, match_keywords},
+	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
 #[derive(Debug, PartialEq)]
 pub struct OrdinalDateTimeCoordinateSystem {
-    pub ordinal_date_time_cs_type: OrdinalDateTimeCsType,
-    pub dimension: Dimension,
-    pub identifier: Option<Id>, // TODO: technically the spec allows for many...
-    pub ordinal_date_time_axis: Vec<OrdinalDateTimeAxis>,
+	pub ordinal_date_time_cs_type: OrdinalDateTimeCsType,
+	pub dimension: Dimension,
+	pub identifier: Option<Id>, // TODO: technically the spec allows for many...
+	pub ordinal_date_time_axis: Vec<Axis>,
 }
 
 impl WktInlineType for OrdinalDateTimeCoordinateSystem {
-    fn from_args<'a, I>(wkt_args: I) -> Result<WktInlineResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a crate::ast::WktArg>,
-    {
-        // Note that only nodes are necessary, so we can basically iterate the
-        // args, consuming all nodes
-        // when we hit not a node we can stop and just throw it into the base type
-        let mut it = wkt_args.into_iter();
+	fn from_args<'a, I>(
+		wkt_args: I,
+	) -> Result<WktInlineResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a crate::ast::WktArg>,
+	{
+		// Note that only nodes are necessary, so we can basically iterate the
+		// args, consuming all nodes
+		// when we hit not a node we can stop and just throw it into the base type
+		let mut it = wkt_args.into_iter();
 
-        let mut nodes = vec![];
+		let mut nodes = vec![];
 
-        while let Some(arg) = it.next() {
-            let node = match arg {
-                WktArg::Node(n) => n,
-                _ => break,
-            };
+		while let Some(arg) = it.next() {
+			let node = match arg {
+				WktArg::Node(n) => n,
+				_ => break,
+			};
 
-            nodes.push(node);
-        }
+			nodes.push(node);
+		}
 
-        let res = OrdinalDateTimeCoordinateSystem::from_nodes(nodes)?;
+		let res = OrdinalDateTimeCoordinateSystem::from_nodes(nodes)?;
 
-        return Ok(WktInlineResult {
-            consumed: res.consumed,
-            result: res.result,
-        });
-    }
+		return Ok(WktInlineResult {
+			consumed: res.consumed,
+			result: res.result,
+		});
+	}
 }
 
 impl WktBaseType for OrdinalDateTimeCoordinateSystem {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let mut iter = wkt_nodes.into_iter();
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let mut iter = wkt_nodes.into_iter();
 
-        let node = match iter.next() {
-            Some(x) => x,
-            None => return Err(WktParseError::NotEnoughNodes),
-        };
+		let node = match iter.next() {
+			Some(x) => x,
+			None => return Err(WktParseError::NotEnoughNodes),
+		};
 
-        match_keywords(&node.keyword, vec![Keywords::Cs])?;
-        match_arity(node.args.len(), 1, 3)?;
+		match_keywords(&node.keyword, vec![Keywords::Cs])?;
+		match_arity(node.args.len(), 1, 3)?;
 
-        let ordinal_date_time_cs_type = OrdinalDateTimeCsType::try_from(&node.args[0])?;
-        let dimension = Dimension::try_from(&node.args[1])?;
+		let ordinal_date_time_cs_type =
+			OrdinalDateTimeCsType::try_from(&node.args[0])?;
+		let dimension = Dimension::try_from(&node.args[1])?;
 
-        let identifier = match node.args.get(2) {
-            Some(x) => Some(x.parse()?),
-            None => None,
-        };
+		let identifier = match node.args.get(2) {
+			Some(x) => Some(x.parse()?),
+			None => None,
+		};
 
-        let mut ordinal_date_time_axis = vec![];
+		let mut ordinal_date_time_axis = vec![];
 
-        let mut i = 1;
+		let mut i = 1;
 
-        while let Some(next) = iter.next() {
-            let axis = match next.parse() {
-                Ok(x) => x,
-                Err(_) => break,
-            };
+		while let Some(next) = iter.next() {
+			let axis = match next.parse() {
+				Ok(x) => x,
+				Err(_) => break,
+			};
 
-            i += 1;
+			i += 1;
 
-            ordinal_date_time_axis.push(axis);
-        }
+			ordinal_date_time_axis.push(axis);
+		}
 
-        let cs = OrdinalDateTimeCoordinateSystem {
-            dimension,
-            identifier,
-            ordinal_date_time_axis,
-            ordinal_date_time_cs_type,
-        };
+		let cs = OrdinalDateTimeCoordinateSystem {
+			dimension,
+			identifier,
+			ordinal_date_time_axis,
+			ordinal_date_time_cs_type,
+		};
 
-        let res = WktBaseTypeResult {
-            consumed: i,
-            result: cs,
-        };
+		let res = WktBaseTypeResult {
+			consumed: i,
+			result: cs,
+		};
 
-        Ok(res)
-    }
+		Ok(res)
+	}
 }

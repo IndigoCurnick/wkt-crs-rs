@@ -1,61 +1,63 @@
 use crate::{
-    arity::match_arity,
-    ast::{Parse, WktNode},
-    base_types::{DatumAnchor, Id},
-    error::WktParseError,
-    keywords::{Keywords, match_keywords},
-    types::{WktBaseType, WktBaseTypeResult},
+	arity::match_arity,
+	ast::{Parse, WktNode},
+	base_types::{DatumAnchor, Id},
+	error::WktParseError,
+	keywords::{Keywords, match_keywords},
+	types::{WktBaseType, WktBaseTypeResult},
 };
 
 #[derive(Debug, PartialEq)]
 pub struct ParametricDatum {
-    pub datum_name: String,
-    pub datum_anchor: Option<DatumAnchor>,
-    pub identifier: Option<Id>,
+	pub datum_name: String,
+	pub datum_anchor: Option<DatumAnchor>,
+	pub identifier: Option<Id>,
 }
 
 impl WktBaseType for ParametricDatum {
-    fn from_nodes<'a, I>(wkt_nodes: I) -> Result<WktBaseTypeResult<Self>, WktParseError>
-    where
-        I: IntoIterator<Item = &'a WktNode>,
-    {
-        let node = match wkt_nodes.into_iter().next() {
-            Some(x) => x,
-            None => return Err(WktParseError::NotEnoughNodes),
-        };
+	fn from_nodes<'a, I>(
+		wkt_nodes: I,
+	) -> Result<WktBaseTypeResult<Self>, WktParseError>
+	where
+		I: IntoIterator<Item = &'a WktNode>,
+	{
+		let node = match wkt_nodes.into_iter().next() {
+			Some(x) => x,
+			None => return Err(WktParseError::NotEnoughNodes),
+		};
 
-        match_keywords(
-            &node.keyword,
-            vec![Keywords::PDatum, Keywords::ParametricDatum],
-        )?;
-        match_arity(node.args.len(), 1, 3)?;
+		match_keywords(
+			&node.keyword,
+			vec![Keywords::PDatum, Keywords::ParametricDatum],
+		)?;
+		match_arity(node.args.len(), 1, 3)?;
 
-        let datum_name = node.args[0].parse()?;
+		let datum_name = node.args[0].parse()?;
 
-        let mut i = 1;
+		let mut i = 1;
 
-        let datum_anchor = match node.args.get(i) {
-            Some(x) => {
-                i += 1;
-                Some(x.parse()?)
-            }
-            None => None,
-        };
+		let datum_anchor = match node.args.get(i) {
+			Some(x) => {
+				i += 1;
+				Some(x.parse()?)
+			}
+			None => None,
+		};
 
-        let identifier = match node.args.get(i) {
-            Some(x) => Some(x.parse()?),
-            None => None,
-        };
+		let identifier = match node.args.get(i) {
+			Some(x) => Some(x.parse()?),
+			None => None,
+		};
 
-        let datum = ParametricDatum {
-            datum_name,
-            datum_anchor,
-            identifier,
-        };
+		let datum = ParametricDatum {
+			datum_name,
+			datum_anchor,
+			identifier,
+		};
 
-        Ok(WktBaseTypeResult {
-            result: datum,
-            consumed: 1,
-        })
-    }
+		Ok(WktBaseTypeResult {
+			result: datum,
+			consumed: 1,
+		})
+	}
 }

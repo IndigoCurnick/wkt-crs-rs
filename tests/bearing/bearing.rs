@@ -4,9 +4,9 @@ const EXAMPLE1: &str = "BEARING[0]";
 
 #[test]
 fn test_bearing() {
-    let correct = vec![WktCrsTypes::Bearing(Bearing(0.0))];
+	let correct = vec![WktCrsTypes::Bearing(Bearing(0.0))];
 
-    let ast = parse_wkt_crs(EXAMPLE1).unwrap();
+	let ast = parse_wkt_crs(EXAMPLE1).unwrap();
 
-    assert_eq!(correct, ast);
+	assert_eq!(correct, ast);
 }

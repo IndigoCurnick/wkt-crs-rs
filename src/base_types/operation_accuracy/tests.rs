@@ -4,12 +4,12 @@ const EXAMPLE: &str = "OPERATIONACCURACY[5]";
 
 #[test]
 fn test_order() {
-    let correct = OperationAccuracy(5.0);
+	let correct = OperationAccuracy(5.0);
 
-    let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE);
 
-    let op = OperationAccuracy::from_nodes(&ast).unwrap();
+	let op = OperationAccuracy::from_nodes(&ast).unwrap();
 
-    assert_eq!(correct, op.result);
-    assert_eq!(op.consumed, 1);
+	assert_eq!(correct, op.result);
+	assert_eq!(op.consumed, 1);
 }

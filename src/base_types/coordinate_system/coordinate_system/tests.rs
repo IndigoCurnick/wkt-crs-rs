@@ -1,14 +1,18 @@
 use std::vec;
 
 use crate::{
-    ast::parse_wkt,
-    base_types::{
-        AngleUnit, Bearing, LengthUnit, Meridian, Order, OrdinalDateTimeAxis, SpatialAxis,
-        coordinate_system::{OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem},
-    },
-    compound_types::{SpatialUnit, Unit},
-    enumerations::{AxisDirection, Dimension, OrdinalDateTimeCsType, SpatialCsType},
-    types::WktBaseType,
+	ast::parse_wkt,
+	base_types::{
+		AngleUnit, Axis, Bearing, LengthUnit, Meridian, Order,
+		coordinate_system::{
+			OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
+		},
+	},
+	compound_types::{SpatialUnit, Unit},
+	enumerations::{
+		AxisDirection, Dimension, OrdinalDateTimeCsType, SpatialCsType,
+	},
+	types::WktBaseType,
 };
 
 use super::CoordinateSystem;
@@ -113,688 +117,713 @@ AXIS["Crossline (J)",northWest,ORDER[2]]
 
 #[test]
 fn test_cs_unit() {
-    test_example_1();
-    test_example_2();
-    test_example_3();
-    test_example_4();
-    test_example_5();
-    test_example_6();
-    test_example_7();
-    test_example_8();
-    test_example_9();
-    test_example_10();
-    test_example_11();
-    test_example_12();
-    test_example_13();
-    test_example_14();
-    test_example_15();
-    test_example_16();
-    test_example_17();
+	test_example_1();
+	test_example_2();
+	test_example_3();
+	test_example_4();
+	test_example_5();
+	test_example_6();
+	test_example_7();
+	test_example_8();
+	test_example_9();
+	test_example_10();
+	test_example_11();
+	test_example_12();
+	test_example_13();
+	test_example_14();
+	test_example_15();
+	test_example_16();
+	test_example_17();
 }
 
 fn test_example_1() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Ellipsoidal,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "latitude".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "longitude".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
-            unit_name: "degree".to_string(),
-            conversion_factor: 0.0174,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Ellipsoidal,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "latitude".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "longitude".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+			unit_name: "degree".to_string(),
+			conversion_factor: 0.0174,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4);
 }
 
 fn test_example_2() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(X)".to_string(),
-                axis_direction: AxisDirection::GeocentricX,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(Y)".to_string(),
-                axis_direction: AxisDirection::GeocentricY,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(Z)".to_string(),
-                axis_direction: AxisDirection::GeocentricZ,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(X)".to_string(),
+				axis_direction: AxisDirection::GeocentricX,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(Y)".to_string(),
+				axis_direction: AxisDirection::GeocentricY,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(Z)".to_string(),
+				axis_direction: AxisDirection::GeocentricZ,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 5);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 5);
 }
 
 fn test_example_3() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(X)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(Y)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(Z)".to_string(),
-                axis_direction: AxisDirection::Up,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(X)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(Y)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(Z)".to_string(),
+				axis_direction: AxisDirection::Up,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE3);
+	let ast = parse_wkt(EXAMPLE3);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 5);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 5);
 }
 
 fn test_example_4() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Spherical,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "distance (r)".to_string(),
-                axis_direction: AxisDirection::AwayFrom,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                    unit_name: "kilometre".to_string(),
-                    conversion_factor: 1000.0,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "longitude (U)".to_string(),
-                axis_direction: AxisDirection::CounterClockwise(Bearing(0.0)),
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::AngleUnit(AngleUnit {
-                    unit_name: "degree".into(),
-                    conversion_factor: 0.017,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "elevation (V)".to_string(),
-                axis_direction: AxisDirection::Up,
-                axis_order: Some(Order(3)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::AngleUnit(AngleUnit {
-                    unit_name: "degree".to_string(),
-                    conversion_factor: 0.017,
-                    identifier: None,
-                })),
-            },
-        ],
-        cs_unit: None,
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Spherical,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "distance (r)".to_string(),
+				axis_direction: AxisDirection::AwayFrom,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "kilometre".to_string(),
+						conversion_factor: 1000.0,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "longitude (U)".to_string(),
+				axis_direction: AxisDirection::CounterClockwise(Bearing(0.0)),
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".into(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "elevation (V)".to_string(),
+				axis_direction: AxisDirection::Up,
+				axis_order: Some(Order(3)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				))),
+			},
+		],
+		cs_unit: None,
+	});
 
-    let ast = parse_wkt(EXAMPLE4);
+	let ast = parse_wkt(EXAMPLE4);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4);
 }
 
 fn test_example_5() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Ellipsoidal,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "latitude".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::AngleUnit(AngleUnit {
-                    unit_name: "degree".to_string(),
-                    conversion_factor: 0.017,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "longitude".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::AngleUnit(AngleUnit {
-                    unit_name: "degree".to_string(),
-                    conversion_factor: 0.017,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "ellipsoidal height (h)".to_string(),
-                axis_direction: AxisDirection::Up,
-                axis_order: Some(Order(3)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                    unit_name: "metre".to_string(),
-                    conversion_factor: 1.0,
-                    identifier: None,
-                })),
-            },
-        ],
-        cs_unit: None,
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Ellipsoidal,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "latitude".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "longitude".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "ellipsoidal height (h)".to_string(),
+				axis_direction: AxisDirection::Up,
+				axis_order: Some(Order(3)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".to_string(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+		],
+		cs_unit: None,
+	});
 
-    let ast = parse_wkt(EXAMPLE5);
+	let ast = parse_wkt(EXAMPLE5);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4)
 }
 
 fn test_example_6() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Ellipsoidal,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(lat)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(lon)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
-            unit_name: "degree".to_string(),
-            conversion_factor: 0.017,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Ellipsoidal,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(lat)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(lon)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(AngleUnit {
+			unit_name: "degree".to_string(),
+			conversion_factor: 0.017,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE6);
+	let ast = parse_wkt(EXAMPLE6);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4)
 }
 
 fn test_example_7() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(E)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                    unit_name: "metre".to_string(),
-                    conversion_factor: 1.0,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(N)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                    unit_name: "metre".to_string(),
-                    conversion_factor: 1.0,
-                    identifier: None,
-                })),
-            },
-        ],
-        cs_unit: None,
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(E)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".to_string(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "(N)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".to_string(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+		],
+		cs_unit: None,
+	});
 
-    let ast = parse_wkt(EXAMPLE7);
+	let ast = parse_wkt(EXAMPLE7);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 3);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 3);
 }
 
 fn test_example_8() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(E)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(N)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(E)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(N)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE8);
+	let ast = parse_wkt(EXAMPLE8);
 
-    let cs = CoordinateSystem::from_nodes(ast.as_slice()).unwrap();
+	let cs = CoordinateSystem::from_nodes(ast.as_slice()).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4)
 }
 
 fn test_example_9() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "northing (X)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "easting (Y)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "German legal metre".to_string(),
-            conversion_factor: 1.0000135965,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "northing (X)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "easting (Y)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "German legal metre".to_string(),
+			conversion_factor: 1.0000135965,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE9);
+	let ast = parse_wkt(EXAMPLE9);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4)
 }
 
 fn test_example_10() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "easting (X)".to_string(),
-                axis_direction: AxisDirection::South(Some(Meridian {
-                    number: 90.0,
-                    angle_unit: AngleUnit {
-                        unit_name: "degree".to_string(),
-                        conversion_factor: 0.017,
-                        identifier: None,
-                    },
-                })),
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "northing (Y)".to_string(),
-                axis_direction: AxisDirection::South(Some(Meridian {
-                    number: 180.0,
-                    angle_unit: AngleUnit {
-                        unit_name: "degree".to_string(),
-                        conversion_factor: 0.017,
-                        identifier: None,
-                    },
-                })),
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "easting (X)".to_string(),
+				axis_direction: AxisDirection::South(Some(Meridian {
+					number: 90.0,
+					angle_unit: AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				})),
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "northing (Y)".to_string(),
+				axis_direction: AxisDirection::South(Some(Meridian {
+					number: 180.0,
+					angle_unit: AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				})),
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE10);
+	let ast = parse_wkt(EXAMPLE10);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4);
 }
 
 fn test_example_11() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "(E)".to_string(),
-                axis_direction: AxisDirection::East,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "(N)".to_string(),
-                axis_direction: AxisDirection::North(None),
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "ellipsoid height (h)".to_string(),
-                axis_direction: AxisDirection::Up,
-                axis_order: None,
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "(E)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "(N)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "ellipsoid height (h)".to_string(),
+				axis_direction: AxisDirection::Up,
+				axis_order: None,
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE11);
+	let ast = parse_wkt(EXAMPLE11);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 5);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 5);
 }
 
 fn test_example_12() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Vertical,
-        dimension: Dimension::One,
-        identifier: None,
-        spatial_axis: vec![SpatialAxis {
-            axis_name_abbreviation: "gravity-related height (H)".to_string(),
-            axis_direction: AxisDirection::Up,
-            axis_order: None,
-            identifier: None,
-            spatial_unit: None,
-        }],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Vertical,
+		dimension: Dimension::One,
+		identifier: None,
+		spatial_axis: vec![Axis {
+			axis_name_abbreviation: "gravity-related height (H)".to_string(),
+			axis_direction: AxisDirection::Up,
+			axis_order: None,
+			identifier: None,
+			unit: None,
+		}],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE12);
+	let ast = parse_wkt(EXAMPLE12);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 3)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 3)
 }
 
 fn test_example_13() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Vertical,
-        dimension: Dimension::One,
-        identifier: None,
-        spatial_axis: vec![SpatialAxis {
-            axis_name_abbreviation: "depth (D)".to_string(),
-            axis_direction: AxisDirection::Down,
-            axis_order: None,
-            identifier: None,
-            spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                unit_name: "metre".to_string(),
-                conversion_factor: 1.0,
-                identifier: None,
-            })),
-        }],
-        cs_unit: None,
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Vertical,
+		dimension: Dimension::One,
+		identifier: None,
+		spatial_axis: vec![Axis {
+			axis_name_abbreviation: "depth (D)".to_string(),
+			axis_direction: AxisDirection::Down,
+			axis_order: None,
+			identifier: None,
+			unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+				LengthUnit {
+					unit_name: "metre".to_string(),
+					conversion_factor: 1.0,
+					identifier: None,
+				},
+			))),
+		}],
+		cs_unit: None,
+	});
 
-    let ast = parse_wkt(EXAMPLE13);
+	let ast = parse_wkt(EXAMPLE13);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 2);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 2);
 }
 
 fn test_example_14() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "site north (x)".to_string(),
-                axis_direction: AxisDirection::SouthEast,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "site east (y)".to_string(),
-                axis_direction: AxisDirection::SouthWest,
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "site north (x)".to_string(),
+				axis_direction: AxisDirection::SouthEast,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "site east (y)".to_string(),
+				axis_direction: AxisDirection::SouthWest,
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE14);
+	let ast = parse_wkt(EXAMPLE14);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 4);
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4);
 }
 
 fn test_example_15() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Polar,
-        dimension: Dimension::Two,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "distance (r)".to_string(),
-                axis_direction: AxisDirection::AwayFrom,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::LengthUnit(LengthUnit {
-                    unit_name: "metre".to_string(),
-                    conversion_factor: 1.0,
-                    identifier: None,
-                })),
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "bearing (U)".to_string(),
-                axis_direction: AxisDirection::Clockwise(Bearing(234.0)),
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: Some(SpatialUnit::AngleUnit(AngleUnit {
-                    unit_name: "degree".to_string(),
-                    conversion_factor: 0.017,
-                    identifier: None,
-                })),
-            },
-        ],
-        cs_unit: None,
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Polar,
+		dimension: Dimension::Two,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "distance (r)".to_string(),
+				axis_direction: AxisDirection::AwayFrom,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(
+					LengthUnit {
+						unit_name: "metre".to_string(),
+						conversion_factor: 1.0,
+						identifier: None,
+					},
+				))),
+			},
+			Axis {
+				axis_name_abbreviation: "bearing (U)".to_string(),
+				axis_direction: AxisDirection::Clockwise(Bearing(234.0)),
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.017,
+						identifier: None,
+					},
+				))),
+			},
+		],
+		cs_unit: None,
+	});
 
-    let ast = parse_wkt(EXAMPLE15);
+	let ast = parse_wkt(EXAMPLE15);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 3)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 3)
 }
 
 fn test_example_16() {
-    let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
-        spatial_cs_type: SpatialCsType::Cartesian,
-        dimension: Dimension::Three,
-        identifier: None,
-        spatial_axis: vec![
-            SpatialAxis {
-                axis_name_abbreviation: "ahead (x)".to_string(),
-                axis_direction: AxisDirection::Forward,
-                axis_order: Some(Order(1)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "right (y)".to_string(),
-                axis_direction: AxisDirection::Starboard,
-                axis_order: Some(Order(2)),
-                identifier: None,
-                spatial_unit: None,
-            },
-            SpatialAxis {
-                axis_name_abbreviation: "down (z)".to_string(),
-                axis_direction: AxisDirection::Down,
-                axis_order: Some(Order(3)),
-                identifier: None,
-                spatial_unit: None,
-            },
-        ],
-        cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
-            unit_name: "metre".to_string(),
-            conversion_factor: 1.0,
-            identifier: None,
-        }))),
-    });
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Three,
+		identifier: None,
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "ahead (x)".to_string(),
+				axis_direction: AxisDirection::Forward,
+				axis_order: Some(Order(1)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "right (y)".to_string(),
+				axis_direction: AxisDirection::Starboard,
+				axis_order: Some(Order(2)),
+				identifier: None,
+				unit: None,
+			},
+			Axis {
+				axis_name_abbreviation: "down (z)".to_string(),
+				axis_direction: AxisDirection::Down,
+				axis_order: Some(Order(3)),
+				identifier: None,
+				unit: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: None,
+		}))),
+	});
 
-    let ast = parse_wkt(EXAMPLE16);
+	let ast = parse_wkt(EXAMPLE16);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 5)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 5)
 }
 
 fn test_example_17() {
-    let correct = CoordinateSystem::OrdinalDateTimeCS(OrdinalDateTimeCoordinateSystem {
-        ordinal_date_time_cs_type: OrdinalDateTimeCsType::Ordinal,
-        dimension: Dimension::Two,
-        identifier: None,
-        ordinal_date_time_axis: vec![
-            OrdinalDateTimeAxis {
-                axis_name_abbreviation: "Inline (I)".to_string(),
-                axis_direction: AxisDirection::NorthEast,
-                axis_order: Some(Order(1)),
-                identifier: None,
-            },
-            OrdinalDateTimeAxis {
-                axis_name_abbreviation: "Crossline (J)".to_string(),
-                axis_direction: AxisDirection::NorthWest,
-                axis_order: Some(Order(2)),
-                identifier: None,
-            },
-        ],
-    });
+	let correct =
+		CoordinateSystem::OrdinalDateTimeCS(OrdinalDateTimeCoordinateSystem {
+			ordinal_date_time_cs_type: OrdinalDateTimeCsType::Ordinal,
+			dimension: Dimension::Two,
+			identifier: None,
+			ordinal_date_time_axis: vec![
+				Axis {
+					axis_name_abbreviation: "Inline (I)".to_string(),
+					axis_direction: AxisDirection::NorthEast,
+					axis_order: Some(Order(1)),
+					identifier: None,
+					unit: None,
+				},
+				Axis {
+					axis_name_abbreviation: "Crossline (J)".to_string(),
+					axis_direction: AxisDirection::NorthWest,
+					axis_order: Some(Order(2)),
+					identifier: None,
+					unit: None,
+				},
+			],
+		});
 
-    let ast = parse_wkt(EXAMPLE17);
+	let ast = parse_wkt(EXAMPLE17);
 
-    let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
-    assert_eq!(cs.result, correct);
-    assert_eq!(cs.consumed, 3)
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 3)
 }
