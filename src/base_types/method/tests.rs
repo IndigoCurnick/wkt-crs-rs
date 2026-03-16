@@ -1,7 +1,7 @@
 use crate::{
 	WktBaseType,
 	ast::parse_wkt,
-	base_types::{Id, OperationMethod},
+	base_types::{Id, Method},
 	data_types::NumText,
 };
 
@@ -9,8 +9,8 @@ const EXAMPLE: &str = r#"METHOD["NADCON",ID["EPSG",9613]]"#;
 
 #[test]
 fn test_operation_method() {
-	let correct = OperationMethod {
-		operation_method_name: "NADCON".into(),
+	let correct = Method {
+		method_name: "NADCON".into(),
 		identifier: Some(Id {
 			authority_name: "EPSG".into(),
 			authority_unique_identifier: NumText::Int(9613),
@@ -22,7 +22,7 @@ fn test_operation_method() {
 
 	let ast = parse_wkt(EXAMPLE);
 
-	let op = OperationMethod::from_nodes(&ast).unwrap();
+	let op = Method::from_nodes(&ast).unwrap();
 
 	assert_eq!(correct, op.result);
 	assert_eq!(op.consumed, 1);

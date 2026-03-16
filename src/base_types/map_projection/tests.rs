@@ -1,8 +1,6 @@
 use crate::{
 	ast::parse_wkt,
-	base_types::{
-		AngleUnit, Id, LengthUnit, MapProjectionMethod, Parameter, ScaleUnit,
-	},
+	base_types::{AngleUnit, Id, LengthUnit, Method, Parameter, ScaleUnit},
 	compound_types::{SpatialUnit, Unit},
 	data_types::NumText,
 	types::WktBaseType,
@@ -63,8 +61,8 @@ fn test_map_projection() {
 fn test_example_1() {
 	let correct = MapProjection {
 		map_projection_name: "Kyrgyzstan zone 3".to_string(),
-		map_projection_method: MapProjectionMethod {
-			map_projection_method_name: "Transverse Mercator".to_string(),
+		map_projection_method: Method {
+			method_name: "Transverse Mercator".to_string(),
 			identifier: Some(Id {
 				authority_name: "EPSG".to_string(),
 				authority_unique_identifier: NumText::Int(9807),
@@ -142,8 +140,8 @@ fn test_example_1() {
 fn test_example_2() {
 	let correct = MapProjection {
 		map_projection_name: "UTM zone 10N".to_string(),
-		map_projection_method: MapProjectionMethod {
-			map_projection_method_name: "Transverse Mercator".to_string(),
+		map_projection_method: Method {
+			method_name: "Transverse Mercator".to_string(),
 			identifier: Some(Id {
 				authority_name: "EPSG".to_string(),
 				authority_unique_identifier: NumText::Int(9807),
@@ -257,8 +255,8 @@ fn test_example_2() {
 fn test_example_3() {
 	let correct = MapProjection {
 		map_projection_name: "UTM zone 10N".to_string(),
-		map_projection_method: MapProjectionMethod {
-			map_projection_method_name: "Transverse Mercator".to_string(),
+		map_projection_method: Method {
+			method_name: "Transverse Mercator".to_string(),
 			identifier: None,
 		},
 		map_projection_parameters: Some(vec![

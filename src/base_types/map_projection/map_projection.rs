@@ -1,7 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{Id, MapProjectionMethod, Parameter},
+	base_types::{Id, Method, Parameter},
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
 	types::{WktBaseType, WktBaseTypeResult},
@@ -10,7 +10,7 @@ use crate::{
 #[derive(Debug, PartialEq)]
 pub struct MapProjection {
 	pub map_projection_name: String,
-	pub map_projection_method: MapProjectionMethod,
+	pub map_projection_method: Method,
 	pub map_projection_parameters: Option<Vec<Parameter>>,
 	pub identifier: Option<Id>, // TODO: Technically the spec allows for multiple
 }

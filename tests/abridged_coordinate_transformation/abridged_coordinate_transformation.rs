@@ -1,9 +1,6 @@
 use wkt_crs_rs::{
 	WktCrsTypes,
-	base_types::{
-		AbridgedCoordinateTransformation, Id, OperationMethod,
-		Parameter,
-	},
+	base_types::{AbridgedCoordinateTransformation, Id, Method, Parameter},
 	compound_types::ScopeExtentIdentifierRemark,
 	data_types::NumText,
 	enumerations::OperationParameterWrapper,
@@ -23,8 +20,8 @@ fn test_abridged_transformation() {
 	let correct = AbridgedCoordinateTransformation {
 		operation_name: "Tokyo to JGD2000 (GSI)".to_string(),
 		operation_version: None,
-		operation_method: OperationMethod {
-			operation_method_name: "Geocentric translations".to_string(),
+		operation_method: Method {
+			method_name: "Geocentric translations".to_string(),
 			identifier: Some(Id {
 				authority_name: "EPSG".to_string(),
 				authority_unique_identifier: NumText::Int(1031),

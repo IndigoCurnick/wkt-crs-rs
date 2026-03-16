@@ -1,7 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{Id, OperationMethod},
+	base_types::{Id, Method},
 	enumerations::OperationParameterWrapper,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
@@ -11,7 +11,7 @@ use crate::{
 #[derive(Debug, PartialEq)]
 pub struct DerivingConversion {
 	pub deriving_conversion_name: String,
-	pub operation_method: OperationMethod,
+	pub operation_method: Method,
 	pub operation_parameter: Option<Vec<OperationParameterWrapper>>,
 	pub identifier: Option<Id>, // TODO: allow multiple
 }

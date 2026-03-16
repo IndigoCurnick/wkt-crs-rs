@@ -4,8 +4,8 @@ use crate::{
 		AngleUnit, Axis, BaseGeodeticCrs, BaseProjectedCrs,
 		BaseStaticGeographicCrs, CoordinateSystem, DerivingConversion,
 		Ellipsoid, GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-		MapProjectionMethod, OperationMethod, OrdinalDateTimeCoordinateSystem,
-		Parameter, ScaleUnit, derived_projected_crs::DerivedProjectedCrs,
+		Method, OrdinalDateTimeCoordinateSystem, Parameter, ScaleUnit,
+		derived_projected_crs::DerivedProjectedCrs,
 	},
 	compound_types::{
 		GeodeticData, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
@@ -76,9 +76,8 @@ fn test_derived_projected_crs() {
 			),
 			map_projection: MapProjection {
 				map_projection_name: "Texas South Central".to_string(),
-				map_projection_method: MapProjectionMethod {
-					map_projection_method_name: "Lambert Conic Conformal"
-						.to_string(),
+				map_projection_method: Method {
+					method_name: "Lambert Conic Conformal".to_string(),
 					identifier: Some(Id {
 						authority_name: "EPSG".to_string(),
 						authority_unique_identifier: NumText::Int(9802),
@@ -111,8 +110,8 @@ fn test_derived_projected_crs() {
 		},
 		deriving_conversion: DerivingConversion {
 			deriving_conversion_name: "Gulf of Mexico".to_string(),
-			operation_method: OperationMethod {
-				operation_method_name: "P6".to_string(),
+			operation_method: Method {
+				method_name: "P6".to_string(),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(1049),

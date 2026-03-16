@@ -1,7 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{OperationMethod, OperationVersion},
+	base_types::{Method, OperationVersion},
 	compound_types::ScopeExtentIdentifierRemark,
 	enumerations::OperationParameterWrapper,
 	error::WktParseError,
@@ -13,7 +13,7 @@ use crate::{
 pub struct AbridgedCoordinateTransformation {
 	pub operation_name: String,
 	pub operation_version: Option<OperationVersion>,
-	pub operation_method: OperationMethod,
+	pub operation_method: Method,
 	pub operation_parameter_wrapper: Option<Vec<OperationParameterWrapper>>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
@@ -52,7 +52,7 @@ impl WktBaseType for AbridgedCoordinateTransformation {
 		};
 
 		let operation_method = match &node.args[i] {
-			WktArg::Node(n) => match OperationMethod::from_nodes(vec![n]) {
+			WktArg::Node(n) => match Method::from_nodes(vec![n]) {
 				Ok(x) => {
 					i += 1;
 					x.result

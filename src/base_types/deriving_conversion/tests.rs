@@ -1,7 +1,7 @@
 use crate::{
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, Id, OperationMethod, Parameter,
+		AngleUnit, Id, Method, Parameter,
 		deriving_conversion::DerivingConversion,
 	},
 	compound_types::{SpatialUnit, Unit},
@@ -27,8 +27,8 @@ const EXAMPLE1: &str = r#"DERIVINGCONVERSION["conversion name",
 fn test_derived_conversion() {
 	let correct = DerivingConversion {
 		deriving_conversion_name: "conversion name".to_string(),
-		operation_method: OperationMethod {
-			operation_method_name: "method name".to_string(),
+		operation_method: Method {
+			method_name: "method name".to_string(),
 			identifier: Some(Id {
 				authority_name: "authority".to_string(),
 				authority_unique_identifier: NumText::Int(123),

@@ -3,10 +3,9 @@ use crate::{
 	base_types::{
 		AngleUnit, AreaDescription, Axis, ConcatenatedOperation,
 		CoordinateSystem, Ellipsoid, Extent, GeodeticCrs,
-		GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-		MapProjectionMethod, OperationAccuracy, Order, Parameter, Scope,
-		SourceCrs, SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs,
-		Usage,
+		GeodeticReferenceFrame, Id, LengthUnit, MapProjection, Method,
+		OperationAccuracy, Order, Parameter, Scope, SourceCrs,
+		SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs, Usage,
 	},
 	compound_types::{
 		CoordinateReferenceSystem, GeodeticData, ScopeExtentIdentifierRemark,
@@ -213,8 +212,8 @@ fn test_concatenated_operation() {
 		},
 		step: vec![Step::MapProjection(MapProjection {
 			map_projection_name: "Kyrgyzstan zone 3".to_string(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Transverse Mercator".to_string(),
+			map_projection_method: Method {
+				method_name: "Transverse Mercator".to_string(),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(9807),

@@ -4,8 +4,8 @@ use crate::{
 		AngleUnit, Axis, BaseDynamicCrs, BaseDynamicGeographicCrs,
 		CoordinateSystem, DerivedDynamicGeogCrs, DerivedGeodeticCrs,
 		DerivedGeographicCrs, DerivingConversion, DynamicCrs, Ellipsoid,
-		FrameEpoch, GeodeticReferenceFrame, Id, LengthUnit, OperationMethod,
-		Parameter, Order, SpatialCoordinateSystem,
+		FrameEpoch, GeodeticReferenceFrame, Id, LengthUnit, Method, Order,
+		Parameter, SpatialCoordinateSystem,
 	},
 	compound_types::{ScopeExtentIdentifierRemark, SpatialUnit, Unit},
 	data_types::NumText,
@@ -66,8 +66,8 @@ fn test_derived_geodetic_crs() {
 			),
 			deriving_conversion: DerivingConversion {
 				deriving_conversion_name: "Atlantic pole".into(),
-				operation_method: OperationMethod {
-					operation_method_name: "Pole rotation".into(),
+				operation_method: Method {
+					method_name: "Pole rotation".into(),
 					identifier: Some(Id {
 						authority_name: "Authority".into(),
 						authority_unique_identifier: NumText::Int(1234),
@@ -78,20 +78,18 @@ fn test_derived_geodetic_crs() {
 					}),
 				},
 				operation_parameter: Some(vec![
-					OperationParameterWrapper::OperationParameter(
-						Parameter {
-							parameter_name: "Latitude of rotated pole".into(),
-							parameter_value: 52.0,
-							parameter_unit: Some(Unit::SpatialUnit(
-								SpatialUnit::AngleUnit(AngleUnit {
-									unit_name: "degree".into(),
-									conversion_factor: 0.017,
-									identifier: None,
-								}),
-							)),
-							identifier: None,
-						},
-					),
+					OperationParameterWrapper::OperationParameter(Parameter {
+						parameter_name: "Latitude of rotated pole".into(),
+						parameter_value: 52.0,
+						parameter_unit: Some(Unit::SpatialUnit(
+							SpatialUnit::AngleUnit(AngleUnit {
+								unit_name: "degree".into(),
+								conversion_factor: 0.017,
+								identifier: None,
+							}),
+						)),
+						identifier: None,
+					}),
 				]),
 				identifier: None,
 			},

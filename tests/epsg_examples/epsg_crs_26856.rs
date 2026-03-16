@@ -3,12 +3,11 @@ use wkt_crs_rs::{
 	base_types::{
 		AngleUnit, Axis, BaseGeodeticCrs, BaseStaticGeographicCrs,
 		CoordinateSystem, Ellipsoid, GeodeticReferenceFrame, Id, LengthUnit,
-		MapProjection, MapProjectionMethod, Parameter, ProjectedCrs, ScaleUnit,
+		MapProjection, Method, Parameter, ProjectedCrs, ScaleUnit,
 		SpatialCoordinateSystem,
 	},
 	compound_types::{
-		GeodeticData, MapProjectionParameterUnit, ScopeExtentIdentifierRemark,
-		SpatialUnit, Unit,
+		GeodeticData, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
 	},
 	data_types::NumText,
 	enumerations::{AxisDirection, Dimension, SpatialCsType},
@@ -170,8 +169,8 @@ fn test_epsg_crs_26856() {
 		map_projection: MapProjection {
 			map_projection_name: "SPCS83 Maine West zone (US survey foot)"
 				.to_string(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Transverse Mercator".to_string(),
+			map_projection_method: Method {
+				method_name: "Transverse Mercator".to_string(),
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(9807),

@@ -3,11 +3,11 @@ use crate::{
 	base_types::{
 		AngleUnit, AreaDescription, Axis, Citation, CoordinateSystem,
 		Ellipsoid, Extent, GeodeticCrs, GeodeticReferenceFrame,
-		GeographicBoundingBox, Id, InterpolationCrs, LengthUnit,
-		OperationAccuracy, OperationMethod, Parameter,
-		OperationParameterFile, OperationVersion, Order, Remark, Scope,
-		SourceCrs, SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs, Uri,
-		Usage, coordinate_operation::coordinate_operation::CoordinateOperation,
+		GeographicBoundingBox, Id, InterpolationCrs, LengthUnit, Method,
+		OperationAccuracy, OperationParameterFile, OperationVersion, Order,
+		Parameter, Remark, Scope, SourceCrs, SpatialCoordinateSystem,
+		StaticGeodeticCrs, TargetCrs, Uri, Usage,
+		coordinate_operation::coordinate_operation::CoordinateOperation,
 	},
 	compound_types::{
 		CoordinateReferenceSystem, GeodeticData, ScopeExtentIdentifierRemark,
@@ -353,8 +353,8 @@ fn test_example_1() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "Geocentric translations".into(),
+		operation_method: Method {
+			method_name: "Geocentric translations".into(),
 			identifier: Some(Id {
 				authority_name: "EPSG".into(),
 				authority_unique_identifier: NumText::Int(1031),
@@ -587,8 +587,8 @@ fn test_example_2() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "Geocentric translations".into(),
+		operation_method: Method {
+			method_name: "Geocentric translations".into(),
 			identifier: Some(Id {
 				authority_name: "EPSG".into(),
 				authority_unique_identifier: NumText::Int(1031),
@@ -818,8 +818,8 @@ fn test_example_3() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "NTv2".into(),
+		operation_method: Method {
+			method_name: "NTv2".into(),
 			identifier: Some(Id {
 				authority_name: "EPSG".into(),
 				authority_unique_identifier: NumText::Int(9615),
@@ -1017,8 +1017,8 @@ fn test_example_4() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "Coordinate Frame".into(),
+		operation_method: Method {
+			method_name: "Coordinate Frame".into(),
 			identifier: None,
 		},
 		operation_parameter_wrapper: Some(vec![
@@ -1221,8 +1221,8 @@ fn test_example_5() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "Vertical Offset and Slope".into(),
+		operation_method: Method {
+			method_name: "Vertical Offset and Slope".into(),
 			identifier: Some(Id {
 				authority_name: "EPSG".into(),
 				authority_unique_identifier: NumText::Int(1046),

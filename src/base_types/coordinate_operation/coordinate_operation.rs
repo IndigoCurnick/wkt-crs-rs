@@ -2,7 +2,7 @@ use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
 	base_types::{
-		InterpolationCrs, OperationAccuracy, OperationMethod, OperationVersion,
+		InterpolationCrs, OperationAccuracy, Method, OperationVersion,
 		SourceCrs, TargetCrs,
 	},
 	compound_types::ScopeExtentIdentifierRemark,
@@ -18,7 +18,7 @@ pub struct CoordinateOperation {
 	pub operation_version: Option<OperationVersion>,
 	pub source_crs: SourceCrs,
 	pub target_crs: TargetCrs,
-	pub operation_method: OperationMethod,
+	pub operation_method: Method,
 	pub operation_parameter_wrapper: Option<Vec<OperationParameterWrapper>>,
 	pub interpolation_crs: Option<InterpolationCrs>,
 	pub operation_accuracy: Option<OperationAccuracy>,
@@ -79,7 +79,7 @@ impl WktBaseType for CoordinateOperation {
 		};
 
 		let operation_method = match &node.args[i] {
-			WktArg::Node(n) => match OperationMethod::from_nodes(vec![n]) {
+			WktArg::Node(n) => match Method::from_nodes(vec![n]) {
 				Ok(x) => {
 					i += 1;
 					x.result

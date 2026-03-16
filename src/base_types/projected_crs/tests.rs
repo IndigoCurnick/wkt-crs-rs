@@ -3,14 +3,13 @@ use crate::{
 	base_types::{
 		AngleUnit, AreaDescription, Axis, BaseGeodeticCrs,
 		BaseStaticGeographicCrs, CoordinateSystem, Ellipsoid, Extent,
-		GeodeticReferenceFrame, Id, LengthUnit, MapProjection,
-		MapProjectionMethod, Order, Parameter, PrimeMeridian, Remark,
-		ScaleUnit, Scope, SpatialCoordinateSystem, Usage,
+		GeodeticReferenceFrame, Id, LengthUnit, MapProjection, Method, Order,
+		Parameter, PrimeMeridian, Remark, ScaleUnit, Scope,
+		SpatialCoordinateSystem, Usage,
 		projected_crs::projected_crs::ProjectedCrs,
 	},
 	compound_types::{
-		GeodeticData, MapProjectionParameterUnit, ScopeExtentIdentifierRemark,
-		SpatialUnit, Unit,
+		GeodeticData, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
 	},
 	data_types::NumText,
 	enumerations::{AxisDirection, Dimension, SpatialCsType},
@@ -163,9 +162,8 @@ fn test_example_1() {
 		),
 		map_projection: MapProjection {
 			map_projection_name: "LAEA".into(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Lambert Azimuthal Equal Area"
-					.into(),
+			map_projection_method: Method {
+				method_name: "Lambert Azimuthal Equal Area".into(),
 				identifier: Some(Id {
 					authority_name: "EPSG".into(),
 					authority_unique_identifier: NumText::Int(9820),
@@ -316,9 +314,8 @@ fn test_example_2() {
 		),
 		map_projection: MapProjection {
 			map_projection_name: "Texas South Central SPCS27".into(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Lambert Conic Conformal (2SP)"
-					.into(),
+			map_projection_method: Method {
+				method_name: "Lambert Conic Conformal (2SP)".into(),
 				identifier: Some(Id {
 					authority_name: "EPSG".into(),
 					authority_unique_identifier: NumText::Int(9802),
@@ -514,8 +511,8 @@ fn test_example_3() {
 		),
 		map_projection: MapProjection {
 			map_projection_name: "UTM zone 10N".into(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Transverse Mercator".into(),
+			map_projection_method: Method {
+				method_name: "Transverse Mercator".into(),
 				identifier: None,
 			},
 			map_projection_parameters: Some(vec![
@@ -633,8 +630,8 @@ fn test_example_4() {
 		),
 		map_projection: MapProjection {
 			map_projection_name: "UTM zone 31N 3D".into(),
-			map_projection_method: MapProjectionMethod {
-				map_projection_method_name: "Transverse Mercator (3D)".into(),
+			map_projection_method: Method {
+				method_name: "Transverse Mercator (3D)".into(),
 				identifier: None,
 			},
 			map_projection_parameters: Some(vec![

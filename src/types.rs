@@ -7,15 +7,14 @@ use crate::{
 		Calendar, Citation, CompoundCrs, ConcatenatedOperation,
 		CoordinateEpoch, CoordinateMetadata, CoordinateOperation,
 		CoordinateSystem, DatumAnchor, DatumEnsembleAccuracy,
-		DatumEnsembleMember, DeformationModelId, DerivedCrsConversionMethod,
-		DerivedEngineeringCrs, DerivedGeodeticCrs, DerivedParametricCrs,
-		DerivedProjectedCrs, DerivedTemporalCrs, DerivedVerticalCrs,
-		DerivingConversion, DynamicCrs, Ellipsoid, EngineeringCrs,
-		EngineeringDatum, Extent, FrameEpoch, GeodeticCrs,
-		GeodeticDatumEnsemble, GeodeticReferenceFrame, GeographicBoundingBox,
-		GeographicCrs, GeoidModelId, Id, InterpolationCrs, LengthUnit,
-		MapProjection, MapProjectionMethod, Meridian, OperationAccuracy,
-		OperationMethod, OperationParameterFile, OperationVersion, Order,
+		DatumEnsembleMember, DeformationModelId, DerivedEngineeringCrs,
+		DerivedGeodeticCrs, DerivedParametricCrs, DerivedProjectedCrs,
+		DerivedTemporalCrs, DerivedVerticalCrs, DerivingConversion, DynamicCrs,
+		Ellipsoid, EngineeringCrs, EngineeringDatum, Extent, FrameEpoch,
+		GeodeticCrs, GeodeticDatumEnsemble, GeodeticReferenceFrame,
+		GeographicBoundingBox, GeographicCrs, GeoidModelId, Id,
+		InterpolationCrs, LengthUnit, MapProjection, Meridian, Method,
+		OperationAccuracy, OperationParameterFile, OperationVersion, Order,
 		Parameter, ParametricCrs, ParametricDatum, ParametricUnit,
 		PointMotionOperation, PrimeMeridian, ProjectedCrs, Remark, ScaleUnit,
 		Scope, SourceCrs, TargetCrs, TemporalDatum, TemporalExtent, TimeCrs,
@@ -95,7 +94,6 @@ pub enum WktCrsTypes {
 	ProjectedCrs(ProjectedCrs),
 	BaseGeodeticCrs(BaseGeodeticCrs),
 	MapProjection(MapProjection),
-	MapProjectionMethod(MapProjectionMethod),
 	VerticalCrs(VerticalCrs),
 	GeoidModel(GeoidModelId),
 	VerticalReferenceFrame(VerticalReferenceFrame),
@@ -109,7 +107,6 @@ pub enum WktCrsTypes {
 	TimeOrigin(TimeOrigin),
 	Calendar(Calendar),
 	DerivingConversion(DerivingConversion),
-	DerivedCrsConversionMethod(DerivedCrsConversionMethod),
 	DerivedCrsConversionParameter(Parameter),
 	DerivedGeodeticCrs(DerivedGeodeticCrs),
 	DerivedProjectedCrs(DerivedProjectedCrs),
@@ -129,7 +126,7 @@ pub enum WktCrsTypes {
 	OperationVersion(OperationVersion),
 	SourceCrs(SourceCrs),
 	TargetCrs(TargetCrs),
-	OperationMethod(OperationMethod),
+	Method(Method),
 	OperationParameter(Parameter),
 	OperationParameterFile(OperationParameterFile),
 	InterpolationCrs(InterpolationCrs),
@@ -364,30 +361,7 @@ impl WktBaseType for WktCrsTypes {
 				process::<Meridian, _>(iter, Self::Meridian)
 			}
 			crate::keywords::Keywords::Method => {
-				if let Ok(tmp) =
-					DerivedCrsConversionMethod::from_nodes(iter.clone())
-				{
-					return Ok(WktBaseTypeResult {
-						result: Self::DerivedCrsConversionMethod(tmp.result),
-						consumed: tmp.consumed,
-					});
-				}
-
-				if let Ok(tmp) = MapProjectionMethod::from_nodes(iter.clone()) {
-					return Ok(WktBaseTypeResult {
-						result: Self::MapProjectionMethod(tmp.result),
-						consumed: tmp.consumed,
-					});
-				}
-
-				if let Ok(tmp) = OperationMethod::from_nodes(iter) {
-					return Ok(WktBaseTypeResult {
-						result: Self::OperationMethod(tmp.result),
-						consumed: tmp.consumed,
-					});
-				}
-
-				return Err(WktParseError::CouldNotDetermineType);
+				process::<Method, _>(iter, Self::Method)
 			}
 			crate::keywords::Keywords::Model => {
 				process::<DeformationModelId, _>(iter, Self::DeformationModelId)
@@ -438,10 +412,7 @@ impl WktBaseType for WktCrsTypes {
 				process::<ProjectedCrs, _>(iter, Self::ProjectedCrs)
 			}
 			crate::keywords::Keywords::Projection => {
-				process::<MapProjectionMethod, _>(
-					iter,
-					Self::MapProjectionMethod,
-				)
+				process::<Method, _>(iter, Self::Method)
 			}
 			crate::keywords::Keywords::Remark => {
 				process::<Remark, _>(iter, Self::Remark)

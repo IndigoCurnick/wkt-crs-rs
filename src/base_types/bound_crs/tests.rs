@@ -3,8 +3,8 @@ use crate::{
 	base_types::{
 		AbridgedCoordinateTransformation, AngleUnit, Axis, BoundCrs,
 		CoordinateSystem, Ellipsoid, GeodeticCrs, GeodeticReferenceFrame, Id,
-		OperationMethod, OperationParameterFile, SourceCrs,
-		SpatialCoordinateSystem, StaticGeodeticCrs, TargetCrs,
+		Method, OperationParameterFile, SourceCrs, SpatialCoordinateSystem,
+		StaticGeodeticCrs, TargetCrs,
 	},
 	compound_types::{
 		CoordinateReferenceSystem, GeodeticData, ScopeExtentIdentifierRemark,
@@ -177,8 +177,8 @@ fn test_bound_crs() {
 		abridged_coordinate_transformation: AbridgedCoordinateTransformation {
 			operation_name: "NAD27 to NAD83 Alaska".into(),
 			operation_version: None,
-			operation_method: OperationMethod {
-				operation_method_name: "NADCON".into(),
+			operation_method: Method {
+				method_name: "NADCON".into(),
 				identifier: Some(Id {
 					authority_name: "EPSG".into(),
 					authority_unique_identifier: NumText::Int(9613),

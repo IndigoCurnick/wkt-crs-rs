@@ -2,7 +2,7 @@ use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
 	base_types::{
-		OperationAccuracy, OperationMethod, OperationVersion, SourceCrs,
+		OperationAccuracy, Method, OperationVersion, SourceCrs,
 	},
 	compound_types::ScopeExtentIdentifierRemark,
 	enumerations::OperationParameterWrapper,
@@ -16,7 +16,7 @@ pub struct PointMotionOperation {
 	pub operation_name: String,
 	pub operation_version: Option<OperationVersion>,
 	pub source_crs: SourceCrs,
-	pub operation_method: OperationMethod,
+	pub operation_method: Method,
 	pub operation_parameter_wrapper: Option<Vec<OperationParameterWrapper>>,
 	pub operation_accuracy: Option<OperationAccuracy>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
@@ -67,7 +67,7 @@ impl WktBaseType for PointMotionOperation {
 		};
 
 		let operation_method = match &node.args[i] {
-			WktArg::Node(n) => match OperationMethod::from_nodes(vec![n]) {
+			WktArg::Node(n) => match Method::from_nodes(vec![n]) {
 				Ok(x) => {
 					i += 1;
 					x.result

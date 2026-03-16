@@ -2,8 +2,8 @@ use wkt_crs_rs::{
 	WktCrsTypes,
 	base_types::{
 		Axis, CoordinateSystem, Ellipsoid, GeodeticCrs, GeodeticReferenceFrame,
-		LengthUnit, OperationAccuracy, OperationMethod, OperationParameterFile,
-		Order, PointMotionOperation, SourceCrs, SpatialCoordinateSystem,
+		LengthUnit, Method, OperationAccuracy, OperationParameterFile, Order,
+		PointMotionOperation, SourceCrs, SpatialCoordinateSystem,
 		StaticGeodeticCrs,
 	},
 	compound_types::{
@@ -114,9 +114,8 @@ fn test_point_motion_operation() {
 				)),
 			),
 		},
-		operation_method: OperationMethod {
-			operation_method_name: "Point motion by grid (Canada NTv2_Vel)"
-				.into(),
+		operation_method: Method {
+			method_name: "Point motion by grid (Canada NTv2_Vel)".into(),
 			identifier: None,
 		},
 		operation_parameter_wrapper: Some(vec![
