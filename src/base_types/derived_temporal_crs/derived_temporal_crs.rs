@@ -30,7 +30,7 @@ impl WktBaseType for DerivedTemporalCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::TimeCrs])?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let derived_crs_name = node.args[0].parse()?;
 		let base_temporal_crs = node.args[1].parse()?;

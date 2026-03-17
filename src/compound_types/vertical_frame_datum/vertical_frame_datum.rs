@@ -2,6 +2,7 @@ use crate::{
 	ast::WktNode,
 	base_types::{VerticalDatumEnsemble, VerticalReferenceFrame},
 	error::WktParseError,
+	keywords::{self, Keywords},
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
@@ -20,6 +21,13 @@ impl WktBaseType for VerticalFrameDatum {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::VerticalDatum
+		};
+
 		if let Ok(res) = VerticalReferenceFrame::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
 				consumed: res.consumed,
@@ -34,6 +42,8 @@ impl WktBaseType for VerticalFrameDatum {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

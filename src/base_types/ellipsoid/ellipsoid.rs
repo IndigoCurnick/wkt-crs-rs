@@ -5,7 +5,7 @@ use log::warn;
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktNode},
-	base_types::LengthUnit,
+	base_types::{Id, LengthUnit},
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
 	types::{WktBaseType, WktBaseTypeResult},
@@ -17,6 +17,7 @@ pub struct Ellipsoid {
 	pub semi_major_axis: f64,
 	pub inverse_flattening: f64,
 	pub length_unit: Option<LengthUnit>,
+	pub identifier: Option<Id>,
 }
 
 impl WktBaseType for Ellipsoid {
@@ -41,7 +42,7 @@ impl WktBaseType for Ellipsoid {
 			warn!("Keyword `SPHEROID` depreciated - use `ELLIPSOID` instead");
 		}
 
-		match_arity(node.args.len(), 3, 4)?;
+		match_arity(node.args.len(), 3, 5)?;
 
 		let ellipsoid_name = node.args[0].parse()?;
 
@@ -54,11 +55,17 @@ impl WktBaseType for Ellipsoid {
 			None => None,
 		};
 
+		let identifier = match node.args.get(4) {
+			Some(x) => Some(x.parse()?),
+			None => None,
+		};
+
 		let ellipsoid = Ellipsoid {
 			ellipsoid_name,
 			inverse_flattening,
 			length_unit,
 			semi_major_axis,
+			identifier,
 		};
 
 		let res = WktBaseTypeResult {

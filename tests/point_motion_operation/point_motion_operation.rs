@@ -58,6 +58,7 @@ fn test_point_motion_operation() {
 										conversion_factor: 1.0,
 										identifier: None,
 									}),
+									identifier: None,
 								},
 								anchor: None,
 								identifier: None,

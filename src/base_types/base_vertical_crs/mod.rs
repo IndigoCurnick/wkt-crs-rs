@@ -3,6 +3,7 @@ pub use crate::base_types::base_vertical_crs::base_static_vertical_crs::BaseStat
 use crate::{
 	ast::WktNode,
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
@@ -24,6 +25,13 @@ impl WktBaseType for BaseVerticalCrs {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::BaseVertCrs
+		};
+
 		if let Ok(res) = BaseDynamicVerticalCrs::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
 				consumed: res.consumed,
@@ -38,6 +46,8 @@ impl WktBaseType for BaseVerticalCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

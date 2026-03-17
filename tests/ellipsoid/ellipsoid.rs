@@ -33,6 +33,7 @@ fn test_example_1() {
 			unit_name: "metre".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	})];
 
 	let ast = parse_wkt_crs(EXAMPLE1).unwrap();
@@ -47,6 +48,7 @@ fn test_example_2() {
 		semi_major_axis: 6378132.0,
 		inverse_flattening: 298.257222101,
 		length_unit: None,
+		identifier: None,
 	})];
 
 	let ast = parse_wkt_crs(EXAMPLE2).unwrap();
@@ -65,6 +67,7 @@ fn test_exmaple_3() {
 			unit_name: "US survey foot".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	})];
 
 	let ast = parse_wkt_crs(EXAMPLE3).unwrap();
@@ -83,6 +86,7 @@ fn test_example_4() {
 			unit_name: "metre".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	})];
 
 	let ast = parse_wkt_crs(EXAMPLE4).unwrap();

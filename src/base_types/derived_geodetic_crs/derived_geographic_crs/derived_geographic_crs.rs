@@ -2,6 +2,7 @@ use crate::ast::WktNode;
 pub use crate::base_types::derived_geodetic_crs::derived_geographic_crs::derived_dynamic_geog_crs::DerivedDynamicGeogCrs;
 pub use crate::base_types::derived_geodetic_crs::derived_geographic_crs::derived_static_geog_crs::DerivedStaticGeogCrs;
 use crate::error::WktParseError;
+use crate::keywords::Keywords;
 use crate::types::{WktBaseType, WktBaseTypeResult};
 
 #[derive(Debug, PartialEq)]
@@ -19,6 +20,13 @@ impl WktBaseType for DerivedGeographicCrs {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodeticCrs
+		};
+
 		if let Ok(stati) = DerivedStaticGeogCrs::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
 				result: Self::DerivedStaticGeogCrs(stati.result),
@@ -33,6 +41,8 @@ impl WktBaseType for DerivedGeographicCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

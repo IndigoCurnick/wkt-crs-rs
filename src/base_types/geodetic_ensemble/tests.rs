@@ -41,6 +41,7 @@ fn test_geodetic_ensemble() {
 				conversion_factor: 1.0,
 				identifier: None,
 			}),
+			identifier: None,
 		},
 		datum_ensemble_accuracy: DatumEnsembleAccuracy(2.0),
 		identifier: None,

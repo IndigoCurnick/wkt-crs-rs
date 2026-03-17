@@ -33,7 +33,7 @@ impl WktBaseType for DynamicGeodeticCrs {
 			&node.keyword,
 			vec![Keywords::GeodCrs, Keywords::GeodeticCrs],
 		)?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let crs_name = node.args[0].parse()?;
 		let dynamic_crs = node.args[1].parse()?;

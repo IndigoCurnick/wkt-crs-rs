@@ -30,7 +30,7 @@ impl WktBaseType for DerivedProjectedCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::DerivedProjCrs])?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let derived_crs_name = node.args[0].parse()?;
 		let base_projected_crs = node.args[1].parse()?;

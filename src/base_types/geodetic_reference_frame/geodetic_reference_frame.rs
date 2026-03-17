@@ -66,25 +66,43 @@ impl WktBaseType for GeodeticReferenceFrame {
 			&node.keyword,
 			vec![Keywords::Datum, Keywords::TRF, Keywords::GeodeticDatum],
 		)?;
-		match_arity(node.args.len(), 2, 4)?;
+		match_arity(node.args.len(), 2, 5)?;
 
 		let datum_name = node.args[0].parse()?;
 		let ellipsoid = node.args[1].parse()?;
 
 		let mut i = 2;
 
-		let anchor = match node.args.get(i) {
-			Some(x) => {
-				i += 1;
-				Some(x.parse()?)
-			}
-			None => None,
-		};
+		let mut anchor = None;
+		let mut identifier = None;
 
-		let identifier = match node.args.get(i) {
-			Some(x) => Some(x.parse()?),
-			None => None,
-		};
+		while i < node.args.len() {
+			let arg = match node.args.get(i) {
+				Some(x) => x,
+				None => break,
+			};
+
+			match arg {
+				WktArg::Data(_) => return Err(WktParseError::ExpectedNode),
+				WktArg::Node(wkt_node) => match wkt_node.keyword {
+					Keywords::Id => {
+						identifier = Some(wkt_node.parse()?);
+						i += 1;
+					}
+					Keywords::Anchor => {
+						anchor = Some(wkt_node.parse()?);
+						i += 1;
+					}
+					_ => {
+						return Err(WktParseError::IncorrectKeyword {
+							expected: vec![Keywords::Anchor, Keywords::Id]
+								.into(),
+							found: wkt_node.keyword.clone(),
+						});
+					}
+				},
+			}
+		}
 
 		// Second node
 

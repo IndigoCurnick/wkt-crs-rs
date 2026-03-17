@@ -6,6 +6,7 @@ use crate::{
 		ProjectedCrs,
 	},
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
@@ -58,6 +59,13 @@ impl WktBaseType for DynamicCrsCoordinateMetadata {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodCrs
+		};
+
 		if let Ok(stati) = DynamicGeodeticCrs::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
 				result: Self::DynamicGeodeticCrs(stati.result),
@@ -107,6 +115,8 @@ impl WktBaseType for DynamicCrsCoordinateMetadata {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

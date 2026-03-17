@@ -30,7 +30,7 @@ impl WktBaseType for DerivedParametricCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::ParametricCrs])?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let derived_crs_name = node.args[0].parse()?;
 		let base_parametric_crs = node.args[1].parse()?;

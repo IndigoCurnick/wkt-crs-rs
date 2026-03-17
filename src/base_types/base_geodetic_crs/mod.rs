@@ -9,6 +9,7 @@ mod tests;
 use crate::{
 	ast::{WktArg, WktNode},
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
@@ -32,6 +33,13 @@ impl WktBaseType for BaseStaticCrs {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodeticCrs
+		};
+
 		if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone())
 		{
 			return Ok(WktBaseTypeResult {
@@ -49,7 +57,9 @@ impl WktBaseType for BaseStaticCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }
 
@@ -104,7 +114,9 @@ impl WktInlineType for BaseGeodeticCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: Keywords::BaseGeodCrs,
+		});
 	}
 }
 
@@ -116,6 +128,13 @@ impl WktBaseType for BaseGeodeticCrs {
 		I: IntoIterator<Item = &'a WktNode>,
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodeticCrs
+		};
 
 		if let Ok(base_static) = BaseStaticGeodeticCrs::from_nodes(iter.clone())
 		{
@@ -150,7 +169,9 @@ impl WktBaseType for BaseGeodeticCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }
 
@@ -169,6 +190,13 @@ impl WktBaseType for BaseDynamicCrs {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodeticCrs
+		};
+
 		if let Ok(base_dynamic) =
 			BaseDynamicGeodeticCrs::from_nodes(iter.clone())
 		{
@@ -185,6 +213,8 @@ impl WktBaseType for BaseDynamicCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

@@ -23,6 +23,7 @@ use crate::{
 	},
 	compound_types::{Step, Unit},
 	error::WktParseError,
+	keywords::Keywords,
 };
 
 pub struct WktBaseTypeResult<T: WktBaseType + Sized> {
@@ -307,7 +308,9 @@ impl WktBaseType for WktCrsTypes {
 					});
 				}
 
-				return Err(WktParseError::CouldNotDetermineType);
+				return Err(WktParseError::CouldNotDetermineType {
+					keyword: Keywords::Ensemble,
+				});
 			}
 			crate::keywords::Keywords::EnsembleAccuracy => {
 				process::<DatumEnsembleAccuracy, _>(

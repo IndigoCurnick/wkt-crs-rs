@@ -32,7 +32,7 @@ impl WktBaseType for DerivedVerticalCrs {
 			&node.keyword,
 			vec![Keywords::VertCrs, Keywords::VerticalCrs],
 		)?;
-		lower_bound_arity(node.args.len(), 3);
+		lower_bound_arity(node.args.len(), 3)?;
 
 		let derived_crs_name = node.args[0].parse()?;
 		let base_vertical_crs = node.args[1].parse()?;

@@ -2,6 +2,7 @@ use crate::{
 	ast::{WktArg, WktNode},
 	base_types::{GeodeticDatumEnsemble, GeodeticReferenceFrame},
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
@@ -34,7 +35,9 @@ impl WktInlineType for GeodeticData {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: Keywords::GeodeticDatum, // TODO: This is just some default
+		});
 	}
 }
 
@@ -46,6 +49,13 @@ impl WktBaseType for GeodeticData {
 		I: IntoIterator<Item = &'a WktNode>,
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeodeticDatum
+		};
 
 		if let Ok(res) = GeodeticReferenceFrame::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
@@ -61,6 +71,8 @@ impl WktBaseType for GeodeticData {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

@@ -6,6 +6,7 @@ pub use static_geographic_crs::StaticGeographicCrs;
 use crate::{
 	ast::WktNode,
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
@@ -24,6 +25,13 @@ impl WktBaseType for GeographicCrs {
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
 
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// TODO: Just some default, if there's no nodes I guess?
+			Keywords::GeogCrs
+		};
+
 		if let Ok(ordinal) = DynamicGeographicCrs::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
 				result: GeographicCrs::DynamicGeographicCrs(ordinal.result),
@@ -38,6 +46,8 @@ impl WktBaseType for GeographicCrs {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

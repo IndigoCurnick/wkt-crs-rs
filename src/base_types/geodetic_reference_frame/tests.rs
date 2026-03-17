@@ -1,8 +1,9 @@
 use crate::{
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, DatumAnchor, Ellipsoid, LengthUnit, PrimeMeridian,
+		AngleUnit, DatumAnchor, Ellipsoid, Id, LengthUnit, PrimeMeridian,
 	},
+	data_types::NumText,
 	types::WktBaseType,
 };
 
@@ -27,9 +28,33 @@ const EXAMPLE3: &str = r#"GEODETICDATUM["Tananarive 1925",
 PRIMEM["Paris",2.5969213,ANGLEUNIT["grad",0.015707]]
 "#;
 
+const EXAMPLE4: &str = r#"
+DATUM[
+	"NAD83 (High Accuracy Reference Network)",
+	ELLIPSOID[
+		"GRS 1980",
+		6378137,
+		298.257222101,
+		LENGTHUNIT[
+			"metre",
+			1,
+			ID["EPSG",9001]
+		],
+		ID["EPSG",7019]
+	],
+	ID["EPSG",6152]
+]
+"#;
+
 #[test]
 fn test_datum() {
-	// Example 1
+	test_example_1();
+	test_example_2();
+	test_example_3();
+	test_example_4();
+}
+
+fn test_example_1() {
 	let correct = GeodeticReferenceFrame {
 		datum_name: "North American Datum 1983".into(),
 		ellipsoid: Ellipsoid {
@@ -41,6 +66,7 @@ fn test_datum() {
 				conversion_factor: 1.0,
 				identifier: None,
 			}),
+			identifier: None,
 		},
 		anchor: None,
 		identifier: None,
@@ -55,8 +81,9 @@ fn test_datum() {
 
 	assert_eq!(correct, datum.result);
 	assert_eq!(datum.consumed, 1);
+}
 
-	// Example 2
+fn test_example_2() {
 	let correct = GeodeticReferenceFrame {
 		datum_name: "World Geodetic System 1984".into(),
 		ellipsoid: Ellipsoid {
@@ -68,6 +95,7 @@ fn test_datum() {
 				conversion_factor: 1.0,
 				identifier: None,
 			}),
+			identifier: None,
 		},
 		anchor: None,
 		identifier: None,
@@ -87,8 +115,9 @@ fn test_datum() {
 
 	assert_eq!(correct, datum.result);
 	assert_eq!(datum.consumed, 2);
+}
 
-	// Example 1
+fn test_example_3() {
 	let correct = GeodeticReferenceFrame {
 		datum_name: "Tananarive 1925".into(),
 		ellipsoid: Ellipsoid {
@@ -100,6 +129,7 @@ fn test_datum() {
 				conversion_factor: 1.0,
 				identifier: None,
 			}),
+			identifier: None,
 		},
 		anchor: Some(DatumAnchor(
 			"Tananarive observatory:21.0191667gS, 50.23849537gE of Paris"
@@ -124,4 +154,49 @@ fn test_datum() {
 
 	assert_eq!(correct, datum.result);
 	assert_eq!(datum.consumed, 2);
+}
+
+fn test_example_4() {
+	let correct = GeodeticReferenceFrame {
+		datum_name: "NAD83 (High Accuracy Reference Network)".into(),
+		ellipsoid: Ellipsoid {
+			ellipsoid_name: "GRS 1980".into(),
+			semi_major_axis: 6378137.0,
+			inverse_flattening: 298.257222101,
+			length_unit: Some(LengthUnit {
+				unit_name: "metre".into(),
+				conversion_factor: 1.0,
+				identifier: Some(Id {
+					authority_name: "EPSG".to_string(),
+					authority_unique_identifier: NumText::Int(9001),
+					version: None,
+					authority_citation: None,
+					id_uri: None,
+				}),
+			}),
+			identifier: Some(Id {
+				authority_name: "EPSG".to_string(),
+				authority_unique_identifier: NumText::Int(7019),
+				version: None,
+				authority_citation: None,
+				id_uri: None,
+			}),
+		},
+		anchor: None,
+		identifier: Some(Id {
+			authority_name: "EPSG".to_string(),
+			authority_unique_identifier: NumText::Int(6152),
+			version: None,
+			authority_citation: None,
+			id_uri: None,
+		}),
+		prime_meridian: None,
+	};
+
+	let ast = parse_wkt(EXAMPLE4);
+
+	let datum = GeodeticReferenceFrame::from_nodes(&ast).unwrap();
+
+	assert_eq!(correct, datum.result);
+	assert_eq!(datum.consumed, 1);
 }

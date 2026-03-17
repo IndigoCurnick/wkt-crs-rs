@@ -2,11 +2,7 @@ use std::{error::Error, fmt::Display};
 
 use strum::ParseError;
 
-use crate::{
-	ast::{WktArg, WktNode},
-	enumerations::AxisDirection,
-	keywords::Keywords,
-};
+use crate::{ast::WktArg, enumerations::AxisDirection, keywords::Keywords};
 
 #[derive(Debug)]
 pub struct Allowed<T: ToString>(Vec<T>);
@@ -61,7 +57,9 @@ pub enum WktParseError {
 	IncorrectKeywordOrder,
 	ParseError(ParseError),
 	IncorrectValue,
-	CouldNotDetermineType,
+	CouldNotDetermineType {
+		keyword: Keywords,
+	},
 	NotEnoughNodes,
 	IncorrectAxisDirection {
 		dir: AxisDirection,
@@ -121,8 +119,8 @@ impl Display for WktParseError {
 				f,
 				"A value which is not supported for this field was provided"
 			),
-			Self::CouldNotDetermineType => {
-				write!(f, "Could not determine type of this node")
+			Self::CouldNotDetermineType { keyword } => {
+				write!(f, "Could not determine variation of: `{}`", keyword)
 			}
 			Self::NotEnoughNodes => {
 				write!(f, "Not enough nodes to construct this type")

@@ -7,6 +7,7 @@ use crate::{
 		ProjectedCrs, TimeCrs, VerticalCrs,
 	},
 	error::WktParseError,
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
@@ -64,6 +65,13 @@ impl WktBaseType for StaticCrsCoordinateMetadata {
 		I: IntoIterator<Item = &'a WktNode>,
 	{
 		let iter: Vec<&'a WktNode> = wkt_nodes.into_iter().collect();
+
+		let first_keyword = if let Some(nod) = iter.get(0) {
+			nod.keyword.clone()
+		} else {
+			// Just some default, if there's no nodes I guess?
+			Keywords::GeodeticCrs
+		};
 
 		if let Ok(stati) = GeodeticCrs::from_nodes(iter.clone()) {
 			return Ok(WktBaseTypeResult {
@@ -156,6 +164,8 @@ impl WktBaseType for StaticCrsCoordinateMetadata {
 			});
 		}
 
-		return Err(WktParseError::CouldNotDetermineType);
+		return Err(WktParseError::CouldNotDetermineType {
+			keyword: first_keyword,
+		});
 	}
 }

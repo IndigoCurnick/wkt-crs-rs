@@ -33,7 +33,7 @@ impl WktBaseType for DerivedStaticGeodCrs {
 			&node.keyword,
 			vec![Keywords::GeodCrs, Keywords::GeodeticCrs],
 		)?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let derived_crs_name = node.args[0].parse()?;
 		let base_static_crs = node.args[1].parse()?;

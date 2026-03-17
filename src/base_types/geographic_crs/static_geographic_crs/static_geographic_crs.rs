@@ -1,6 +1,6 @@
 use crate::{
 	arity::lower_bound_arity,
-	ast::{Parse, WktArg, WktNode},
+	ast::{Parse, WktNode},
 	base_types::CoordinateSystem,
 	compound_types::{GeodeticData, ScopeExtentIdentifierRemark},
 	error::WktParseError,

@@ -24,6 +24,7 @@ fn test_ellipsoid() {
 			unit_name: "metre".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	};
 
 	let ast = parse_wkt(EXAMPLE1);
@@ -38,6 +39,7 @@ fn test_ellipsoid() {
 		semi_major_axis: 6378132.0,
 		inverse_flattening: 298.257222101,
 		length_unit: None,
+		identifier: None,
 	};
 
 	let ast = parse_wkt(EXAMPLE2);
@@ -57,6 +59,7 @@ fn test_ellipsoid() {
 			unit_name: "US survey foot".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	};
 
 	let ast = parse_wkt(EXAMPLE3);
@@ -76,6 +79,7 @@ fn test_ellipsoid() {
 			unit_name: "metre".to_string(),
 			identifier: None,
 		}),
+		identifier: None,
 	};
 
 	let ast = parse_wkt(EXAMPLE4);

@@ -144,6 +144,13 @@ fn test_epsg_crs_26856() {
 									id_uri: None,
 								}),
 							}),
+							identifier: Some(Id {
+								authority_name: "EPSG".to_string(),
+								authority_unique_identifier: NumText::Int(7019),
+								version: None,
+								authority_citation: None,
+								id_uri: None,
+							}),
 						},
 						anchor: None,
 						identifier: Some(Id {
