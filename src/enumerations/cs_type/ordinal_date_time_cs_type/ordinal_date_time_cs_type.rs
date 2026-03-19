@@ -20,7 +20,10 @@ impl TryFrom<&WktArg> for OrdinalDateTimeCsType {
 		return match value {
 			WktArg::Data(n) => match OrdinalDateTimeCsType::from_str(n) {
 				Ok(x) => Ok(x),
-				Err(y) => Err(WktParseError::ParseError(y)),
+				Err(y) => Err(WktParseError::ParseError {
+					err: y,
+					data: n.clone(),
+				}),
 			},
 			_ => Err(WktParseError::ExpectedString { arg: value.clone() }),
 		};

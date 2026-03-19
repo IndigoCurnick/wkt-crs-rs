@@ -55,7 +55,10 @@ pub enum WktParseError {
 	TooManyKeyword(Keywords),
 	TooFewKeyword(Keywords),
 	IncorrectKeywordOrder,
-	ParseError(ParseError),
+	ParseError {
+		err: ParseError,
+		data: String,
+	},
 	IncorrectValue,
 	CouldNotDetermineType {
 		keyword: Keywords,
@@ -114,7 +117,7 @@ impl Display for WktParseError {
 			Self::IncorrectKeywordOrder => {
 				write!(f, "Keywords are not in correct order")
 			}
-			Self::ParseError(p) => write!(f, "{}", p),
+			Self::ParseError { err, data } => write!(f, "{} for {}", err, data),
 			Self::IncorrectValue => write!(
 				f,
 				"A value which is not supported for this field was provided"

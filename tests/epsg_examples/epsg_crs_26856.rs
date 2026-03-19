@@ -155,7 +155,7 @@ fn test_epsg_crs_26856() {
 						anchor: None,
 						identifier: Some(Id {
 							authority_name: "EPSG".to_string(),
-							authority_unique_identifier: NumText::Int(7019),
+							authority_unique_identifier: NumText::Int(6152),
 							version: None,
 							authority_citation: None,
 							id_uri: None,
@@ -166,7 +166,7 @@ fn test_epsg_crs_26856() {
 				ellipsoidal_cs_unit: None,
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
-					authority_unique_identifier: NumText::Int(6152),
+					authority_unique_identifier: NumText::Int(4152),
 					version: None,
 					authority_citation: None,
 					id_uri: None,

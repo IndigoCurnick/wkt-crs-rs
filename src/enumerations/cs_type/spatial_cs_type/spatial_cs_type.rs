@@ -33,7 +33,12 @@ impl TryFrom<&WktArg> for SpatialCsType {
 		match value {
 			WktArg::Data(s) => match SpatialCsType::from_str(s) {
 				Ok(x) => return Ok(x),
-				Err(y) => return Err(WktParseError::ParseError(y)),
+				Err(y) => {
+					return Err(WktParseError::ParseError {
+						err: y,
+						data: s.clone(),
+					});
+				}
 			},
 			_ => {
 				return Err(WktParseError::ExpectedString {

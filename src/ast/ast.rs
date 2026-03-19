@@ -38,6 +38,7 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 			'"' => {
 				let end = s[1..].find('"').unwrap() + 1;
 				let content = &s[1..end];
+
 				tokens.push(Token::Data(content.to_string()));
 				s = &s[end + 1..];
 			}
@@ -53,7 +54,8 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 				if let Ok(ident) = Keywords::from_str(ident_candidate) {
 					tokens.push(Token::Keyword(ident));
 				} else {
-					tokens.push(Token::Data(ident_candidate.to_string()));
+					let ident_can_strip = ident_candidate.trim();
+					tokens.push(Token::Data(ident_can_strip.to_string()));
 				}
 
 				s = &s[len..];

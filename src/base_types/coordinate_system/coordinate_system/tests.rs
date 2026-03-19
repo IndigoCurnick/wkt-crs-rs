@@ -3,12 +3,13 @@ use std::vec;
 use crate::{
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, Axis, Bearing, LengthUnit, Meridian, Order,
+		AngleUnit, Axis, Bearing, Id, LengthUnit, Meridian, Order,
 		coordinate_system::{
 			OrdinalDateTimeCoordinateSystem, SpatialCoordinateSystem,
 		},
 	},
 	compound_types::{SpatialUnit, Unit},
+	data_types::NumText,
 	enumerations::{
 		AxisDirection, Dimension, OrdinalDateTimeCsType, SpatialCsType,
 	},
@@ -115,6 +116,27 @@ AXIS["Inline (I)",northEast,ORDER[1]],
 AXIS["Crossline (J)",northWest,ORDER[2]]
 "#;
 
+const EXAMPLE18: &str = r#"
+CS[
+	Cartesian,
+	2,
+	ID["EPSG",4497]
+],
+AXIS[
+	"Easting (X)",
+	east
+],
+AXIS[
+	"Northing (Y)",
+	north
+],
+LENGTHUNIT[
+	"US survey foot",
+	0.304800609601219,
+	ID["EPSG",9003]
+]
+"#;
+
 #[test]
 fn test_cs_unit() {
 	test_example_1();
@@ -134,6 +156,7 @@ fn test_cs_unit() {
 	test_example_15();
 	test_example_16();
 	test_example_17();
+	test_example_18();
 }
 
 fn test_example_1() {
@@ -826,4 +849,52 @@ fn test_example_17() {
 
 	assert_eq!(cs.result, correct);
 	assert_eq!(cs.consumed, 3)
+}
+
+fn test_example_18() {
+	let correct = CoordinateSystem::SpatialCS(SpatialCoordinateSystem {
+		spatial_cs_type: SpatialCsType::Cartesian,
+		dimension: Dimension::Two,
+		identifier: Some(Id {
+			authority_name: "EPSG".to_string(),
+			authority_unique_identifier: NumText::Int(4497),
+			version: None,
+			authority_citation: None,
+			id_uri: None,
+		}),
+		spatial_axis: vec![
+			Axis {
+				axis_name_abbreviation: "Easting (X)".to_string(),
+				axis_direction: AxisDirection::East,
+				axis_order: None,
+				unit: None,
+				identifier: None,
+			},
+			Axis {
+				axis_name_abbreviation: "Northing (Y)".to_string(),
+				axis_direction: AxisDirection::North(None),
+				axis_order: None,
+				unit: None,
+				identifier: None,
+			},
+		],
+		cs_unit: Some(Unit::SpatialUnit(SpatialUnit::LengthUnit(LengthUnit {
+			unit_name: "US survey foot".to_string(),
+			conversion_factor: 0.304800609601219,
+			identifier: Some(Id {
+				authority_name: "EPSG".to_string(),
+				authority_unique_identifier: NumText::Int(9003),
+				version: None,
+				authority_citation: None,
+				id_uri: None,
+			}),
+		}))),
+	});
+
+	let ast = parse_wkt(EXAMPLE18);
+
+	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
+
+	assert_eq!(cs.result, correct);
+	assert_eq!(cs.consumed, 4)
 }

@@ -10,6 +10,7 @@ use crate::{
 };
 
 #[derive(Debug, PartialEq, EnumString)]
+#[strum(ascii_case_insensitive)]
 pub enum AxisDirection {
 	#[strum(disabled)]
 	North(Option<Meridian>),
@@ -106,7 +107,8 @@ impl AxisDirection {
 }
 
 #[derive(Debug, PartialEq, EnumString, AsRefStr)]
-enum AxisDirectionInner {
+#[strum(ascii_case_insensitive)]
+pub enum AxisDirectionInner {
 	#[strum(serialize = "north")]
 	North,
 	#[strum(serialize = "northNorthEast")]
@@ -200,7 +202,12 @@ impl TryFrom<(&WktArg, Option<&WktArg>)> for AxisDirection {
 		let inner = match definite {
 			WktArg::Data(s) => match AxisDirectionInner::from_str(s) {
 				Ok(x) => x,
-				Err(y) => return Err(WktParseError::ParseError(y)),
+				Err(y) => {
+					return Err(WktParseError::ParseError {
+						err: y,
+						data: s.clone(),
+					});
+				}
 			},
 			_ => {
 				return Err(WktParseError::ExpectedString {
