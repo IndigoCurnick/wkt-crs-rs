@@ -67,6 +67,7 @@ fn test_derived_projected_crs() {
 								identifier: None,
 							},
 							anchor: None,
+							anchor_epoch: None,
 							identifier: None,
 							prime_meridian: None,
 						},

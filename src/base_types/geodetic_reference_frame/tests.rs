@@ -69,6 +69,7 @@ fn test_example_1() {
 			identifier: None,
 		},
 		anchor: None,
+		anchor_epoch: None,
 		identifier: None,
 		prime_meridian: None,
 	};
@@ -98,6 +99,7 @@ fn test_example_2() {
 			identifier: None,
 		},
 		anchor: None,
+		anchor_epoch: None,
 		identifier: None,
 		prime_meridian: Some(PrimeMeridian {
 			prime_meridian_name: "Greenwich".into(),
@@ -135,6 +137,7 @@ fn test_example_3() {
 			"Tananarive observatory:21.0191667gS, 50.23849537gE of Paris"
 				.into(),
 		)),
+		anchor_epoch: None,
 		identifier: None,
 		prime_meridian: Some(PrimeMeridian {
 			prime_meridian_name: "Paris".into(),
@@ -183,6 +186,7 @@ fn test_example_4() {
 			}),
 		},
 		anchor: None,
+		anchor_epoch: None,
 		identifier: Some(Id {
 			authority_name: "EPSG".to_string(),
 			authority_unique_identifier: NumText::Int(6152),

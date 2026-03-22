@@ -1,24 +1,25 @@
 use crate::{
 	ast::{WktArg, WktNode},
 	base_types::{
-		AbridgedCoordinateTransformation, AngleUnit, AreaDescription, Axis,
-		BaseEngineeringCrs, BaseGeodeticCrs, BaseParametricCrs,
-		BaseProjectedCrs, BaseTemporalCrs, BaseVerticalCrs, Bearing, BoundCrs,
-		Calendar, Citation, CompoundCrs, ConcatenatedOperation,
-		CoordinateEpoch, CoordinateMetadata, CoordinateOperation,
-		CoordinateSystem, DatumAnchor, DatumEnsembleAccuracy,
-		DatumEnsembleMember, DeformationModelId, DerivedEngineeringCrs,
-		DerivedGeodeticCrs, DerivedParametricCrs, DerivedProjectedCrs,
-		DerivedTemporalCrs, DerivedVerticalCrs, DerivingConversion, DynamicCrs,
-		Ellipsoid, EngineeringCrs, EngineeringDatum, Extent, FrameEpoch,
-		GeodeticCrs, GeodeticDatumEnsemble, GeodeticReferenceFrame,
-		GeographicBoundingBox, GeographicCrs, GeoidModelId, Id,
-		InterpolationCrs, LengthUnit, MapProjection, Meridian, Method,
-		OperationAccuracy, OperationParameterFile, OperationVersion, Order,
-		Parameter, ParametricCrs, ParametricDatum, ParametricUnit,
-		PointMotionOperation, PrimeMeridian, ProjectedCrs, Remark, ScaleUnit,
-		Scope, SourceCrs, TargetCrs, TemporalDatum, TemporalExtent, TimeCrs,
-		TimeOrigin, TimeUnit, Uri, Usage, VerticalCrs, VerticalDatumEnsemble,
+		AbridgedCoordinateTransformation, AnchorEpoch, AngleUnit,
+		AreaDescription, Axis, BaseEngineeringCrs, BaseGeodeticCrs,
+		BaseParametricCrs, BaseProjectedCrs, BaseTemporalCrs, BaseVerticalCrs,
+		Bearing, BoundCrs, Calendar, Citation, CompoundCrs,
+		ConcatenatedOperation, CoordinateEpoch, CoordinateMetadata,
+		CoordinateOperation, CoordinateSystem, DatumAnchor,
+		DatumEnsembleAccuracy, DatumEnsembleMember, DeformationModelId,
+		DerivedEngineeringCrs, DerivedGeodeticCrs, DerivedParametricCrs,
+		DerivedProjectedCrs, DerivedTemporalCrs, DerivedVerticalCrs,
+		DerivingConversion, DynamicCrs, Ellipsoid, EngineeringCrs,
+		EngineeringDatum, Extent, FrameEpoch, GeodeticCrs,
+		GeodeticDatumEnsemble, GeodeticReferenceFrame, GeographicBoundingBox,
+		GeographicCrs, GeoidModelId, Id, InterpolationCrs, LengthUnit,
+		MapProjection, Meridian, Method, OperationAccuracy,
+		OperationParameterFile, OperationVersion, Order, Parameter,
+		ParametricCrs, ParametricDatum, ParametricUnit, PointMotionOperation,
+		PrimeMeridian, ProjectedCrs, Remark, ScaleUnit, Scope, SourceCrs,
+		TargetCrs, TemporalDatum, TemporalExtent, TimeCrs, TimeOrigin,
+		TimeUnit, Uri, Usage, VerticalCrs, VerticalDatumEnsemble,
 		VerticalExtent, VerticalReferenceFrame,
 	},
 	compound_types::{Step, Unit},
@@ -60,6 +61,7 @@ where
 
 #[derive(Debug, PartialEq)]
 pub enum WktCrsTypes {
+	AnchorEpoch(AnchorEpoch),
 	Scope(Scope),
 	Extent(Extent),
 	Usage(Usage),
@@ -183,6 +185,9 @@ impl WktBaseType for WktCrsTypes {
 			}
 			crate::keywords::Keywords::Anchor => {
 				process::<DatumAnchor, _>(iter, Self::DatumAnchor)
+			}
+			crate::keywords::Keywords::AnchorEpoch => {
+				process::<AnchorEpoch, _>(iter, Self::AnchorEpoch)
 			}
 			crate::keywords::Keywords::AngleUnit => {
 				process::<AngleUnit, _>(iter, Self::AngleUnit)

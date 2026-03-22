@@ -153,6 +153,7 @@ fn test_epsg_crs_26856() {
 							}),
 						},
 						anchor: None,
+						anchor_epoch: None,
 						identifier: Some(Id {
 							authority_name: "EPSG".to_string(),
 							authority_unique_identifier: NumText::Int(6152),

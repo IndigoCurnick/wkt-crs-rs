@@ -10,6 +10,7 @@ use crate::error::WktParseError;
 pub enum Keywords {
 	AbridgedTransformation,
 	Anchor,
+	AnchorEpoch,
 	AngleUnit,
 	Area,
 	Axis,

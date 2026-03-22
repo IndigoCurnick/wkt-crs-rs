@@ -17,6 +17,20 @@ pub struct Id {
 	pub id_uri: Option<Uri>,
 }
 
+impl Id {
+	pub fn new_epsg(authority_unique_identifier: i32) -> Self {
+		return Self {
+			authority_name: "EPSG".to_string(),
+			authority_unique_identifier: NumText::Int(
+				authority_unique_identifier,
+			),
+			version: None,
+			authority_citation: None,
+			id_uri: None,
+		};
+	}
+}
+
 impl WktBaseType for Id {
 	fn from_nodes<'a, I>(
 		wkt_nodes: I,

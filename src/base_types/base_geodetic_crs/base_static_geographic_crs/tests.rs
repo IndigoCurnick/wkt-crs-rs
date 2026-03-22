@@ -63,6 +63,7 @@ fn test_example_1() {
 					identifier: None,
 				},
 				anchor: None,
+				anchor_epoch: None,
 				identifier: None,
 				prime_meridian: None,
 			},
@@ -115,6 +116,7 @@ fn test_example_2() {
 					}),
 				},
 				anchor: None,
+				anchor_epoch: None,
 				identifier: Some(Id {
 					authority_name: "EPSG".to_string(),
 					authority_unique_identifier: NumText::Int(6152),

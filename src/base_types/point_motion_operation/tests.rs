@@ -61,6 +61,7 @@ fn test_point_motion_operation() {
 									identifier: None,
 								},
 								anchor: None,
+								anchor_epoch: None,
 								identifier: None,
 								prime_meridian: None,
 							},

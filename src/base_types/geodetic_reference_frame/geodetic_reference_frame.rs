@@ -1,7 +1,7 @@
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{DatumAnchor, Ellipsoid, Id, PrimeMeridian},
+	base_types::{AnchorEpoch, DatumAnchor, Ellipsoid, Id, PrimeMeridian},
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
@@ -12,6 +12,7 @@ pub struct GeodeticReferenceFrame {
 	pub datum_name: String,
 	pub ellipsoid: Ellipsoid,
 	pub anchor: Option<DatumAnchor>,
+	pub anchor_epoch: Option<AnchorEpoch>,
 	pub identifier: Option<Id>, // TODO: technically multiple allowed
 	pub prime_meridian: Option<PrimeMeridian>,
 }
@@ -66,7 +67,7 @@ impl WktBaseType for GeodeticReferenceFrame {
 			&node.keyword,
 			vec![Keywords::Datum, Keywords::TRF, Keywords::GeodeticDatum],
 		)?;
-		match_arity(node.args.len(), 2, 5)?;
+		match_arity(node.args.len(), 2, 6)?;
 
 		let datum_name = node.args[0].parse()?;
 		let ellipsoid = node.args[1].parse()?;
@@ -74,6 +75,7 @@ impl WktBaseType for GeodeticReferenceFrame {
 		let mut i = 2;
 
 		let mut anchor = None;
+		let mut anchor_epoch = None;
 		let mut identifier = None;
 
 		while i < node.args.len() {
@@ -91,6 +93,10 @@ impl WktBaseType for GeodeticReferenceFrame {
 					}
 					Keywords::Anchor => {
 						anchor = Some(wkt_node.parse()?);
+						i += 1;
+					}
+					Keywords::AnchorEpoch => {
+						anchor_epoch = Some(wkt_node.parse()?);
 						i += 1;
 					}
 					_ => {
@@ -122,6 +128,7 @@ impl WktBaseType for GeodeticReferenceFrame {
 			datum_name,
 			ellipsoid,
 			anchor,
+			anchor_epoch,
 			identifier,
 			prime_meridian,
 		};

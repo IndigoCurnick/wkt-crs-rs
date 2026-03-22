@@ -1,4 +1,5 @@
 mod abridged_coordinate_transformation;
+mod anchor_epoch;
 mod angle_unit;
 mod area_description;
 mod axis;
@@ -76,6 +77,7 @@ mod vertical_extent;
 mod vertical_reference_frame;
 
 pub use abridged_coordinate_transformation::AbridgedCoordinateTransformation;
+pub use anchor_epoch::AnchorEpoch;
 pub use angle_unit::AngleUnit;
 pub use area_description::AreaDescription;
 pub use axis::Axis;

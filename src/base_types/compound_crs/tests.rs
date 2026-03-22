@@ -106,6 +106,7 @@ fn test_example_1() {
 							identifier: None,
 						},
 						anchor: None,
+						anchor_epoch: None,
 						identifier: None,
 						prime_meridian: Some(PrimeMeridian {
 							prime_meridian_name: "Greenwhich".into(),
@@ -235,6 +236,7 @@ fn test_example_2() {
 						identifier: None,
 					},
 					anchor: None,
+					anchor_epoch: None,
 					identifier: None,
 					prime_meridian: None,
 				},
@@ -349,6 +351,7 @@ fn test_example_3() {
 						identifier: None,
 					},
 					anchor: None,
+					anchor_epoch: None,
 					identifier: None,
 					prime_meridian: None,
 				},

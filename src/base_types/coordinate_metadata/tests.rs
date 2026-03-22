@@ -58,6 +58,7 @@ fn test_coordinate_metadata() {
 								identifier: None,
 							},
 							anchor: None,
+							anchor_epoch: None,
 							identifier: None,
 							prime_meridian: None,
 						},
