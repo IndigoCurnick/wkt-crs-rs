@@ -88,6 +88,7 @@ fn test_target_crs() {
 							)),
 						},
 					),
+					defining_transformation_id: None,
 					scope_extent_identifier_remark:
 						ScopeExtentIdentifierRemark {
 							usage: None,

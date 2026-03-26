@@ -7,11 +7,11 @@ use crate::{
 		Bearing, BoundCrs, Calendar, Citation, CompoundCrs,
 		ConcatenatedOperation, CoordinateEpoch, CoordinateMetadata,
 		CoordinateOperation, CoordinateSystem, DatumAnchor,
-		DatumEnsembleAccuracy, DatumEnsembleMember, DeformationModelId,
-		DerivedEngineeringCrs, DerivedGeodeticCrs, DerivedParametricCrs,
-		DerivedProjectedCrs, DerivedTemporalCrs, DerivedVerticalCrs,
-		DerivingConversion, DynamicCrs, Ellipsoid, EngineeringCrs,
-		EngineeringDatum, Extent, FrameEpoch, GeodeticCrs,
+		DatumEnsembleAccuracy, DatumEnsembleMember, DefiningTransformation,
+		DeformationModelId, DerivedEngineeringCrs, DerivedGeodeticCrs,
+		DerivedParametricCrs, DerivedProjectedCrs, DerivedTemporalCrs,
+		DerivedVerticalCrs, DerivingConversion, DynamicCrs, Ellipsoid,
+		EngineeringCrs, EngineeringDatum, Extent, FrameEpoch, GeodeticCrs,
 		GeodeticDatumEnsemble, GeodeticReferenceFrame, GeographicBoundingBox,
 		GeographicCrs, GeoidModelId, Id, InterpolationCrs, LengthUnit,
 		MapProjection, Meridian, Method, OperationAccuracy,
@@ -141,6 +141,7 @@ pub enum WktCrsTypes {
 	Unit(Unit),
 	Uri(Uri),
 	Step(Step),
+	DefiningTransformation(DefiningTransformation),
 }
 
 // It is essential this is never inlined - the match is so huge that it can easily
@@ -342,10 +343,42 @@ impl WktBaseType for WktCrsTypes {
 				)
 			}
 			crate::keywords::Keywords::GeogCrs => {
-				process::<DerivedGeodeticCrs, _>(iter, Self::DerivedGeodeticCrs)
+				if let Ok(tmp) = GeodeticCrs::from_nodes(iter.clone()) {
+					return Ok(WktBaseTypeResult {
+						result: Self::GeodeticCrs(tmp.result),
+						consumed: tmp.consumed,
+					});
+				}
+
+				if let Ok(tmp) = DerivedGeodeticCrs::from_nodes(iter) {
+					return Ok(WktBaseTypeResult {
+						result: Self::DerivedGeodeticCrs(tmp.result),
+						consumed: tmp.consumed,
+					});
+				}
+
+				return Err(WktParseError::CouldNotDetermineType {
+					keyword: Keywords::GeogCrs,
+				});
 			}
 			crate::keywords::Keywords::GeographicCrs => {
-				process::<DerivedGeodeticCrs, _>(iter, Self::DerivedGeodeticCrs)
+				if let Ok(tmp) = GeodeticCrs::from_nodes(iter.clone()) {
+					return Ok(WktBaseTypeResult {
+						result: Self::GeodeticCrs(tmp.result),
+						consumed: tmp.consumed,
+					});
+				}
+
+				if let Ok(tmp) = DerivedGeodeticCrs::from_nodes(iter) {
+					return Ok(WktBaseTypeResult {
+						result: Self::DerivedGeodeticCrs(tmp.result),
+						consumed: tmp.consumed,
+					});
+				}
+
+				return Err(WktParseError::CouldNotDetermineType {
+					keyword: Keywords::GeographicCrs,
+				});
 			}
 			crate::keywords::Keywords::GeoidModel => {
 				process::<GeoidModelId, _>(iter, Self::GeoidModel)
@@ -511,6 +544,12 @@ impl WktBaseType for WktCrsTypes {
 				process::<VerticalReferenceFrame, _>(
 					iter,
 					Self::VerticalReferenceFrame,
+				)
+			}
+			crate::keywords::Keywords::DefiningTransformation => {
+				process::<DefiningTransformation, _>(
+					iter,
+					Self::DefiningTransformation,
 				)
 			}
 		};

@@ -34,6 +34,7 @@ pub enum Keywords {
 	CoordinateOperation,
 	Cs,
 	Datum,
+	DefiningTransformation,
 	DerivedProjCrs,
 	DerivingConversion,
 	Dynamic,

@@ -1,7 +1,10 @@
 use crate::{
 	arity::lower_bound_arity,
-	ast::{Parse, WktNode},
-	base_types::{CoordinateSystem, DynamicCrs, GeodeticReferenceFrame},
+	ast::{Parse, WktArg, WktNode},
+	base_types::{
+		CoordinateSystem, DefiningTransformation, DynamicCrs,
+		GeodeticReferenceFrame,
+	},
 	compound_types::ScopeExtentIdentifierRemark,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
@@ -14,6 +17,7 @@ pub struct DynamicGeodeticCrs {
 	pub dynamic_crs: DynamicCrs,
 	pub geodetic_reference_frame: GeodeticReferenceFrame,
 	pub coordinate_system: CoordinateSystem,
+	pub defining_transformation_id: Option<DefiningTransformation>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
 
@@ -42,9 +46,25 @@ impl WktBaseType for DynamicGeodeticCrs {
 		let coordinate_system =
 			CoordinateSystem::from_args(&node.args[3..node.args.len()])?;
 
+		let mut i = 3 + coordinate_system.consumed;
+
+		let defining_transformation_id = match node.args.get(i) {
+			Some(x) => match x {
+				WktArg::Data(_) => None,
+				WktArg::Node(y) => match y.keyword {
+					Keywords::DefiningTransformation => {
+						i += 1;
+						Some(y.parse()?)
+					}
+					_ => None,
+				},
+			},
+			None => None,
+		};
+
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
-				&node.args[3 + coordinate_system.consumed..node.args.len()],
+				&node.args[i..node.args.len()],
 			)?;
 
 		let res = DynamicGeodeticCrs {
@@ -52,6 +72,7 @@ impl WktBaseType for DynamicGeodeticCrs {
 			dynamic_crs,
 			geodetic_reference_frame,
 			coordinate_system: coordinate_system.result,
+			defining_transformation_id,
 			scope_extent_identifier_remark: scope_extent_identifier_remark
 				.result,
 		};

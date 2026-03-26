@@ -1,7 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
-	ast::{Parse, WktNode},
-	base_types::CoordinateSystem,
+	ast::{Parse, WktArg, WktNode},
+	base_types::{CoordinateSystem, DefiningTransformation},
 	compound_types::{GeodeticData, ScopeExtentIdentifierRemark},
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
@@ -13,6 +13,7 @@ pub struct StaticGeographicCrs {
 	pub crs_name: String,
 	pub frame: GeodeticData,
 	pub coordinate_system: CoordinateSystem,
+	pub defining_transformation_id: Option<DefiningTransformation>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
 
@@ -42,6 +43,20 @@ impl WktBaseType for StaticGeographicCrs {
 			CoordinateSystem::from_args(&node.args[i..node.args.len()])?;
 		i += coordinate_system.consumed;
 
+		let defining_transformation_id = match node.args.get(i) {
+			Some(x) => match x {
+				WktArg::Data(_) => None,
+				WktArg::Node(y) => match y.keyword {
+					Keywords::DefiningTransformation => {
+						i += 1;
+						Some(y.parse()?)
+					}
+					_ => None,
+				},
+			},
+			None => None,
+		};
+
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
 				&node.args[i..node.args.len()],
@@ -51,6 +66,7 @@ impl WktBaseType for StaticGeographicCrs {
 			crs_name,
 			frame: frame.result,
 			coordinate_system: coordinate_system.result,
+			defining_transformation_id,
 			scope_extent_identifier_remark: scope_extent_identifier_remark
 				.result,
 		};

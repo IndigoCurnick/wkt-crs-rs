@@ -91,6 +91,7 @@ fn test_source_crs() {
 							)),
 						},
 					),
+					defining_transformation_id: None,
 					scope_extent_identifier_remark:
 						ScopeExtentIdentifierRemark {
 							identifier: None,

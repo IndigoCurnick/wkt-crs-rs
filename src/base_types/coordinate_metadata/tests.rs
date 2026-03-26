@@ -116,6 +116,7 @@ fn test_coordinate_metadata() {
 								cs_unit: None,
 							},
 						),
+						defining_transformation_id: None,
 						scope_extent_identifier_remark:
 							ScopeExtentIdentifierRemark {
 								identifier: None,

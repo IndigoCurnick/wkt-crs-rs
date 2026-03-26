@@ -22,6 +22,7 @@ mod coordinate_system;
 mod datum_anchor;
 mod datum_ensemble_accuracy;
 mod datum_ensemble_member;
+mod defining_transformation;
 mod deformation_model_id;
 mod derived_engineering_crs;
 mod derived_geodetic_crs;
@@ -111,6 +112,7 @@ pub use coordinate_system::{
 pub use datum_anchor::DatumAnchor;
 pub use datum_ensemble_accuracy::DatumEnsembleAccuracy;
 pub use datum_ensemble_member::DatumEnsembleMember;
+pub use defining_transformation::DefiningTransformation;
 pub use deformation_model_id::DeformationModelId;
 pub use derived_engineering_crs::DerivedEngineeringCrs;
 pub use derived_geodetic_crs::{

@@ -128,6 +128,7 @@ fn test_concatenated_operation() {
 								)),
 							},
 						),
+						defining_transformation_id: None,
 						scope_extent_identifier_remark:
 							ScopeExtentIdentifierRemark {
 								identifier: None,
@@ -204,6 +205,7 @@ fn test_concatenated_operation() {
 								)),
 							},
 						),
+						defining_transformation_id: None,
 						scope_extent_identifier_remark:
 							ScopeExtentIdentifierRemark {
 								usage: None,

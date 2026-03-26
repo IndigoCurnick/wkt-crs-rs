@@ -106,6 +106,7 @@ fn test_point_motion_operation() {
 								)),
 							},
 						),
+						defining_transformation_id: None,
 						scope_extent_identifier_remark:
 							ScopeExtentIdentifierRemark {
 								identifier: None,

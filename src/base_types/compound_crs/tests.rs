@@ -146,6 +146,7 @@ fn test_example_1() {
 						)),
 					},
 				),
+				defining_transformation_id: None,
 				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 					usage: None,
 					identifier: None,
@@ -270,6 +271,7 @@ fn test_example_2() {
 						)),
 					},
 				),
+				defining_transformation_id: None,
 				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 					usage: None,
 					identifier: None,
@@ -385,6 +387,7 @@ fn test_example_3() {
 						)),
 					},
 				),
+				defining_transformation_id: None,
 				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 					usage: None,
 					identifier: None,

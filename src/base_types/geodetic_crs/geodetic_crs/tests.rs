@@ -141,6 +141,7 @@ fn test_example_1() {
 				))),
 			},
 		),
+		defining_transformation_id: None,
 		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 			usage: Some(vec![Usage {
 				scope: Scope(
@@ -261,6 +262,7 @@ fn test_example_2() {
 					cs_unit: None,
 				},
 			),
+			defining_transformation_id: None,
 			scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 				usage: None,
 				identifier: None,
@@ -330,6 +332,7 @@ fn test_example_3() {
 					))),
 				},
 			),
+			defining_transformation_id: None,
 			scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 				usage: None,
 				identifier: Some(vec![Id {
@@ -406,6 +409,7 @@ fn test_example_4() {
 					))),
 				},
 			),
+			defining_transformation_id: None,
 			scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 				usage: None,
 				identifier: None,
