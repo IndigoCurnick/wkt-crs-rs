@@ -30,6 +30,10 @@ impl<T: ToString> From<Vec<T>> for Allowed<T> {
 #[derive(Debug)]
 pub enum WktParseError {
 	UnknownKeyword(String),
+	ExpectedKeyword,
+	UnexpectedToken {
+		token: String,
+	},
 	IncorrectArity {
 		min: usize,
 		max: Option<usize>,
@@ -73,6 +77,10 @@ impl Display for WktParseError {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
 			Self::UnknownKeyword(k) => write!(f, "Unknown Keyword: `{}`", k),
+			Self::ExpectedKeyword => write!(f, "Expected Keyword"),
+			Self::UnexpectedToken { token } => {
+				write!(f, "Unexpected Token: {}", token)
+			}
 			Self::IncorrectArity { min, max, found } => {
 				if let Some(m) = max {
 					write!(

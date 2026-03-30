@@ -9,7 +9,7 @@ const EXAMPLE1: &str = "ENSEMBLEACCURACY[2]";
 fn test_ensemble_acc() {
 	let correct = DatumEnsembleAccuracy(2.0);
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

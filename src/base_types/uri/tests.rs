@@ -8,7 +8,7 @@ const EXAMPLE1: &str = r#"URI["urn:ogc:def:crs:EPSG:4326"]"#;
 fn test_uri() {
 	let correct = Uri("urn:ogc:def:crs:EPSG:4326".to_string());
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 	assert_eq!(ast.len(), 1);
 	let uri = Uri::from_nodes(&ast).unwrap();
 

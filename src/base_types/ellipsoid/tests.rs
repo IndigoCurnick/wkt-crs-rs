@@ -27,7 +27,7 @@ fn test_ellipsoid() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 	assert_eq!(ast.len(), 1);
 	let el = Ellipsoid::from_nodes(&ast).unwrap();
 
@@ -42,7 +42,7 @@ fn test_ellipsoid() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 	assert_eq!(ast.len(), 1);
 
 	let el = Ellipsoid::from_nodes(&ast).unwrap();
@@ -62,7 +62,7 @@ fn test_ellipsoid() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE3);
+	let ast = parse_wkt(EXAMPLE3).unwrap();
 	assert_eq!(ast.len(), 1);
 
 	let el = Ellipsoid::from_nodes(&ast).unwrap();
@@ -82,7 +82,7 @@ fn test_ellipsoid() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE4);
+	let ast = parse_wkt(EXAMPLE4).unwrap();
 	assert_eq!(ast.len(), 1);
 
 	let el = Ellipsoid::from_nodes(&ast).unwrap();

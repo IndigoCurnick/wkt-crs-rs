@@ -6,7 +6,7 @@ const EXAMPLE: &str = r#"VERSION["GSI"]"#;
 fn test_operation_version() {
 	let correct = OperationVersion("GSI".into());
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	let res = OperationVersion::from_nodes(&ast).unwrap();
 

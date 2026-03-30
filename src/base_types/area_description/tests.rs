@@ -8,7 +8,7 @@ const EXAMPLE1: &str = r#"AREA["Netherlands offshore."]"#;
 fn test_area() {
 	let correct = AreaDescription("Netherlands offshore.".to_string());
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 	let area = AreaDescription::from_nodes(&ast).unwrap();

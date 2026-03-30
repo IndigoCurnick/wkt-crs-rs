@@ -10,7 +10,7 @@ fn test_operation_parameter_file() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	let res = OperationParameterFile::from_nodes(&ast).unwrap();
 

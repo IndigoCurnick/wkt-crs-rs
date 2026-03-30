@@ -6,7 +6,7 @@ const EXAMPLE: &str = "OPERATIONACCURACY[5]";
 fn test_order() {
 	let correct = OperationAccuracy(5.0);
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	let op = OperationAccuracy::from_nodes(&ast).unwrap();
 

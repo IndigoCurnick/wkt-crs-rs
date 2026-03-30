@@ -12,7 +12,7 @@ fn test_angle_unit() {
 		unit_name: "degree".to_string(),
 	};
 
-	let ast = parse_wkt(AU_EXAMPLE1);
+	let ast = parse_wkt(AU_EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

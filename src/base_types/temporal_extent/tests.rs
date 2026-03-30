@@ -24,7 +24,7 @@ fn test_example_1() {
 		)),
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 	let time = TemporalExtent::from_nodes(&ast).unwrap();
 
 	assert_eq!(time.result, correct);
@@ -37,7 +37,7 @@ fn test_example_2() {
 		to: DateOrString::String("Quaternary".to_string()),
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	let time = TemporalExtent::from_nodes(&ast).unwrap();
 

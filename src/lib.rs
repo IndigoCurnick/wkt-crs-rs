@@ -13,7 +13,7 @@ mod keywords;
 mod types;
 
 pub fn parse_wkt_crs(text: &str) -> Result<Vec<WktCrsTypes>, WktParseError> {
-	let ast = parse_wkt(text);
+	let ast = parse_wkt(text)?;
 
 	let mut out = vec![];
 

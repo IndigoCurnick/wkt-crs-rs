@@ -20,7 +20,7 @@ fn test_operation_method() {
 		}),
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	let op = Method::from_nodes(&ast).unwrap();
 

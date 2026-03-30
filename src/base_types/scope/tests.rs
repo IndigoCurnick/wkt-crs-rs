@@ -10,7 +10,7 @@ fn test_scope() {
 	let correct =
 		Scope("Large scale topographic mapping and cadastre.".to_string());
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

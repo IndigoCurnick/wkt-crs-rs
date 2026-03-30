@@ -36,7 +36,7 @@ fn test_example_1() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -54,7 +54,7 @@ fn test_example_2() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -70,7 +70,7 @@ fn test_example_3() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE3);
+	let ast = parse_wkt(EXAMPLE3).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

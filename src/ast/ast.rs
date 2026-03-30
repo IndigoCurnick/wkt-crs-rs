@@ -66,7 +66,7 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 	tokens
 }
 
-fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
+fn parse_nodes(tokens: &mut Vec<Token>) -> Result<Vec<WktNode>, WktParseError> {
 	let mut nodes = Vec::new();
 
 	loop {
@@ -74,7 +74,7 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
 
 		match first {
 			Some(Token::Keyword(_)) => {
-				nodes.push(parse_node(tokens));
+				nodes.push(parse_node(tokens)?);
 			}
 			Some(Token::WktSeparator) => {
 				tokens.remove(0);
@@ -82,22 +82,35 @@ fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
 			None => {
 				break;
 			}
-			Some(Token::Data(d)) => panic!("Unexpected token: `{}`", d),
-			Some(Token::LDelimiter) => panic!("Unexpected token: `[`"),
-			Some(Token::RDelimiter) => panic!("Unexpected token: `]`"),
+			Some(Token::Data(d)) => {
+				return Err(WktParseError::UnexpectedToken {
+					token: d.clone(),
+				});
+			}
+			Some(Token::LDelimiter) => {
+				return Err(WktParseError::UnexpectedToken {
+					token: "[".to_string(),
+				});
+			}
+			Some(Token::RDelimiter) => {
+				return Err(WktParseError::UnexpectedToken {
+					token: "]".to_string(),
+				});
+			}
 		}
 	}
 
 	while let Some(Token::Keyword(_)) = tokens.first() {
-		nodes.push(parse_node(tokens));
+		nodes.push(parse_node(tokens)?);
 	}
-	nodes
+
+	return Ok(nodes);
 }
 
-pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
+pub fn parse_node(tokens: &mut Vec<Token>) -> Result<WktNode, WktParseError> {
 	let keyword = match tokens.remove(0) {
 		Token::Keyword(s) => s,
-		_ => panic!("expected keyword"),
+		_ => return Err(WktParseError::ExpectedKeyword),
 	};
 
 	assert!(matches!(tokens.remove(0), Token::LDelimiter));
@@ -116,17 +129,17 @@ pub fn parse_node(tokens: &mut Vec<Token>) -> WktNode {
 				tokens.remove(0);
 			}
 			Some(Token::Keyword(_)) => {
-				let node = parse_node(tokens);
+				let node = parse_node(tokens)?;
 				args.push(WktArg::Node(node));
 			}
 			other => panic!("unexpected token: {:?}", other),
 		}
 	}
 
-	WktNode { keyword, args }
+	return Ok(WktNode { keyword, args });
 }
 
-pub fn parse_wkt(s: &str) -> Vec<WktNode> {
+pub fn parse_wkt(s: &str) -> Result<Vec<WktNode>, WktParseError> {
 	let mut tokens = tokenize(s);
 	parse_nodes(&mut tokens)
 }

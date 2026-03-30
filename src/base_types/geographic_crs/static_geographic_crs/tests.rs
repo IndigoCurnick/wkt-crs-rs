@@ -121,7 +121,7 @@ fn test_static_geographic_crs() {
 		},
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

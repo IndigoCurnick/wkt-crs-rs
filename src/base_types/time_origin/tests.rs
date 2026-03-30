@@ -18,7 +18,7 @@ fn test_time_origin() {
 		),
 	)));
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

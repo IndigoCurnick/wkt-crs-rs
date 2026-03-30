@@ -15,7 +15,7 @@ fn test_gbbox() {
 		upper_right_longitude: 6.40,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -31,7 +31,7 @@ fn test_gbbox() {
 		upper_right_longitude: -171.20,
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

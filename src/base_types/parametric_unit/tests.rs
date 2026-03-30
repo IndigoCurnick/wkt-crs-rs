@@ -12,7 +12,7 @@ fn test_parametric_unit() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

@@ -12,7 +12,7 @@ fn test_scale_unit() {
 		unit_name: "parts per million".to_string(),
 	};
 
-	let ast = parse_wkt(SU_EXAMPLE1);
+	let ast = parse_wkt(SU_EXAMPLE1).unwrap();
 	assert_eq!(ast.len(), 1);
 	let su = ScaleUnit::from_nodes(&ast).unwrap();
 

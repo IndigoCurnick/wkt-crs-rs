@@ -9,7 +9,7 @@ const EXAMPLE1: &str = r#"CITATION["some-citation"]"#;
 fn test_citation() {
 	let correct = Citation("some-citation".to_string());
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

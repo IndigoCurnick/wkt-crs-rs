@@ -14,7 +14,7 @@ fn test_remark() {
 fn test_example_1() {
 	let correct = Remark("A remark in ASCII".to_string());
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -26,7 +26,7 @@ fn test_example_1() {
 fn test_example_2() {
 	let correct = Remark("Замечание на русском языке".to_string());
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

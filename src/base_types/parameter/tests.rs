@@ -23,7 +23,7 @@ fn test_operation_parameter() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	let res = Parameter::from_nodes(&ast).unwrap();
 

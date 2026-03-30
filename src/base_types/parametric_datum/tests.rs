@@ -15,7 +15,7 @@ fn test_parametric_datum() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

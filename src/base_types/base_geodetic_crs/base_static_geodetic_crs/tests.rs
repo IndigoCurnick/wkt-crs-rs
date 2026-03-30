@@ -61,7 +61,7 @@ fn test_base_static_geodetic_crs() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE);
+	let ast = parse_wkt(EXAMPLE).unwrap();
 	assert_eq!(ast.len(), 1);
 	let map_proj = BaseStaticGeodeticCrs::from_nodes(&ast).unwrap();
 

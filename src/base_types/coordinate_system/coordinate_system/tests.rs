@@ -187,7 +187,7 @@ fn test_example_1() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -230,7 +230,7 @@ fn test_example_2() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -273,7 +273,7 @@ fn test_example_3() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE3);
+	let ast = parse_wkt(EXAMPLE3).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -330,7 +330,7 @@ fn test_example_4() {
 		cs_unit: None,
 	});
 
-	let ast = parse_wkt(EXAMPLE4);
+	let ast = parse_wkt(EXAMPLE4).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -387,7 +387,7 @@ fn test_example_5() {
 		cs_unit: None,
 	});
 
-	let ast = parse_wkt(EXAMPLE5);
+	let ast = parse_wkt(EXAMPLE5).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -423,7 +423,7 @@ fn test_example_6() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE6);
+	let ast = parse_wkt(EXAMPLE6).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -467,7 +467,7 @@ fn test_example_7() {
 		cs_unit: None,
 	});
 
-	let ast = parse_wkt(EXAMPLE7);
+	let ast = parse_wkt(EXAMPLE7).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -503,7 +503,7 @@ fn test_example_8() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE8);
+	let ast = parse_wkt(EXAMPLE8).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(ast.as_slice()).unwrap();
 
@@ -539,7 +539,7 @@ fn test_example_9() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE9);
+	let ast = parse_wkt(EXAMPLE9).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -589,7 +589,7 @@ fn test_example_10() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE10);
+	let ast = parse_wkt(EXAMPLE10).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -632,7 +632,7 @@ fn test_example_11() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE11);
+	let ast = parse_wkt(EXAMPLE11).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -659,7 +659,7 @@ fn test_example_12() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE12);
+	let ast = parse_wkt(EXAMPLE12).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -688,7 +688,7 @@ fn test_example_13() {
 		cs_unit: None,
 	});
 
-	let ast = parse_wkt(EXAMPLE13);
+	let ast = parse_wkt(EXAMPLE13).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -724,7 +724,7 @@ fn test_example_14() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE14);
+	let ast = parse_wkt(EXAMPLE14).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -768,7 +768,7 @@ fn test_example_15() {
 		cs_unit: None,
 	});
 
-	let ast = parse_wkt(EXAMPLE15);
+	let ast = parse_wkt(EXAMPLE15).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -811,7 +811,7 @@ fn test_example_16() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE16);
+	let ast = parse_wkt(EXAMPLE16).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -843,7 +843,7 @@ fn test_example_17() {
 			],
 		});
 
-	let ast = parse_wkt(EXAMPLE17);
+	let ast = parse_wkt(EXAMPLE17).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 
@@ -891,7 +891,7 @@ fn test_example_18() {
 		}))),
 	});
 
-	let ast = parse_wkt(EXAMPLE18);
+	let ast = parse_wkt(EXAMPLE18).unwrap();
 
 	let cs = CoordinateSystem::from_nodes(&ast).unwrap();
 

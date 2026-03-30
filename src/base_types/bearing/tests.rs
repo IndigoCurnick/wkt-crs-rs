@@ -8,7 +8,7 @@ const EXAMPLE1: &str = "BEARING[0]";
 fn test_bearing() {
 	let correct = Bearing(0.0);
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

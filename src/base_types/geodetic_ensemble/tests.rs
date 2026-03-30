@@ -57,7 +57,7 @@ fn test_geodetic_ensemble() {
 		},
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 2);
 

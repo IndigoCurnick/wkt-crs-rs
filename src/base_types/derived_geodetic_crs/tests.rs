@@ -134,7 +134,7 @@ fn test_derived_geodetic_crs() {
 		}),
 	);
 
-	let ast = parse_wkt(EXAMPLE_1);
+	let ast = parse_wkt(EXAMPLE_1).unwrap();
 
 	let res = DerivedGeodeticCrs::from_nodes(&ast).unwrap();
 

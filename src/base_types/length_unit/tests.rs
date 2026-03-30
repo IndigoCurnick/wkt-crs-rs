@@ -14,7 +14,7 @@ fn test_parse_length_unit() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -31,7 +31,7 @@ fn test_parse_length_unit() {
 		identifier: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

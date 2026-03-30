@@ -12,7 +12,7 @@ fn test_order() {
 fn test_example_1() {
 	let correct = Order(0);
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -24,7 +24,7 @@ fn test_example_1() {
 fn test_example_2() {
 	let correct = Order(1);
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

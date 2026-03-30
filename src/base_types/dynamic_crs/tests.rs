@@ -19,7 +19,7 @@ fn test_dynamic_crs() {
 		deformation_model_id: None,
 	};
 
-	let ast = parse_wkt(EXAMPLE1);
+	let ast = parse_wkt(EXAMPLE1).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
@@ -36,7 +36,7 @@ fn test_dynamic_crs() {
 		)),
 	};
 
-	let ast = parse_wkt(EXAMPLE2);
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 
