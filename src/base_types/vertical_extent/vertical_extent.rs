@@ -1,5 +1,3 @@
-use horologium::Temporal;
-
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktNode},
@@ -8,12 +6,6 @@ use crate::{
 	keywords::{Keywords, match_keywords},
 	types::{WktBaseType, WktBaseTypeResult},
 };
-
-#[derive(Debug, PartialEq)]
-pub enum DateOrString {
-	Date(Temporal),
-	String(String),
-}
 
 #[derive(Debug, PartialEq)]
 pub struct VerticalExtent {
@@ -37,7 +29,7 @@ impl WktBaseType for VerticalExtent {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::VerticalExtent])?;
-		match_arity(node.args.len(), 1, 3);
+		match_arity(node.args.len(), 1, 3)?;
 
 		let minimum_height = node.args[0].parse()?;
 		let maximum_height = node.args[1].parse()?;

@@ -29,7 +29,7 @@ impl WktBaseType for ParametricCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::ParametricCrs])?;
-		lower_bound_arity(node.args.len(), 4);
+		lower_bound_arity(node.args.len(), 4)?;
 
 		let crs_name = node.args[0].parse()?;
 		let parametric_datum = node.args[1].parse()?;

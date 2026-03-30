@@ -2,8 +2,8 @@ use wkt_crs_rs::{
 	WktCrsTypes,
 	base_types::{
 		AnchorEpoch, AngleUnit, Axis, BaseGeodeticCrs, BaseStaticGeographicCrs,
-		CoordinateSystem, DatumAnchor, Ellipsoid, GeodeticReferenceFrame, Id,
-		LengthUnit, MapProjection, Method, Parameter, ProjectedCrs, ScaleUnit,
+		CoordinateSystem, Ellipsoid, GeodeticReferenceFrame, Id, LengthUnit,
+		MapProjection, Method, Parameter, ProjectedCrs, ScaleUnit,
 		SpatialCoordinateSystem,
 	},
 	compound_types::{

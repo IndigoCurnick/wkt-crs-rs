@@ -66,10 +66,6 @@ pub fn tokenize(mut s: &str) -> Vec<Token> {
 	tokens
 }
 
-fn is_all_upper(s: &str) -> bool {
-	s.chars().any(|c| c.is_alphabetic()) && s.chars().all(|c| !c.is_lowercase())
-}
-
 fn parse_nodes(tokens: &mut Vec<Token>) -> Vec<WktNode> {
 	let mut nodes = Vec::new();
 
@@ -141,38 +137,10 @@ pub struct WktNode {
 	pub args: Vec<WktArg>,
 }
 
-impl<'a> WktElement<'a> for WktNode {
-	fn get_node(&'a self) -> Option<&'a WktNode> {
-		return Some(self);
-	}
-
-	fn get_arg(&'a self) -> Option<&'a WktArg> {
-		return None;
-	}
-}
-
 #[derive(Clone, Debug, PartialEq)]
 pub enum WktArg {
 	Data(String),
 	Node(WktNode),
-}
-
-impl<'a> WktElement<'a> for WktArg {
-	fn get_node(&'a self) -> Option<&'a WktNode> {
-		return match self {
-			Self::Node(n) => Some(n),
-			Self::Data(_) => None,
-		};
-	}
-
-	fn get_arg(&'a self) -> Option<&'a WktArg> {
-		return Some(self);
-	}
-}
-
-pub trait WktElement<'a> {
-	fn get_node(&'a self) -> Option<&'a WktNode>;
-	fn get_arg(&'a self) -> Option<&'a WktArg>;
 }
 
 pub trait Parse<T> {

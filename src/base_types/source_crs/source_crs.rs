@@ -1,7 +1,6 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::WktNode,
-	base_types::CoordinateSystem,
 	compound_types::CoordinateReferenceSystem,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},

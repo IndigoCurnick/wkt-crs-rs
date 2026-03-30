@@ -27,7 +27,7 @@ impl WktBaseType for BaseTemporalCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::BaseTimeCrs])?;
-		match_arity(node.args.len(), 2, 3);
+		match_arity(node.args.len(), 2, 3)?;
 
 		let base_crs_name = node.args[0].parse()?;
 		let temporal_datum = node.args[1].parse()?;

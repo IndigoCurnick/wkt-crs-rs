@@ -29,7 +29,7 @@ impl WktBaseType for BaseStaticVerticalCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::BaseVertCrs])?;
-		match_arity(node.args.len(), 3, 4);
+		match_arity(node.args.len(), 3, 4)?;
 
 		let base_crs_name = node.args[0].parse()?;
 		let vertical_frame_datum = node.args[1].parse()?;

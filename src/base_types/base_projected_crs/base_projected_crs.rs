@@ -28,7 +28,7 @@ impl WktBaseType for BaseProjectedCrs {
 		};
 
 		match_keywords(&node.keyword, vec![Keywords::BaseProjCrs])?;
-		match_arity(node.args.len(), 3, 4);
+		match_arity(node.args.len(), 3, 4)?;
 
 		let base_crs_name = node.args[0].parse()?;
 		let base_geodetic_crs = node.args[1].parse()?;

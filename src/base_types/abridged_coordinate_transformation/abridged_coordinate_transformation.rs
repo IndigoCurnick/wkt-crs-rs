@@ -64,7 +64,7 @@ impl WktBaseType for AbridgedCoordinateTransformation {
 
 		let mut operation_paramters = vec![];
 
-		for j in i..len {
+		for _j in i..len {
 			let op = match node.args.get(i) {
 				Some(a) => match a {
 					WktArg::Node(n) => {

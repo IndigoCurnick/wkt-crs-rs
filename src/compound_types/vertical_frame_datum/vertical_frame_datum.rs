@@ -2,7 +2,7 @@ use crate::{
 	ast::WktNode,
 	base_types::{VerticalDatumEnsemble, VerticalReferenceFrame},
 	error::WktParseError,
-	keywords::{self, Keywords},
+	keywords::Keywords,
 	types::{WktBaseType, WktBaseTypeResult},
 };
 

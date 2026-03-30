@@ -1,9 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{
-		OperationAccuracy, Method, OperationVersion, SourceCrs,
-	},
+	base_types::{Method, OperationAccuracy, OperationVersion, SourceCrs},
 	compound_types::ScopeExtentIdentifierRemark,
 	enumerations::OperationParameterWrapper,
 	error::WktParseError,
@@ -79,7 +77,7 @@ impl WktBaseType for PointMotionOperation {
 
 		let mut operation_paramters = vec![];
 
-		for j in i..len {
+		for _j in i..len {
 			let op = match node.args.get(i) {
 				Some(a) => match a {
 					WktArg::Node(n) => {
