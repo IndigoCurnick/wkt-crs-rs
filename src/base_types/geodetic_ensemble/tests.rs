@@ -45,7 +45,7 @@ fn test_geodetic_ensemble() {
 		},
 		datum_ensemble_accuracy: DatumEnsembleAccuracy(2.0),
 		identifier: None,
-		prime_meridian: PrimeMeridian {
+		prime_meridian: Some(PrimeMeridian {
 			prime_meridian_name: "Greenwich".into(),
 			irm_longitude: 0.0,
 			angle_unit: Some(AngleUnit {
@@ -54,7 +54,7 @@ fn test_geodetic_ensemble() {
 				identifier: None,
 			}),
 			identifier: None,
-		},
+		}),
 	};
 
 	let ast = parse_wkt(EXAMPLE1).unwrap();

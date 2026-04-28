@@ -17,7 +17,7 @@ pub struct GeodeticDatumEnsemble {
 	pub ellipsoid: Ellipsoid,
 	pub datum_ensemble_accuracy: DatumEnsembleAccuracy,
 	pub identifier: Option<Id>,
-	pub prime_meridian: PrimeMeridian,
+	pub prime_meridian: Option<PrimeMeridian>, // ! The spec says this is not optional but I routinely find instances in the EPSG database without it
 }
 
 impl WktInlineType for GeodeticDatumEnsemble {
@@ -161,12 +161,13 @@ impl WktBaseType for GeodeticDatumEnsemble {
 
 		// Prime Meridian
 
-		let prime_node = match iterator.next() {
-			Some(x) => x,
-			None => return Err(WktParseError::NotEnoughNodes),
+		let prime_meridian = match iterator.next() {
+			Some(second) => match second.parse() {
+				Ok(x) => Some(x),
+				Err(_) => None,
+			},
+			None => None,
 		};
-
-		let prime_meridian = prime_node.parse()?;
 
 		// Final validation
 
