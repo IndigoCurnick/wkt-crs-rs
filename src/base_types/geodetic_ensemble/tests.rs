@@ -9,12 +9,14 @@ use crate::{
 
 use super::GeodeticDatumEnsemble;
 
-const EXAMPLE1: &str = r#"ENSEMBLE["WGS 84 ensemble",
-MEMBER["WGS 84 (TRANSIT)"],
-MEMBER["WGS 84 (G730)"],
-ELLIPSOID["WGS 84",6378137,298.2572236,LENGTHUNIT["metre",1.0]],
-ENSEMBLEACCURACY[2.0]
-],
+const EXAMPLE1: &str = r#"
+ENSEMBLE[
+	"WGS 84 ensemble",
+	MEMBER["WGS 84 (TRANSIT)"],
+	MEMBER["WGS 84 (G730)"],
+	ELLIPSOID["WGS 84",6378137,298.2572236,LENGTHUNIT["metre",1.0]],
+	ENSEMBLEACCURACY[2.0]
+	],
 PRIMEM["Greenwich",0.0,ANGLEUNIT["degree",0.017]]
 "#;
 

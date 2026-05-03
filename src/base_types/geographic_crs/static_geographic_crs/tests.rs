@@ -2,9 +2,10 @@ use crate::{
 	WktBaseType,
 	ast::parse_wkt,
 	base_types::{
-		AngleUnit, Axis, CoordinateSystem, DefiningTransformation, Ellipsoid,
-		GeodeticReferenceFrame, Id, LengthUnit, SpatialCoordinateSystem,
-		StaticGeographicCrs,
+		AngleUnit, Axis, CoordinateSystem, DatumEnsembleAccuracy,
+		DatumEnsembleMember, DefiningTransformation, Ellipsoid,
+		GeodeticDatumEnsemble, GeodeticReferenceFrame, Id, LengthUnit,
+		SpatialCoordinateSystem, StaticGeographicCrs,
 	},
 	compound_types::{
 		GeodeticData, ScopeExtentIdentifierRemark, SpatialUnit, Unit,
@@ -12,7 +13,7 @@ use crate::{
 	enumerations::{AxisDirection, Dimension, SpatialCsType},
 };
 
-const EXAMPLE: &str = r#"
+const EXAMPLE1: &str = r#"
 GEOGCRS[
 	"WC05-IRF",
 	DATUM[
@@ -56,8 +57,57 @@ GEOGCRS[
 ]
 "#;
 
+const EXAMPLE2: &str = r#"
+GEOGCRS[
+	"ETRS89",
+	ENSEMBLE[
+		"European Terrestrial Reference System 1989 ensemble", 
+		MEMBER[
+			"European Terrestrial Reference Frame 1989", 
+			ID["EPSG",1178]
+		], 
+		MEMBER[
+			"European Terrestrial Reference Frame 1990", 
+			ID["EPSG",1179]
+		], 
+		ELLIPSOID[
+			"GRS 1980",
+			6378137,
+			298.257222101,
+			LENGTHUNIT[
+				"metre",
+				1,
+				ID["EPSG",9001]
+			],
+			ID["EPSG",7019]
+		], 
+		ENSEMBLEACCURACY[0.1],
+		ID["EPSG",6258]
+	],
+	CS[
+		ellipsoidal,
+		2,
+		ID["EPSG",6422]
+	],
+	AXIS[
+		"Geodetic latitude (Lat)",
+		north
+	],
+	AXIS[
+		"Geodetic longitude (Lon)",
+		east
+	],
+	ANGLEUNIT[
+		"degree",
+		0.0174532925199433,
+		ID["EPSG",9102]
+	],
+	ID["EPSG",4258]
+]
+"#;
+
 #[test]
-fn test_static_geographic_crs() {
+fn test_static_geographic_crs_frame() {
 	let correct = StaticGeographicCrs {
 		crs_name: "WC05-IRF".to_string(),
 		frame: GeodeticData::GeodeticReferenceFrame(GeodeticReferenceFrame {
@@ -121,7 +171,92 @@ fn test_static_geographic_crs() {
 		},
 	};
 
-	let ast = parse_wkt(EXAMPLE).unwrap();
+	let ast = parse_wkt(EXAMPLE1).unwrap();
+
+	assert_eq!(ast.len(), 1);
+
+	let datum = StaticGeographicCrs::from_nodes(&ast).unwrap();
+
+	assert_eq!(correct, datum.result);
+	assert_eq!(datum.consumed, 1);
+}
+
+#[test]
+fn test_static_geographic_crs_ensemble() {
+	let correct = StaticGeographicCrs {
+		crs_name: "ETRS89".to_string(),
+		frame: GeodeticData::GeodeticDatumEnsemble(GeodeticDatumEnsemble {
+			datum_ensemble_name:
+				"European Terrestrial Reference System 1989 ensemble"
+					.to_string(),
+			datum_ensemble_member: vec![
+				DatumEnsembleMember {
+					ensemble_member_name:
+						"European Terrestrial Reference Frame 1989".to_string(),
+					identifier: Some(Id::new_epsg(1178)),
+				},
+				DatumEnsembleMember {
+					ensemble_member_name:
+						"European Terrestrial Reference Frame 1990".to_string(),
+					identifier: Some(Id::new_epsg(1179)),
+				},
+			],
+			ellipsoid: Ellipsoid {
+				ellipsoid_name: "GRS 1980".to_string(),
+				semi_major_axis: 6378137.0,
+				inverse_flattening: 298.257222101,
+				length_unit: Some(LengthUnit {
+					unit_name: "metre".to_string(),
+					conversion_factor: 1.0,
+					identifier: Some(Id::new_epsg(9001)),
+				}),
+				identifier: Some(Id::new_epsg(7019)),
+			},
+			datum_ensemble_accuracy: DatumEnsembleAccuracy(0.1),
+			identifier: Some(Id::new_epsg(6258)),
+			prime_meridian: None,
+		}),
+		coordinate_system: CoordinateSystem::SpatialCS(
+			SpatialCoordinateSystem {
+				spatial_cs_type: SpatialCsType::Ellipsoidal,
+				dimension: Dimension::Two,
+				identifier: Some(Id::new_epsg(6422)),
+				spatial_axis: vec![
+					Axis {
+						axis_name_abbreviation: "Geodetic latitude (Lat)"
+							.to_string(),
+						axis_direction: AxisDirection::North(None),
+						axis_order: None,
+						unit: None,
+						identifier: None,
+					},
+					Axis {
+						axis_name_abbreviation: "Geodetic longitude (Lon)"
+							.to_string(),
+						axis_direction: AxisDirection::East,
+						axis_order: None,
+						unit: None,
+						identifier: None,
+					},
+				],
+				cs_unit: Some(Unit::SpatialUnit(SpatialUnit::AngleUnit(
+					AngleUnit {
+						unit_name: "degree".to_string(),
+						conversion_factor: 0.0174532925199433,
+						identifier: Some(Id::new_epsg(9102)),
+					},
+				))),
+			},
+		),
+		defining_transformation_id: None,
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: None,
+			identifier: Some(vec![Id::new_epsg(4258)]),
+			remark: None,
+		},
+	};
+
+	let ast = parse_wkt(EXAMPLE2).unwrap();
 
 	assert_eq!(ast.len(), 1);
 

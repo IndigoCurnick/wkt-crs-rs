@@ -6,7 +6,7 @@ use wkt_crs_rs::{
 		GeodeticDatumEnsemble, GeodeticReferenceFrame, GeographicCrs, Id,
 		LengthUnit, Method, OperationAccuracy, OperationParameterFile,
 		OperationVersion, SourceCrs, SpatialCoordinateSystem,
-		StaticGeodeticCrs, StaticGeographicCrs, TargetCrs,
+		StaticGeographicCrs, TargetCrs,
 	},
 	compound_types::{
 		CoordinateReferenceSystem, GeodeticData, ScopeExtentIdentifierRemark,
@@ -237,8 +237,9 @@ fn test_epsg_transformation_6189() {
 		},
 		target_crs: TargetCrs {
 		coordinate_system: CoordinateReferenceSystem::SingleCrs(
-			SingleCrs::GeodeticCrs(GeodeticCrs::StaticGeodeticCrs(
-			StaticGeodeticCrs {
+			SingleCrs::GeodeticCrs(GeodeticCrs::GeographicCrs(
+				GeographicCrs::StaticGeographicCrs(
+			StaticGeographicCrs {
 				crs_name: "ETRS89".to_string(),
 				frame: GeodeticData::GeodeticDatumEnsemble(GeodeticDatumEnsemble {
 				datum_ensemble_name:
@@ -318,7 +319,7 @@ fn test_epsg_transformation_6189() {
 					identifier: Some(Id::new_epsg(7019)),
 				},
 				datum_ensemble_accuracy: DatumEnsembleAccuracy(0.1),
-				identifier: Some(Id::new_epsg(7019)),
+				identifier: Some(Id::new_epsg(6258)),
 				prime_meridian: None,
 				}),
 				coordinate_system: CoordinateSystem::SpatialCS(
@@ -356,10 +357,10 @@ fn test_epsg_transformation_6189() {
 				defining_transformation_id: None,
 				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 				usage: None,
-				identifier: None,
+				identifier: Some(vec![Id::new_epsg(4258)]),
 				remark: None,
 				},
-			},
+			}),
 			)),
 		),
 		},

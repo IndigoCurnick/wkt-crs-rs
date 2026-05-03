@@ -187,6 +187,8 @@ impl WktBaseType for GeodeticDatumEnsemble {
 			}
 		};
 
+		let consumed = if prime_meridian.is_some() { 2 } else { 1 };
+
 		let res = GeodeticDatumEnsemble {
 			datum_ensemble_name,
 			datum_ensemble_member,
@@ -198,7 +200,7 @@ impl WktBaseType for GeodeticDatumEnsemble {
 
 		Ok(WktBaseTypeResult {
 			result: res,
-			consumed: 2,
+			consumed,
 		})
 	}
 }

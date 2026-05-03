@@ -43,6 +43,7 @@ where
 		I: IntoIterator<Item = &'a WktNode>;
 }
 
+#[derive(Debug)]
 pub struct WktInlineResult<T: WktInlineType + Sized> {
 	pub result: T,
 	pub consumed: usize,
