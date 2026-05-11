@@ -3,7 +3,7 @@ use crate::{
 	base_types::{
 		AngleUnit, Axis, CompoundCrs, CoordinateSystem, DatumAnchor,
 		DynamicCrs, DynamicGeographicCrs, Ellipsoid, FrameEpoch, GeodeticCrs,
-		GeodeticReferenceFrame, GeographicCrs, LengthUnit, Order,
+		GeodeticReferenceFrame, GeographicCrs, Id, LengthUnit, Order,
 		OrdinalDateTimeCoordinateSystem, ParametricCrs, ParametricDatum,
 		ParametricUnit, PrimeMeridian, SpatialCoordinateSystem,
 		StaticGeographicCrs, StaticVerticalCrs, TemporalDatum, TimeCrs,
@@ -78,14 +78,74 @@ const EXAMPLE3: &str = r#"COMPOUNDCRS["2D GPS position with civil time in ISO 86
 ]
 "#;
 
-#[test]
-fn test_compound_crs() {
-	test_example_1();
-	test_example_2();
-	test_example_3();
-}
+const EXAMPLE4: &str = r#"
+COMPOUNDCRS[
+	"Tokyo + JSLD69 height",
+	GEOGCRS[
+		"Tokyo",
+		DATUM[
+			"Tokyo",
+			ELLIPSOID[
+				"Bessel 1841",
+				6377397.155,
+				299.1528128,
+				LENGTHUNIT[
+					"metre",
+					1,
+					ID["EPSG",9001]
+				],
+				ID["EPSG",7004]
+			],
+			ID["EPSG",6301]
+		],
+		CS[
+			ellipsoidal,
+			2,
+			ID["EPSG",6422]
+		],
+		AXIS[
+			"Geodetic latitude (Lat)",
+			north
+		],
+		AXIS[
+			"Geodetic longitude (Lon)",
+			east
+		],
+		ANGLEUNIT[
+			"degree",
+			0.0174532925199433,
+			ID["EPSG",9102]
+		],
+		ID["EPSG",4301]
+	],
+	VERTCRS[
+		"JSLD69 height",
+		VDATUM[
+			"Japanese Standard Levelling Datum 1969",
+			ID["EPSG",5122]
+		],
+		CS[
+			vertical,
+			1,
+			ID["EPSG",6499]
+		],
+		AXIS[
+			"Gravity-related height (H)",
+			up
+		],
+		LENGTHUNIT[
+			"metre",
+			1,
+			ID["EPSG",9001]
+		],
+		ID["EPSG",5723]
+	],
+	ID["EPSG",7414]
+]
+"#;
 
-fn test_example_1() {
+#[test]
+fn test_compound_crs_example_1() {
 	let correct = CompoundCrs {
 		compound_crs_name: "NAD83 + NAVD88".into(),
 		crs_one: SingleCrs::GeodeticCrs(GeodeticCrs::GeographicCrs(
@@ -213,7 +273,8 @@ fn test_example_1() {
 	assert_eq!(correct, acc.result);
 }
 
-fn test_example_2() {
+#[test]
+fn test_compound_crs_example_2() {
 	let correct = CompoundCrs {
 		compound_crs_name: "ICAO layer 0".into(),
 		crs_one: SingleCrs::GeodeticCrs(GeodeticCrs::GeographicCrs(
@@ -332,7 +393,8 @@ fn test_example_2() {
 	assert_eq!(correct, acc.result);
 }
 
-fn test_example_3() {
+#[test]
+fn test_compound_crs_example_3() {
 	let correct = CompoundCrs {
 		compound_crs_name: "2D GPS position with civil time in ISO 8601 format"
 			.into(),
@@ -439,4 +501,119 @@ fn test_example_3() {
 	let acc = CompoundCrs::from_nodes(&ast).unwrap();
 
 	assert_eq!(correct, acc.result);
+}
+
+#[test]
+fn test_compound_crs_example_4() {
+	let compound = CompoundCrs {
+		compound_crs_name: "Tokyo + JSLD69 height".to_string(),
+		crs_one: SingleCrs::GeodeticCrs(GeodeticCrs::GeographicCrs(
+			GeographicCrs::StaticGeographicCrs(StaticGeographicCrs {
+				crs_name: "Tokyo".to_string(),
+				frame: GeodeticData::GeodeticReferenceFrame(
+					GeodeticReferenceFrame {
+						datum_name: "Tokyo".to_string(),
+						ellipsoid: Ellipsoid {
+							ellipsoid_name: "Bessel 1841".to_string(),
+							semi_major_axis: 6377397.155,
+							inverse_flattening: 299.1528128,
+							length_unit: Some(LengthUnit::metre()),
+							identifier: Some(Id::new_epsg(7004)),
+						},
+						prime_meridian: None,
+						anchor: None,
+						anchor_epoch: None,
+						identifier: Some(Id::new_epsg(6301)),
+					},
+				),
+				coordinate_system: CoordinateSystem::SpatialCS(
+					SpatialCoordinateSystem {
+						spatial_cs_type: SpatialCsType::Ellipsoidal,
+						dimension: Dimension::Two,
+						identifier: Some(Id::new_epsg(6422)),
+						spatial_axis: vec![
+							Axis {
+								axis_name_abbreviation:
+									"Geodetic latitude (Lat)".to_string(),
+								axis_direction: AxisDirection::North(None),
+								axis_order: None,
+								unit: None,
+								identifier: None,
+							},
+							Axis {
+								axis_name_abbreviation:
+									"Geodetic longitude (Lon)".to_string(),
+								axis_direction: AxisDirection::East,
+								axis_order: None,
+								unit: None,
+								identifier: None,
+							},
+						],
+						cs_unit: Some(Unit::SpatialUnit(
+							SpatialUnit::AngleUnit(AngleUnit::degree()),
+						)),
+					},
+				),
+				defining_transformation_id: None,
+				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+					usage: None,
+					identifier: Some(vec![Id::new_epsg(4301)]),
+					remark: None,
+				},
+			}),
+		)),
+		crs_two: SingleCrs::VerticalCrs(VerticalCrs::StaticVerticalCrs(
+			StaticVerticalCrs {
+				crs_name: "JSLD69 height".to_string(),
+				vertical_frame_datum:
+					VerticalFrameDatum::VerticalReferenceFrame(
+						VerticalReferenceFrame {
+							datum_name:
+								"Japanese Standard Levelling Datum 1969"
+									.to_string(),
+							datum_anchor: None,
+							identifier: Some(Id::new_epsg(5122)),
+						},
+					),
+				coordinate_system: CoordinateSystem::SpatialCS(
+					SpatialCoordinateSystem {
+						spatial_cs_type: SpatialCsType::Vertical,
+						dimension: Dimension::One,
+						identifier: Some(Id::new_epsg(6499)),
+						spatial_axis: vec![Axis {
+							axis_name_abbreviation:
+								"Gravity-related height (H)".to_string(),
+							axis_direction: AxisDirection::Up,
+							axis_order: None,
+							unit: None,
+							identifier: None,
+						}],
+						cs_unit: Some(Unit::SpatialUnit(
+							SpatialUnit::LengthUnit(LengthUnit::metre()),
+						)),
+					},
+				),
+				geoid_model_id: None,
+				scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+					usage: None,
+					identifier: Some(vec![Id::new_epsg(5723)]),
+					remark: None,
+				},
+			},
+		)),
+		additional_crs: None,
+		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
+			usage: None,
+			identifier: Some(vec![Id::new_epsg(7414)]),
+			remark: None,
+		},
+	};
+
+	let ast = parse_wkt(EXAMPLE4).unwrap();
+
+	assert_eq!(ast.len(), 1);
+
+	let acc = CompoundCrs::from_nodes(&ast).unwrap();
+
+	assert_eq!(compound, acc.result);
 }

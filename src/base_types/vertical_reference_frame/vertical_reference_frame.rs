@@ -1,3 +1,5 @@
+use std::num::NonZeroI128;
+
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktNode},
@@ -38,11 +40,14 @@ impl WktBaseType for VerticalReferenceFrame {
 
 		let mut i = 1;
 
-		// ? wait isn't this going to fail if we have an id but not an anchor?
 		let datum_anchor = match node.args.get(i) {
 			Some(x) => {
-				i += 1;
-				Some(x.parse()?)
+				if let Ok(y) = x.parse() {
+					i += 1;
+					Some(y)
+				} else {
+					None
+				}
 			}
 			None => None,
 		};

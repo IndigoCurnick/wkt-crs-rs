@@ -63,3 +63,13 @@ impl WktBaseType for LengthUnit {
 		})
 	}
 }
+
+impl LengthUnit {
+	pub fn metre() -> Self {
+		return Self {
+			unit_name: "metre".to_string(),
+			conversion_factor: 1.0,
+			identifier: Some(Id::new_epsg(9001)),
+		};
+	}
+}

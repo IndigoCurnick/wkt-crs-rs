@@ -65,3 +65,13 @@ impl WktBaseType for AngleUnit {
 		Ok(res)
 	}
 }
+
+impl AngleUnit {
+	pub fn degree() -> Self {
+		return Self {
+			unit_name: "degree".to_string(),
+			conversion_factor: 0.0174532925199433,
+			identifier: Some(Id::new_epsg(9102)),
+		};
+	}
+}
