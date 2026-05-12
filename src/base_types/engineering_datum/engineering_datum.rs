@@ -38,8 +38,12 @@ impl WktBaseType for EngineeringDatum {
 
 		let datum_anchor = match node.args.get(i) {
 			Some(x) => {
-				i += 1;
-				Some(x.parse()?)
+				if let Ok(y) = x.parse() {
+					i += 1;
+					Some(y)
+				} else {
+					None
+				}
 			}
 			None => None,
 		};
