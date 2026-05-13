@@ -128,7 +128,7 @@ fn test_example_2() {
 				))),
 			},
 		),
-		geoid_model_id: Some(GeoidModelId {
+		geoid_model_id: Some(vec![GeoidModelId {
 			geoid_model_name: "CGG2013".to_string(),
 			identifier: Some(Id {
 				authority_name: "EPSG".into(),
@@ -137,7 +137,7 @@ fn test_example_2() {
 				authority_citation: None,
 				id_uri: None,
 			}),
-		}),
+		}]),
 		scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 			usage: None,
 			identifier: None,

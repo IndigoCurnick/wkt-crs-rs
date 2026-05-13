@@ -1,6 +1,6 @@
 use crate::{
 	arity::lower_bound_arity,
-	ast::{Parse, WktNode},
+	ast::{Parse, WktArg, WktNode},
 	base_types::{CoordinateSystem, GeoidModelId},
 	compound_types::{ScopeExtentIdentifierRemark, VerticalFrameDatum},
 	error::WktParseError,
@@ -13,7 +13,7 @@ pub struct StaticVerticalCrs {
 	pub crs_name: String,
 	pub vertical_frame_datum: VerticalFrameDatum,
 	pub coordinate_system: CoordinateSystem,
-	pub geoid_model_id: Option<GeoidModelId>,
+	pub geoid_model_id: Option<Vec<GeoidModelId>>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
 
@@ -41,23 +41,37 @@ impl WktBaseType for StaticVerticalCrs {
 		let coordinate_system =
 			CoordinateSystem::from_args(&node.args[2..node.args.len()])?;
 
-		let mut u = 0;
-		let geoid_model_id = match node.args.get(2 + coordinate_system.consumed)
-		{
-			Some(x) => {
-				if let Ok(y) = x.parse() {
-					u += 1;
-					Some(y)
-				} else {
-					None
+		let mut geoid_models = vec![];
+		let mut final_id = 0;
+
+		for i in 2 + coordinate_system.consumed..node.args.len() {
+			let arg = &node.args[i];
+
+			let no = match arg {
+				WktArg::Node(n) => n,
+				_ => return Err(WktParseError::ExpectedNode),
+			};
+
+			match no.keyword {
+				Keywords::GeoidModel => {
+					let geo = no.parse()?;
+
+					geoid_models.push(geo);
+					final_id = i;
 				}
+				_ => break,
 			}
-			None => None,
+		}
+
+		let geoid_model_id = if geoid_models.is_empty() {
+			None
+		} else {
+			Some(geoid_models)
 		};
 
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
-				&node.args[u + 2 + coordinate_system.consumed..node.args.len()],
+				&node.args[final_id + 1..node.args.len()],
 			)?;
 
 		let res = StaticVerticalCrs {
