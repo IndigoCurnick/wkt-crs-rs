@@ -12,7 +12,6 @@ use crate::{
 pub struct BaseStaticVerticalCrs {
 	pub base_crs_name: String,
 	pub vertical_frame_datum: VerticalFrameDatum,
-	pub vertical_reference_frame: VerticalReferenceFrame,
 	pub identifier: Option<Id>, // TODO: multiple
 }
 
@@ -33,9 +32,8 @@ impl WktBaseType for BaseStaticVerticalCrs {
 
 		let base_crs_name = node.args[0].parse()?;
 		let vertical_frame_datum = node.args[1].parse()?;
-		let vertical_reference_frame = node.args[2].parse()?;
 
-		let identifier = match node.args.get(3) {
+		let identifier = match node.args.get(2) {
 			Some(x) => Some(x.parse()?),
 			None => None,
 		};
@@ -43,7 +41,6 @@ impl WktBaseType for BaseStaticVerticalCrs {
 		let res = BaseStaticVerticalCrs {
 			base_crs_name,
 			vertical_frame_datum,
-			vertical_reference_frame,
 			identifier,
 		};
 

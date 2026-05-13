@@ -1,7 +1,7 @@
 use crate::{
 	arity::lower_bound_arity,
 	ast::{Parse, WktNode},
-	base_types::{BaseVerticalCrs, DerivingConversion},
+	base_types::{BaseVerticalCrs, CoordinateSystem, DerivingConversion},
 	compound_types::ScopeExtentIdentifierRemark,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
@@ -13,6 +13,7 @@ pub struct DerivedVerticalCrs {
 	pub derived_crs_name: String,
 	pub base_vertical_crs: BaseVerticalCrs,
 	pub deriving_conversion: DerivingConversion,
+	pub coordinate_system: CoordinateSystem,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
 
@@ -38,15 +39,22 @@ impl WktBaseType for DerivedVerticalCrs {
 		let base_vertical_crs = node.args[1].parse()?;
 		let deriving_conversion = node.args[2].parse()?;
 
+		let len = node.args.len();
+
+		let coordinate_system_wrapper =
+			CoordinateSystem::from_args(&node.args[3..len])?;
+
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
-				&node.args[3..node.args.len()],
+				&node.args
+					[3 + coordinate_system_wrapper.consumed..node.args.len()],
 			)?;
 
 		let res = DerivedVerticalCrs {
 			derived_crs_name,
 			base_vertical_crs,
 			deriving_conversion,
+			coordinate_system: coordinate_system_wrapper.result,
 			scope_extent_identifier_remark: scope_extent_identifier_remark
 				.result,
 		};
