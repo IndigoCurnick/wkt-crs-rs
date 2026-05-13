@@ -42,7 +42,7 @@ impl WktBaseType for StaticVerticalCrs {
 			CoordinateSystem::from_args(&node.args[2..node.args.len()])?;
 
 		let mut geoid_models = vec![];
-		let mut final_id = 0;
+		let mut final_id = 2 + coordinate_system.consumed;
 
 		for i in 2 + coordinate_system.consumed..node.args.len() {
 			let arg = &node.args[i];
@@ -66,12 +66,15 @@ impl WktBaseType for StaticVerticalCrs {
 		let geoid_model_id = if geoid_models.is_empty() {
 			None
 		} else {
+			final_id += 1;
 			Some(geoid_models)
 		};
 
+		println!("final: {}", final_id);
+
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
-				&node.args[final_id + 1..node.args.len()],
+				&node.args[final_id..node.args.len()],
 			)?;
 
 		let res = StaticVerticalCrs {
