@@ -70,8 +70,6 @@ impl WktBaseType for StaticVerticalCrs {
 			Some(geoid_models)
 		};
 
-		println!("final: {}", final_id);
-
 		let scope_extent_identifier_remark =
 			ScopeExtentIdentifierRemark::from_args(
 				&node.args[final_id..node.args.len()],
