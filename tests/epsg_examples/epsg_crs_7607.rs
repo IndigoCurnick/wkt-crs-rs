@@ -31,7 +31,7 @@ PROJCRS[
 					ID["EPSG",9001]
 				],
 				ID["EPSG",7019]
-			], 
+			],
 			ANCHOREPOCH[2010],
 			ID["EPSG",1116]
 		],
@@ -147,6 +147,7 @@ fn test_epsg_crs_7607() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: Some(Id::new_epsg(6318)),
 			},
 		),

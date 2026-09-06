@@ -151,6 +151,7 @@ fn test_example_1() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: Some(Id {
 					authority_name: "EuroGeographics".into(),
 					authority_unique_identifier: NumText::Text(
@@ -313,6 +314,7 @@ fn test_example_2() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: None,
 			},
 		),
@@ -512,6 +514,7 @@ fn test_example_3() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: None,
 			},
 		),
@@ -633,6 +636,7 @@ fn test_example_4() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: None,
 			},
 		),

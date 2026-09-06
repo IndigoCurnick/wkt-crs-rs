@@ -13,7 +13,7 @@ pub struct StaticGeodeticCrs {
 	pub crs_name: String,
 	pub frame: GeodeticData,
 	pub coordinate_system: CoordinateSystem,
-	pub defining_transformation_id: Option<DefiningTransformation>,
+	pub defining_transformation_id: Option<Vec<DefiningTransformation>>,
 	pub scope_extent_identifier_remark: ScopeExtentIdentifierRemark,
 }
 
@@ -43,18 +43,31 @@ impl WktBaseType for StaticGeodeticCrs {
 
 		let mut i = 2 + coordinate_system.consumed;
 
-		let defining_transformation_id = match node.args.get(i) {
-			Some(x) => match x {
-				WktArg::Data(_) => None,
-				WktArg::Node(y) => match y.keyword {
+		let mut defining_transformations = vec![];
+
+		loop {
+			let nd = match node.args.get(i) {
+				Some(x) => x,
+				None => break,
+			};
+
+			match nd {
+				WktArg::Node(x) => match x.keyword {
 					Keywords::DefiningTransformation => {
+						defining_transformations.push(x.parse()?);
 						i += 1;
-						Some(y.parse()?)
 					}
-					_ => None,
+					_ => break,
 				},
-			},
-			None => None,
+				_ => return Err(WktParseError::ExpectedNode),
+			}
+		}
+
+		let defining_transformation_id = if defining_transformations.is_empty()
+		{
+			None
+		} else {
+			Some(defining_transformations)
 		};
 
 		let scope_extent_identifier_remark =

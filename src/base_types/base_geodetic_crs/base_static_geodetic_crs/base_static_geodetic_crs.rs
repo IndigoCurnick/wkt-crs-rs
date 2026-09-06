@@ -1,7 +1,7 @@
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktArg, WktNode},
-	base_types::{AngleUnit, Id},
+	base_types::{AngleUnit, DefiningTransformation, Id},
 	compound_types::GeodeticData,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},
@@ -13,6 +13,7 @@ pub struct BaseStaticGeodeticCrs {
 	pub base_crs_name: String,
 	pub geodetic_data: GeodeticData,
 	pub ellipsoidal_cs_unit: Option<AngleUnit>,
+	pub defining_transformation: Option<Vec<DefiningTransformation>>,
 	pub identifier: Option<Id>,
 }
 
@@ -77,6 +78,33 @@ impl WktBaseType for BaseStaticGeodeticCrs {
 			None => None,
 		};
 
+		let mut defining_transformations = vec![];
+
+		loop {
+			let nd = match node.args.get(i) {
+				Some(x) => x,
+				None => break,
+			};
+
+			match nd {
+				WktArg::Node(x) => match x.keyword {
+					Keywords::DefiningTransformation => {
+						defining_transformations.push(x.parse()?);
+						i += 1;
+					}
+					_ => break,
+				},
+				_ => return Err(WktParseError::ExpectedNode),
+			}
+		}
+
+		let defining_transformation_id = if defining_transformations.is_empty()
+		{
+			None
+		} else {
+			Some(defining_transformations)
+		};
+
 		let identifier = match node.args.get(i) {
 			Some(x) => Some(x.parse()?),
 			None => None,
@@ -86,6 +114,7 @@ impl WktBaseType for BaseStaticGeodeticCrs {
 			base_crs_name,
 			geodetic_data: geodetic_data.result,
 			ellipsoidal_cs_unit,
+			defining_transformation: defining_transformation_id,
 			identifier,
 		};
 

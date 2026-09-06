@@ -63,3 +63,13 @@ impl WktBaseType for ScaleUnit {
 		Ok(res)
 	}
 }
+
+impl ScaleUnit {
+	pub fn unity() -> Self {
+		return Self {
+			unit_name: "unity".to_string(),
+			conversion_factor: 1.0,
+			identifier: Some(Id::new_epsg(9201)),
+		};
+	}
+}

@@ -73,6 +73,7 @@ fn test_derived_projected_crs() {
 						},
 					),
 					ellipsoidal_cs_unit: None,
+					defining_transformation: None,
 					identifier: None,
 				},
 			),

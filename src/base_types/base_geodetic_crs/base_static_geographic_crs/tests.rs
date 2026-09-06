@@ -69,6 +69,7 @@ fn test_example_1() {
 			},
 		),
 		ellipsoidal_cs_unit: None,
+		defining_transformation: None,
 		identifier: Some(Id {
 			authority_name: "EuroGeographics".into(),
 			authority_unique_identifier: NumText::Text("ETRS89-LatLon".into()),
@@ -128,6 +129,7 @@ fn test_example_2() {
 			},
 		),
 		ellipsoidal_cs_unit: None,
+		defining_transformation: None,
 		identifier: Some(Id {
 			authority_name: "EPSG".to_string(),
 			authority_unique_identifier: NumText::Int(4152),

@@ -1,7 +1,7 @@
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktNode},
-	base_types::{Id, VerticalReferenceFrame},
+	base_types::Id,
 	compound_types::VerticalFrameDatum,
 	error::WktParseError,
 	keywords::{Keywords, match_keywords},

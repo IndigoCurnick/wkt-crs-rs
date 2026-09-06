@@ -189,6 +189,7 @@ fn test_epsg_crs_9952() {
 					},
 				),
 				ellipsoidal_cs_unit: None,
+				defining_transformation: None,
 				identifier: Some(Id::new_epsg(5324)),
 			},
 		),

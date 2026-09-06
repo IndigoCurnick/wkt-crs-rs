@@ -1,5 +1,3 @@
-use std::num::NonZeroI128;
-
 use crate::{
 	arity::match_arity,
 	ast::{Parse, WktNode},

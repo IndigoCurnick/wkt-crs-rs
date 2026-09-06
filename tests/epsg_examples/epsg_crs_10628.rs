@@ -113,11 +113,11 @@ fn test_epsg_crs_10628() {
 					))),
 				},
 			),
-			defining_transformation_id: Some(DefiningTransformation {
+			defining_transformation_id: Some(vec![DefiningTransformation {
 				defining_transformation_name: "ETRS89 to WC05-IRF (1)"
 					.to_string(),
 				identifier: Some(Id::new_epsg(10629)),
-			}),
+			}]),
 			scope_extent_identifier_remark: ScopeExtentIdentifierRemark {
 				usage: None,
 				identifier: Some(vec![Id::new_epsg(10628)]),

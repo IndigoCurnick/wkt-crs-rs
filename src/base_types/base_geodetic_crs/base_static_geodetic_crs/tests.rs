@@ -58,6 +58,7 @@ fn test_base_static_geodetic_crs() {
 			conversion_factor: 0.0174532925199433,
 			identifier: None,
 		}),
+		defining_transformation: None,
 		identifier: None,
 	};
 
