@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TimeUnit {
 	pub unit_name: String,
 	pub conversion_factor: Option<f64>,

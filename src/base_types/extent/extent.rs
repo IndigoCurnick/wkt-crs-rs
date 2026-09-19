@@ -8,7 +8,7 @@ use crate::{
 	types::{WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Extent {
 	pub area_description: Option<AreaDescription>,
 	pub geographic_bounding_box: Option<GeographicBoundingBox>,

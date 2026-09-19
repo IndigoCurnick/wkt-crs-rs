@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct MapProjection {
 	pub map_projection_name: String,
 	pub map_projection_method: Method,

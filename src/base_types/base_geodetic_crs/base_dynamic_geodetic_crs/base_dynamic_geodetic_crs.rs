@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct BaseDynamicGeodeticCrs {
 	pub base_crs_name: String,
 	pub dynamic_crs: DynamicCrs,

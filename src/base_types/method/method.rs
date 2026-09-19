@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Method {
 	pub method_name: String,
 	pub identifier: Option<Id>, // TODO: technically allowed multiple of these

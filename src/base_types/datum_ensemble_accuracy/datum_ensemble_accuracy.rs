@@ -6,7 +6,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DatumEnsembleAccuracy(pub f64); // ? could this be an int?
 
 impl WktBaseType for DatumEnsembleAccuracy {

@@ -4,7 +4,7 @@ use strum::{AsRefStr, EnumString};
 
 use crate::{ast::WktArg, error::WktParseError};
 
-#[derive(Debug, PartialEq, EnumString, AsRefStr)]
+#[derive(Debug, Clone, PartialEq, EnumString, AsRefStr)]
 pub enum TemporalCountMeasureCsType {
 	#[strum(serialize = "temporalCount")]
 	TemporalCount,

@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DefiningTransformation {
 	pub defining_transformation_name: String,
 	pub identifier: Option<Id>, // TODO: Technically the spec allows for many IDs here

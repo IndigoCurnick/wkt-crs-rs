@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Id {
 	pub authority_name: String,
 	pub authority_unique_identifier: NumText,

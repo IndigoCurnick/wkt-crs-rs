@@ -6,7 +6,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum VerticalFrameDatum {
 	VerticalReferenceFrame(VerticalReferenceFrame),
 	VerticalDatumEnsemble(VerticalDatumEnsemble),

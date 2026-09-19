@@ -7,7 +7,7 @@ use crate::{
 };
 
 // TODO: Make this a tuple struct
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Remark(pub String);
 
 impl WktBaseType for Remark {

@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SpatialUnit {
 	AngleUnit(AngleUnit),
 	LengthUnit(LengthUnit),

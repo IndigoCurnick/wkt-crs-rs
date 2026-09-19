@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DerivingConversion {
 	pub deriving_conversion_name: String,
 	pub operation_method: Method,

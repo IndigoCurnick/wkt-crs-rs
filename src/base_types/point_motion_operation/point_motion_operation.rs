@@ -9,7 +9,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct PointMotionOperation {
 	pub operation_name: String,
 	pub operation_version: Option<OperationVersion>,

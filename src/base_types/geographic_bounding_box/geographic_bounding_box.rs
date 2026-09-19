@@ -6,7 +6,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GeographicBoundingBox {
 	pub lower_left_latitude: f64,
 	pub lower_left_longitude: f64,

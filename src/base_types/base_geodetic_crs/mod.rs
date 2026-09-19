@@ -18,7 +18,7 @@ pub use base_dynamic_geographic_crs::BaseDynamicGeographicCrs;
 pub use base_static_geodetic_crs::BaseStaticGeodeticCrs;
 pub use base_static_geographic_crs::BaseStaticGeographicCrs;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum BaseStaticCrs {
 	BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
 	BaseStaticGeographicCrs(BaseStaticGeographicCrs),
@@ -64,7 +64,7 @@ impl WktBaseType for BaseStaticCrs {
 }
 
 // * yes yes it is called `geodetic` but contains geographic....
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum BaseGeodeticCrs {
 	BaseStaticGeodeticCrs(BaseStaticGeodeticCrs),
 	BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
@@ -175,7 +175,7 @@ impl WktBaseType for BaseGeodeticCrs {
 	}
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum BaseDynamicCrs {
 	BaseDynamicGeodeticCrs(BaseDynamicGeodeticCrs),
 	BaseDynamicGeographicCrs(BaseDynamicGeographicCrs),

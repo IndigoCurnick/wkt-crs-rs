@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ParametricDatum {
 	pub datum_name: String,
 	pub datum_anchor: Option<DatumAnchor>,

@@ -10,7 +10,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum GeographicCrs {
 	DynamicGeographicCrs(DynamicGeographicCrs),
 	StaticGeographicCrs(StaticGeographicCrs),

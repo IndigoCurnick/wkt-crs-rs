@@ -6,7 +6,7 @@ use crate::{
 	types::{WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ScopeExtentIdentifierRemark {
 	pub usage: Option<Vec<Usage>>,
 	pub identifier: Option<Vec<Id>>,

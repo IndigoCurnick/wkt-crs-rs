@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ProjectedCrs {
 	pub crs_name: String,
 	pub base_geodetic_crs: BaseGeodeticCrs,

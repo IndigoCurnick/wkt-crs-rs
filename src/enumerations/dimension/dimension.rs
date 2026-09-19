@@ -1,6 +1,6 @@
 use crate::{ast::WktArg, error::WktParseError};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Dimension {
 	One,
 	Two,

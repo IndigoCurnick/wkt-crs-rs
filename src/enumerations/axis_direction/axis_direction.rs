@@ -9,7 +9,7 @@ use crate::{
 	types::WktBaseType,
 };
 
-#[derive(Debug, PartialEq, EnumString)]
+#[derive(Debug, Clone, PartialEq, EnumString)]
 #[strum(ascii_case_insensitive)]
 pub enum AxisDirection {
 	#[strum(disabled)]

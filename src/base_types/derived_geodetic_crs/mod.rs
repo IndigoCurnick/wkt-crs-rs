@@ -18,7 +18,7 @@ mod derived_static_geod_crs;
 #[cfg(test)]
 mod tests;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DerivedGeodeticCrs {
 	DerivedStaticGeodCrs(DerivedStaticGeodCrs),
 	DerivedDynamicGeodCrs(DerivedDynamicGeodCrs),

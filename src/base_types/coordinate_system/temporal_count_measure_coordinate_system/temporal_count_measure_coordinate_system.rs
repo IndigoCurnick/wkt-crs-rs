@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TemporalCountMeasureCoordinateSystem {
 	pub temporal_count_measure_cs_type: TemporalCountMeasureCsType,
 	pub dimension: Dimension,

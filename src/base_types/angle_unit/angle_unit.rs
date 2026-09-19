@@ -9,7 +9,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct AngleUnit {
 	pub unit_name: String,
 	pub conversion_factor: f64,

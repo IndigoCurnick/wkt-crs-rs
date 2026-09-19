@@ -10,7 +10,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum CoordinateMetadata {
 	StaticCoordinateMetadata(StaticCoordinateMetadata),
 	DynamicCoordinateMetadata(DynamicCoordinateMetadata),
@@ -52,7 +52,7 @@ impl WktBaseType for CoordinateMetadata {
 	}
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct StaticCoordinateMetadata {
 	pub static_coordinate_metadata: StaticCrsCoordinateMetadata,
 }
@@ -85,7 +85,7 @@ impl WktBaseType for StaticCoordinateMetadata {
 	}
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DynamicCoordinateMetadata {
 	pub dynamic_coordinate_metadata: DynamicCrsCoordinateMetadata,
 	pub metadata_coordinate_epoch: CoordinateEpoch,

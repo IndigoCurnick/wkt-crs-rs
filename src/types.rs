@@ -60,7 +60,7 @@ where
 		I: IntoIterator<Item = &'a WktArg>;
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum WktCrsTypes {
 	AnchorEpoch(AnchorEpoch),
 	Scope(Scope),

@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct OrdinalDateTimeCoordinateSystem {
 	pub ordinal_date_time_cs_type: OrdinalDateTimeCsType,
 	pub dimension: Dimension,

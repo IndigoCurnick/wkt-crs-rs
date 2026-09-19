@@ -10,7 +10,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DynamicCrsCoordinateMetadata {
 	DynamicGeodeticCrs(DynamicGeodeticCrs),
 	DynamicGeographicCrs(DynamicGeographicCrs),

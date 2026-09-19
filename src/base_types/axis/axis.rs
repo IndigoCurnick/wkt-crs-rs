@@ -9,7 +9,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Axis {
 	pub axis_name_abbreviation: String,
 	pub axis_direction: AxisDirection,

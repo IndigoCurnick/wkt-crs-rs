@@ -6,7 +6,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct AreaDescription(pub String);
 
 impl WktBaseType for AreaDescription {

@@ -7,7 +7,7 @@ use crate::{
 };
 
 // TODO: Make a tuple struct
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct CoordinateEpoch(pub f64);
 
 impl WktBaseType for CoordinateEpoch {

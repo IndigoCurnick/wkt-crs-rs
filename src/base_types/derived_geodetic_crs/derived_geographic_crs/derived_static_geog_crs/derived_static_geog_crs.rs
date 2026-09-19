@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DerivedStaticGeogCrs {
 	pub derived_crs_name: String,
 	pub base_static_crs: BaseStaticCrs,

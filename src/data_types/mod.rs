@@ -1,12 +1,12 @@
 use horologium::Temporal;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DateOrString {
 	Date(Temporal),
 	String(String),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum NumText {
 	Int(i32),
 	Text(String),

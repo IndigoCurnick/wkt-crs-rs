@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct VerticalDatumEnsemble {
 	pub datum_ensemble_name: String,
 	pub datum_ensemble_member: Vec<DatumEnsembleMember>,

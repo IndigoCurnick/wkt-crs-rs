@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DatumEnsembleMember {
 	pub ensemble_member_name: String,
 	pub identifier: Option<Id>, // TODO: Technically the spec allows multiple

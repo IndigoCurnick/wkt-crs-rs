@@ -7,7 +7,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DynamicCrs {
 	pub frame_reference_epoch: FrameEpoch,
 	pub deformation_model_id: Option<DeformationModelId>,

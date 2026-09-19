@@ -11,7 +11,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Ellipsoid {
 	pub ellipsoid_name: String,
 	pub semi_major_axis: f64,

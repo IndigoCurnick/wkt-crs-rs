@@ -5,7 +5,7 @@ use crate::error::WktParseError;
 use crate::keywords::Keywords;
 use crate::types::{WktBaseType, WktBaseTypeResult};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DerivedGeographicCrs {
 	DerivedStaticGeogCrs(DerivedStaticGeogCrs),
 	DerivedDynamicGeogCrs(DerivedDynamicGeogCrs),

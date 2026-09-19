@@ -9,7 +9,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SpatialCoordinateSystem {
 	pub spatial_cs_type: SpatialCsType,
 	pub dimension: Dimension,

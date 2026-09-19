@@ -12,7 +12,7 @@ use crate::{
 };
 
 // TODO: Can take an ID too optionally
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LengthUnit {
 	pub unit_name: String,
 	pub conversion_factor: f64,

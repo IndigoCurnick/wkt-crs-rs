@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DerivedProjectedCrs {
 	pub derived_crs_name: String,
 	pub base_projected_crs: BaseProjectedCrs,

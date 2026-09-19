@@ -8,7 +8,7 @@ use crate::{
 	types::{WktBaseType, WktBaseTypeResult, WktInlineType},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct StaticVerticalCrs {
 	pub crs_name: String,
 	pub vertical_frame_datum: VerticalFrameDatum,
